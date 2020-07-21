@@ -161,6 +161,7 @@
     <Compile Include="Areas\DashBoard\Controllers\AccomodationTypesController.cs" />
     <Compile Include="Areas\DashBoard\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\DashBoard\DashBoardAreaRegistration.cs" />
+    <Compile Include="Areas\DashBoard\ViewModels\AccomodationTypesViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
