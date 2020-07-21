@@ -158,7 +158,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Areas\DashBoard\Controllers\AccomodationTypesController.cs" />
     <Compile Include="Areas\DashBoard\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\DashBoard\DashBoardAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -213,9 +212,6 @@
     <Content Include="Areas\DashBoard\Content\vendor\bootstrap\js\bootstrap.min.js.map" />
     <Content Include="Areas\DashBoard\Content\vendor\jquery\jquery.min.map" />
     <Content Include="Areas\DashBoard\Content\vendor\jquery\jquery.slim.min.map" />
-    <Content Include="Areas\DashBoard\Views\AccomodationTypes\Index.cshtml" />
-    <Content Include="Areas\DashBoard\Views\AccomodationTypes\_Listing.cshtml" />
-    <Content Include="Areas\DashBoard\Views\AccomodationTypes\_Action.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -267,7 +263,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\DashBoard\Models\" />
-    <Folder Include="Areas\DashBoard\Views\AccomodationType\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -275,20 +270,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HBMS.Services\HMS.Services.csproj">
-      <Project>{ED008DC5-1AB6-47AD-BF6D-CF5DA06CBA37}</Project>
-      <Name>HMS.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HMS.Data\HMS.Data.csproj">
-      <Project>{A614B77E-81D1-4017-ACF0-FE3311DBF229}</Project>
-      <Name>HMS.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HMS.Entities\HMS.Entities.csproj">
-      <Project>{195D1863-7633-4929-BBEC-5D6200A19DBD}</Project>
-      <Name>HMS.Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
