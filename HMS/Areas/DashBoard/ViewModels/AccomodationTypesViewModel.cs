@@ -9,6 +9,8 @@ namespace HMS.Areas.ViewModels
     public class AccomodationTypesListingViewModel
     {
         public IEnumerable<AccomodationType> AccomodationTypes { get; set; }
+
+        public string SearchTerm { get; set; }
     }
     
     public class AccomodationTypesActionViewModel

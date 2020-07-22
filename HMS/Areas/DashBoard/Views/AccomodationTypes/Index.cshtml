@@ -1,4 +1,4 @@
-﻿
+﻿@model HMS.Areas.ViewModels.AccomodationTypesListingViewModel
 @{
     ViewBag.Title = "Index";
 }
@@ -13,28 +13,53 @@
 
 <div class="row mb-3">
     <div class="col col-lg-12">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="search..." aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
-            <div class="input-group-append" id="button-addon4">
-                <button class="btn btn-outline-primary" type="button">Search</button>
-                <button class="btn btn-outline-secondary" type="button">Reset</button>
-                <button class="btn btn-outline-success" type="button" data-toggle="modal" data-target="#exampleModal">Create</button>
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchTerm" placeholder="search..." value="@Model.SearchTerm" required="">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i>Search</button>
+                    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "AccomodationTypes")"><i class="fas fa-redo-alt mr-1"></i>Reset</a>
+                    <button class="data-btn btn btn-outline-success" data-href="@Url.Action("Action", "AccomodationTypes", new {isDelete = false})" type="button" data-toggle="modal" data-target="#actionModal">
+                        <i class="fas fa-plus mr-1"></i>Create
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
 <div class="row">
     <div class="col col-lg-12">
-        @{ Html.RenderAction("Listing"); }
+        @{ Html.RenderPartial("_Listing", Model); }
     </div>
 </div>
 
 
 <!-- Modal -->
-<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         @* keep modal content part in partial view _Action *@
 
     </div>
 </div>
+
+
+@*@section scripts{*@
+    <script>
+        
+        $('.data-btn').click(function () {
+            //alert($(this).attr('data-href'));
+            $.ajax({
+                    url: $(this).attr('data-href')
+                })
+                .done(function(response) {
+                    //alert('hi');
+                    $('#actionModal .modal-dialog').html(response);
+                });
+
+        });
+
+
+    </script>
+    
+@*}*@

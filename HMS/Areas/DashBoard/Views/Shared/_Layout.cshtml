@@ -14,6 +14,7 @@
         <!-- font awesome kit or cdn -->
         <script src="https://kit.fontawesome.com/2e4f108b26.js" crossorigin="anonymous"></script>
 
+        <script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -96,7 +97,7 @@
         }
 
 
-    <script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>
+    @*<script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>*@
     <script src="~/Areas/DashBoard/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- Menu Toggle Script -->
         <script>
@@ -108,6 +109,6 @@
             });
         </script>
 
-        @*@RenderSection("scripts", required: false)*@
+        @RenderSection("scripts", required: false)
     </body>
 </html>
