@@ -47,4 +47,43 @@
   #wrapper.toggled #sidebar-wrapper {
     margin-left: -15rem;
   }
+
+  
+}
+
+@media (max-width: 768px) {
+  /* css for admin page AccomodationPackages*/
+  .h2, h2 {
+    font-size: 1.3rem;
+}
+    hr {
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
+    }
+    th {
+        line-height: 1px;
+        white-space: nowrap;
+    }
+    .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control, .input-group > .form-control-plaintext {
+        width: 100% !important;
+
+}
+
+    .btn {
+        padding: .100rem .30rem !important;
+        border-radius: 0;
+    }
+
+    .input-group-append {
+        margin-left: 10%;
+        margin-top: 1%;
+    }
+    .form-control {
+        height: calc(1.5em + .45rem + 2px);
+        padding: .275rem .65rem;
+        margin-top: 1px;
+        border-radius: 0;
+        margin-left: -1px;
+
+    }
 }

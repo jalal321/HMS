@@ -1,0 +1,100 @@
+﻿@model HMS.Areas.DashBoard.ViewModels.AccomodationActionViewModel
+
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                
+                @if (Model.Id > 0 && ViewBag.isDelete == false)
+                {
+                    <span>Edit Accomodation</span>
+                }
+                else if (Model.Id > 0 && ViewBag.isDelete == true)
+                {
+                 <span>Delete Accomodation</span>
+                <br/>
+                <span class="text text-danger mt-2"><i class="fas fa-exclamation-triangle mr-1"></i>Are You Sure You Want to Delete? </span>
+                }
+                else{
+                    <span>Create New Accomodation</span>
+                }
+
+            </h5>
+            <button Package="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form id="actionForm">
+
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Accmodation Package</label>
+                    <select class="form-control" name="AccomodationPackageId">
+                        @if (@Model.AccomodationPackages != null)
+                        {
+                            foreach (var t in @Model.AccomodationPackages)
+                            {
+                            <option  value="@t.Id" @(t.Id == @Model.AccomodationPackageId ? "selected" : string.Empty)>@t.Name</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Acccomodation Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Description</label>
+                    <input class="form-control" id="exampleInputPassword1" name="Description" value="@Model.Description" aria-describedby="name" placeholder="Enter Description">
+
+                </div>
+                
+
+            </form>
+            <div id="errorDiv">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button Package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
+            @if (!ViewBag.isDelete == true)
+            {
+                <button Package="button" id="actionButton" data-href="@Url.Action("Action","Accomodation",new {id = Model.Id , isDeleted = false})" class="actionButton btn btn-primary"><i class="far fa-save mr-1"></i>Save changes</button>
+
+            }
+            else
+            {
+                <button Package="button" id="actionButton" data-href="@Url.Action("Action", "Accomodation", new {id = Model.Id, isDeleted = true})"
+                         class="actionButton btn btn-danger"><i class="fas fa-exclamation-circle mr-1"></i>Delete</button>
+            }
+        </div>
+    </div>
+
+
+    <script>
+
+        $('.actionButton').click(function () {
+            
+                $.ajax({
+                    //url: '@Url.Action("Action","AccomodationPackages")',
+                    url: $(this).attr("data-href"),
+                    method: "post",
+                    data: $('#actionForm').serialize()
+                })
+                .done(function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        $('#errorDiv').html(response.message);
+                    }
+                });
+
+        });
+
+    </script>
+

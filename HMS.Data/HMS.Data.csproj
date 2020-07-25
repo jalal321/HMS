@@ -40,6 +40,9 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -54,6 +57,10 @@
     <Compile Include="Migrations\202007181810336_basicentities.cs" />
     <Compile Include="Migrations\202007181810336_basicentities.designer.cs">
       <DependentUpon>202007181810336_basicentities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007251001532_step3.cs" />
+    <Compile Include="Migrations\202007251001532_step3.designer.cs">
+      <DependentUpon>202007251001532_step3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +78,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202007181810336_basicentities.resx">
       <DependentUpon>202007181810336_basicentities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007251001532_step3.resx">
+      <DependentUpon>202007251001532_step3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
