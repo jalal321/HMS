@@ -1,4 +1,4 @@
-﻿@model HMS.Areas.DashBoard.ViewModels.UsersActionViewModel
+﻿@model HMS.Areas.DashBoard.ViewModels.RolesActionViewModel
 
 
     <div class="modal-content">
@@ -33,8 +33,8 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Role</label>
-                    <select class="form-control" name="AccomodationTypeId">
+                    @*<label for="exampleInputEmail1">Role</label>*@
+                    @*<select class="form-control" name="AccomodationTypeId">
                         @if (@Model.Role != null)
                         {
                             foreach (var t in @Model.Roles)
@@ -43,34 +43,14 @@
                             }
                         }
                         
-                    </select>
+                    </select>*@
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
-                    <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Acccomodation Package Name">
+                    <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Role Name">
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Email</label>
-                    <input class="form-control" id="exampleInputPassword1" name="Email" value="@Model.Email" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-
-                @if (!String.IsNullOrEmpty(Model.Id) || ViewBag.isDelete == true)
-                {
-                    <div class="form-group">
-                        <label for="exampleInputPassword2">Current Role</label>
-                        <textarea class="form-control" id="exampleInputPassword2"
-                                  name="" aria-describedby="name" placeholder="">
-                        @foreach (var r in Model.UserRoles)
-                        {
-                            @r
-                        }
-                    </textarea>
-                        @*<input class="form-control" id="exampleInputPassword2" name="" value="@Model.UserRoles.FirstOrDefault()" aria-describedby="name" placeholder="Enter Fee Per Night">*@
-
-                    </div>
-                }
+             
             </form>
            
         </div>
@@ -78,13 +58,13 @@
             <button Package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
             @if (!ViewBag.isDelete == true)
             {
-                <button type="button" id="actionButton" data-href="@Url.Action("Action", "User", new {id = Model.Id, isDeleted = false})" 
+                <button type="button" id="actionButton" data-href="@Url.Action("Action", "Role", new {id = Model.Id, isDeleted = false})" 
                         class="actionButton btn btn-primary"><i class="far fa-save mr-1"></i>Save changes</button>
 
             }
             else
             {
-                <button type="button" id="actionButton" data-href="@Url.Action("Action", "User", new { id = Model.Id, isDeleted = true })"
+                <button type="button" id="actionButton" data-href="@Url.Action("Action", "Role", new { id = Model.Id, isDeleted = true })"
                          class="actionButton btn btn-danger"><i class="fas fa-exclamation-circle mr-1"></i>Delete</button>
             }
         </div>
@@ -106,7 +86,7 @@
                     //alert(response.Message);
                   if (response.Success) {
 
-                      window.location.href = "@Url.Action("Index","User")"; 
+                      window.location.href = "@Url.Action("Index","Role")"; 
                       //location.reload();
                   } else {
                         $('#errorDiv').addClass("alert alert-danger");

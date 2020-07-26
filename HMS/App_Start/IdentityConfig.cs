@@ -88,6 +88,25 @@ namespace HMS
         }
     }
 
+    // Configure the application role manager which is used in this application.
+    /// <summary>
+    ///  important::  dont forget to register it in startup.Auth Class
+    /// </summary>
+   public class HMSRoleManager : RoleManager<IdentityRole>
+    {
+        public HMSRoleManager(IRoleStore<IdentityRole , string> roleStore) : base(roleStore)
+        {
+            
+        }
+
+        public static HMSRoleManager Create(IdentityFactoryOptions<HMSRoleManager> options , IOwinContext context)
+        {
+         
+            return new HMSRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+        }
+    }
+
+
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {

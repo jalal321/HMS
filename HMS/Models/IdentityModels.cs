@@ -12,10 +12,12 @@ namespace HMS.Models
 
         //add customized fields here
 
-        //public string FullName { get; set; }
-        //public string Country { get; set; }
-        //public string City { get; set; }
-        //public string Address { get; set; }
+        public string FullName { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
+        public string State { get; set; }
+        
         
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

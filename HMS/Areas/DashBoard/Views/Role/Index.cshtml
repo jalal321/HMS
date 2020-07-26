@@ -1,11 +1,11 @@
-﻿@model HMS.Areas.DashBoard.ViewModels.UsersListingViewModel
+﻿@model HMS.Areas.DashBoard.ViewModels.RolesListingViewModel
 @{
     ViewBag.Title = "Index";
 }
 
 <div class="row">
     <div class="col col-lg-12">
-        <h2>Users</h2>
+        <h2>Roles</h2>
         <hr/>
     </div>
 </div>
@@ -16,8 +16,8 @@
         <form>
             <div class="input-group">
                 <input type="text" class="form-control" name="searchTerm" placeholder="search..." value="@Model.SearchTerm" >
-                <select class="form-control" name="accomodationTypeID">
-                    @if(Model.Roles != null && Model.Roles.Count() > 0)
+                @*<select class="form-control" name="accomodationTypeID">
+                    @if(Model.Roles != null && Model.Roles.Any())
                     { 
                      <option value="0">Select Role</option>
                      foreach (var t in Model.Roles)
@@ -25,15 +25,12 @@
                         <option value="@t.Id" @(Model.RoleID == t.Id ? "selected" : string.Empty) >@t.Name</option>
                     }
                     }
-                    else
-                    {
-                        <option value="0">Nothing Found</option>
-                    }
-                </select>
+
+                </select>*@
                 <div class="input-group-append" id="button-addon4">
                     <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i>Search</button>
-                    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "User")"><i class="fas fa-redo-alt mr-1"></i>Reset</a>
-                    <button class="data-btn btn btn-outline-success" data-href="@Url.Action("Action", "User", new {isDelete = false})" type="button" data-toggle="modal" data-target="#actionModal">
+                    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Role")"><i class="fas fa-redo-alt mr-1"></i>Reset</a>
+                    <button class="data-btn btn btn-outline-success" data-href="@Url.Action("Action", "Role", new {isDelete = false})" type="button" data-toggle="modal" data-target="#actionModal">
                         <i class="fas fa-plus mr-1"></i>Create
                     </button>
                 </div>
