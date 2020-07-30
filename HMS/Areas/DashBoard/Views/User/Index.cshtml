@@ -16,14 +16,15 @@
         <form>
             <div class="input-group">
                 <input type="text" class="form-control" name="searchTerm" placeholder="search..." value="@Model.SearchTerm" >
-                <select class="form-control" name="accomodationTypeID">
-                    @if(Model.Roles != null && Model.Roles.Count() > 0)
-                    { 
-                     <option value="0">Select Role</option>
-                     foreach (var t in Model.Roles)
+                <select class="form-control" name="roleId">
+                    <option value="0" disabled="" hidden="" selected="">Select Role</option>
+                    @if (Model.Roles != null && Model.Roles.Count() > 0)
                     {
-                        <option value="@t.Id" @(Model.RoleID == t.Id ? "selected" : string.Empty) >@t.Name</option>
-                    }
+
+                        foreach (var t in Model.Roles)
+                        {
+                            <option value="@t.Id" @(Model.RoleID == t.Id ? "selected" : string.Empty)>@t.Name</option>
+                        }
                     }
                     else
                     {
@@ -44,6 +45,8 @@
 
 <div class="row">
     <div class="col col-lg-12">
+        
+       
         @{ Html.RenderPartial("_Listing", Model); }
     </div>
 </div>
@@ -51,7 +54,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" id="modal-content">
         @* keep modal content part in partial view _Action *@
 
     </div>
@@ -67,7 +70,8 @@
                     url: $(this).attr('data-href')
                 })
                 .done(function(response) {
-                    //alert('hi');
+                //    alert('hi');
+                
                     $('#actionModal .modal-dialog').html(response);
                 });
 

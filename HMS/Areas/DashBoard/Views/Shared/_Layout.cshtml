@@ -1,4 +1,6 @@
-﻿
+﻿@using System.Web.UI.WebControls
+@using HMS.Entities
+
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -38,10 +40,12 @@
                         <i class="fas fa-bed mr-1"></i>  Accomodation
                     </a>
                    
-                    <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-light">
+                <a href="@Url.Action("Index", "User")"
+                   class="list-group-item list-group-item-action bg-light @(ViewContext.RouteData.Values["controller"].ToString() == "User" ? "text-primary" : string.Empty)">
                         <i class="fas fa-users mr-1"></i> Users
                     </a>
-                    <a href="@Url.Action("Index", "Role")" class=" list-group-item list-group-item-action bg-light">
+                    <a href="@Url.Action("Index", "Role")"
+                       class="list-group-item list-group-item-action bg-light @(ViewContext.RouteData.Values["controller"].ToString() == "Role" ? "text-primary" : string.Empty)">
                         <i class="fas fa-users-cog mr-1"></i> Roles
                     </a>
 
@@ -55,11 +59,30 @@
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div class="nav-item">
+                        <a class="nav-link text-primary" href="#">
+                            <i class="fas fa-user mr-1">
+
+                            </i> Welcome @User.Identity.Name
+                        </a>
+
+                    </div>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                            <li class="nav-item active">
+                            <li class="nav-item active mr-2">
                                 <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
-                                    <i class="fas fa-sign-out-alt"></i> LogOut
+                                    <i class="fas fa-bell text-danger"> <span class="badge badge-danger">4</span></i> Booking
+                                </a>
+                            </li>
+                            <li class="nav-item active mr-2">
+                                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="fas fa-envelope text-danger"> <span class="badge badge-danger">4</span></i> Message
+                                </a>
+                            </li>
+
+                            <li class="nav-item active ">
+                                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="fas fa-power-off text-danger"></i> LogOut
                                 </a>
                             </li>
                             @*<li class="nav-item">

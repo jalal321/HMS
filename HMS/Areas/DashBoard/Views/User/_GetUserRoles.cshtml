@@ -1,0 +1,209 @@
+﻿@model HMS.Areas.DashBoard.ViewModels.UsersActionViewModel
+           
+@{
+     Layout = null;
+}
+
+@*<div id="modal-content">*@
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h6 class="modal-title text-primary" id="exampleModalLabel">
+
+            <i class="fas fa-user-shield mr-2"></i>@Model.Name Roles Detail
+        </h6>
+        <a href="@Url.Action("Index","User")" package="button" class="close" data-dismiss="" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </a>
+    </div>
+    <div class="modal-body">
+          
+        <form id="actionForm">
+
+            <input type="hidden" name="Id" id="userid" data="@Model.Id" />
+            <div id="resultDiv" class="text">
+
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-xl-6" style="">
+                    <div class="card border-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header  bg-success text-white">
+                            <i class="fas fa-check-circle mr-1"></i>Role Assigned (@Model.UserRole.Count)
+                        </div>
+                        <div class="card-body text-success">
+                            @*<h5 class="card-title">Warning card title</h5>*@
+                            @if (@Model.UserRole.Count > 0)
+                            {
+                                foreach (var t in @Model.UserRole)
+                                {
+
+                                    <input type="checkbox" class="roletoremove checkbox" id="@t.Id" value="@t.Id" />
+                                    <label for="@t.Id">@t.Name</label>
+
+                                    <br />
+                                }
+
+
+                            }
+                            else
+                            {
+                                <p class="text text-danger">No Role Assigned!</p>
+                            }
+
+                        </div>
+                    </div>
+                    </div>
+
+                <div class="form-group col-lg-6 col-xl-6" style="">
+                    <div class="card border-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header  bg-info text-white">
+                            <i class="fas fa-times-circle mr-1"></i>Role Available (@Model.Roles.Count())
+                        </div>
+                        
+                        <div class="card-body text-info">
+                            @if (@Model.Roles != null && @Model.Roles.Count() > 0)
+                            {
+                                foreach (var t in @Model.Roles)
+                                {
+
+                                    <input type="checkbox" class="roletoassign checkbox text-danger" id="@t.Id" value="@t.Id" />
+                                    <label for="@t.Id">@t.Name</label>
+                                    <br />
+                                }
+
+
+                            }
+                            else
+                            {
+                                <p class="text text-danger">No Role Available!</p>
+                            }
+
+
+                        </div>
+                        </div>
+            </div>
+            </div>
+        </form>
+
+
+
+    </div>
+    <div class="modal-footer">
+       
+            <button type="button" id="assign" data="@Model.Id" data-href="@Url.Action("GetUserRoles", "User")" class="actionButton btn btn-outline-primary" disabled="">
+                <i class="fas fa-user-plus mr-1"></i>Assign
+            </button>
+
+
+        <button type="button" id="remove" data="@Model.Id" data-href="@Url.Action("GetUserRoles", "User", new {isRemove = true})" 
+                class="actionButton btn btn-outline-danger" disabled="">
+            <i class="fas fa-user-times mr-1"></i>Remove
+        </button>
+        <a package="button" href="@Url.Action("Index","User")" class="btn btn-outline-secondary" data-dismiss="">
+            <i class="far fa-times-circle mr-1"></i>
+            Close
+        </a>
+
+        
+    </div>
+</div>
+@*</div>*@
+
+
+<script>
+    var roleiD;
+
+    var useriD = $('#userid').attr("data");
+    //$('.roletoassign').click(function () {
+    //    //alert('hi');
+    //    $('.roletoassign').not(this).prop('checked', false);
+    //    roleiD = $(this).attr("value");
+
+    //});
+
+    $('input[type = checkbox]').click(function () {
+        //alert('hi');
+        $('input[type = checkbox]').not(this).prop('checked', false);
+        roleiD = $(this).attr("value");
+        if ($(this).hasClass('roletoassign')) {
+            $('#assign').prop('disabled', false);
+            $('#remove').prop('disabled', true);
+        } else {
+            $('#remove').prop('disabled', false);
+            $('#assign').prop('disabled', true);
+        }
+    });
+
+    $('.actionButton').click(function () {
+
+        if ($(this).hasClass('btn-outline-primary')) {
+            $(this).find('i').removeClass('fa-user-plus');
+            $(this).find('i').addClass('fas fa-spinner fa-spin');
+        } else {
+            $(this).find('i').removeClass('fa-user-times');
+            $(this).find('i').addClass('fas fa-spinner fa-spin');
+        }
+       
+
+        //alert(useriD);
+        $.ajax({
+            url: $(this).attr("data-href"),
+            method: "post",
+            data: ({
+                userid: useriD,
+                roleid: roleiD
+            }),
+            dataType: "json"
+        })
+          .done(function (response) {
+              //alert(response.Message);
+              if (response.Success) {
+                  
+                  //var th = $(this);
+                  UpdateUserRolesModal();     
+                //window.location.href = "@Url.Action("Index","User")";
+                      
+                  } else {
+                      alert("hi in else");
+
+                        $('#resultDiv').addClass("alert alert-danger");
+                        $('#resultDiv').html(response.Message);
+                    }
+                });
+
+    });
+
+    function UpdateUserRolesModal() {
+       // alert("hi in function");
+        //alert($(this).attr("data-href"));
+        //alert(th);
+        $.ajax({
+            //url: $(this).attr("data-href"),
+            url : "@Url.Action("GetUserRoles","User")",
+            method: "get",
+            data: ({
+                userid: useriD
+            })
+            //dataType: "json"
+        }).done(function (response) {
+                 //alert(response.Message);
+           
+            $('#modal-content').html(response);
+           
+                $('#resultDiv').addClass("alert alert-success");
+                $('#resultDiv').html('<span class="fas fa-check mr-1"></span> operation performed successfully!');
+           
+                     
+        //location.reload();
+
+
+
+    }).fail(function (parameters) {
+
+        $('#resultDiv').addClass("alert alert-danger");
+        $('#resultDiv').html("Something went wrong !");
+    });
+    }
+
+</script>

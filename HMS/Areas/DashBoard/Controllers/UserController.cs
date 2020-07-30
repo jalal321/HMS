@@ -24,13 +24,13 @@ namespace HMS.Areas.DashBoard.Controllers
         
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private HMSRoleManager _roleManager;
         
         public UserController()
         {
         }
 
-        public UserController(ApplicationUserManager userManager, ApplicationSignInManager signInManager , RoleManager<IdentityRole> roleManager)
+        public UserController(ApplicationUserManager userManager, ApplicationSignInManager signInManager , HMSRoleManager roleManager)
         {
             UserManager = userManager;
             RoleManager = roleManager;
@@ -61,13 +61,14 @@ namespace HMS.Areas.DashBoard.Controllers
             }
         }
 
-        ApplicationDbContext db = new ApplicationDbContext();
-        
-        public RoleManager<IdentityRole> RoleManager
+        //ApplicationDbContext db = new ApplicationDbContext();
+
+        public HMSRoleManager RoleManager
         {
             get
             {
-                return _roleManager ?? new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                //return _roleManager ?? new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+                return _roleManager ?? HttpContext.GetOwinContext().Get<HMSRoleManager>();
             }
             private set
             {
@@ -96,10 +97,11 @@ namespace HMS.Areas.DashBoard.Controllers
                 model.Users.Skip((pager.CurrentPage - 1)*pager.PageSize).Take(pager.PageSize).ToList();
 
             model.SearchTerm = searchTerm;
-            //model.Roles = accomodationTypesService.GetAllAccomodationTypes();
             model.Roles = RoleManager.Roles;
-            model.RoleID = roleID;
+            model.RoleID = roleID;                  
+                              
             model.pager = pager;
+            
             return View(model);
         }
 
@@ -108,12 +110,15 @@ namespace HMS.Areas.DashBoard.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-         public string GetRole(string id)
+         public ActionResult GetSingleUserRoles(string id)
          {
-           var model = UserManager.GetRoles(id).FirstOrDefault();
+           var model = UserManager.GetRoles(id);
 
-             return model;
+             return PartialView("_GetSingleUserRoles",model.ToList());
          }
+        
+
+       
 
          public List<ApplicationUser> SearchUsers(string searchTerm, string roleId)
          {
@@ -129,15 +134,24 @@ namespace HMS.Areas.DashBoard.Controllers
              //RoleManager.Create(role1);
 
              var users = UserManager.Users.AsQueryable();
+             
 
              if (!string.IsNullOrEmpty(searchTerm))
              {
-                 users = users.Where(a => a.Email.ToLower().Contains(searchTerm.ToLower()));
+                 users = users.Where(a => a.Email.ToLower().Contains(searchTerm.ToLower()) 
+                     || a.UserName.ToLower().Contains(searchTerm.ToLower()));
              }
 
              if (!string.IsNullOrEmpty(roleId))
              {
-                 //users = users.Where(a => a.Roles == roleID.Value);
+                 //users = from user in users
+                 //    where user.Roles.Any(a => a.RoleId == roleId)
+                 //    select user;
+                 var role = RoleManager.FindById(roleId);
+                 var userIds = role.Users.Select(a=>a.UserId).ToList();
+                 users = users.Where( a=> userIds.Contains(a.Id));
+                 
+                
              }
  
              return users.OrderBy(a=>a.Email).ToList();
@@ -156,6 +170,7 @@ namespace HMS.Areas.DashBoard.Controllers
             UsersActionViewModel model = new UsersActionViewModel();
             ViewBag.isDelete = isDelete;
 
+            model.Roles = RoleManager.Roles;
 
             if (!string.IsNullOrEmpty(ID) && isDelete)
             {
@@ -165,7 +180,11 @@ namespace HMS.Areas.DashBoard.Controllers
                  model.Id = user.Id;
                  model.Name = user.UserName;
                  model.Email = user.Email;
-                 model.UserRoles = UserManager.GetRoles(model.Id).ToList();
+                 model.FullName = user.FullName;
+                 model.Country = user.Country;
+                 model.City = user.City;
+                 model.Address = user.Address;
+                 model.UserRolesNames = UserManager.GetRoles(user.Id).ToList();
                
             }
 
@@ -177,7 +196,11 @@ namespace HMS.Areas.DashBoard.Controllers
                 model.Id = user.Id;
                 model.Name = user.UserName;
                 model.Email = user.Email;
-                model.UserRoles = UserManager.GetRoles(model.Id).ToList();
+                model.FullName = user.FullName;
+                model.Country = user.Country;
+                model.City = user.City;
+                model.Address = user.Address;
+                model.UserRolesNames = UserManager.GetRoles(user.Id).ToList();
                
             }
             else
@@ -204,7 +227,10 @@ namespace HMS.Areas.DashBoard.Controllers
 
                 user.UserName = model.Name;
                 user.Email = model.Email;
-
+                user.FullName = user.FullName;
+                user.Country = user.Country;
+                user.City = user.City;
+                user.Address = user.Address;
                 result = await UserManager.UpdateAsync(user);
              
             }
@@ -217,12 +243,24 @@ namespace HMS.Areas.DashBoard.Controllers
 
             else
             {
+                //Create new User here with Role
                 var user = new ApplicationUser();
 
                 user.UserName = model.Name;
                 user.Email = model.Email;
+                user.FullName = user.FullName;
+                user.Country = user.Country;
+                user.City = user.City;
+                user.Address = user.Address;
+                var role = await RoleManager.FindByIdAsync(model.RoleId);
 
                 result = await UserManager.CreateAsync(user);
+
+                if (result.Succeeded)
+                {
+                   result = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                }
+                
             }
 
             json.Data = new { Success = result.Succeeded, Message = string.Join(",", result.Errors) };
@@ -233,6 +271,59 @@ namespace HMS.Areas.DashBoard.Controllers
         }
 
        
+        //user roles add and remove actions
+        public async Task<ActionResult> GetUserRoles(string id)
+        {
+            UsersActionViewModel model = new UsersActionViewModel();
+            
+            var user = await UserManager.FindByIdAsync(id);
+            var userRoleIDs = user.Roles.Select(x => x.RoleId).ToList();
+            model.UserRole = RoleManager.Roles.Where(a => userRoleIDs.Contains(a.Id)).ToList();
+            //model.UserRole = RoleManager.Roles.Where(a => a.Id.Contains(userRoleIDs)).ToList();
+            model.Name = user.UserName;
+            model.Id = id;
+            model.Roles = RoleManager.Roles.Where(a=> !userRoleIDs.Contains(a.Id)).ToList();
+
+            return PartialView("_GetUserRoles", model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetUserRoles(string userid , string roleid , bool isRemove = false)
+        {
+           
+            JsonResult json = new JsonResult();
+            IdentityResult result = null;
+
+            if (isRemove == false)
+            {
+                // add to role
+                if (userid != null && roleid != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleid);
+                   
+                    result = await UserManager.AddToRoleAsync(userid, role.Name);
+
+                }
+            }
+            else if (isRemove == true)
+            {
+                //remove from role
+                if (userid != null && roleid != null)
+                {
+                    var role = await RoleManager.FindByIdAsync(roleid);
+                    //edit here
+                    result = await UserManager.RemoveFromRoleAsync(userid, role.Name);
+
+                }
+            }
+           
+
+            json.Data = new { Success = result.Succeeded, Message = string.Join(",", result.Errors) };
+
+            return json;
+
+        }
+
 
     }
 }

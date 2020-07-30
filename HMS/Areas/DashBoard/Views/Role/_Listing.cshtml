@@ -24,7 +24,10 @@
                     @t.Name
                 </td>
                 <td>
-                    @t.Users.Count
+                    <a href="@Url.Action("Index","User", new {roleId = @t.Id})">
+                        @t.Users.Count
+                    </a>
+                    
                 </td>
                 @*<td>
                     @{Html.RenderAction("GetRole", new {@id = @t.Id}); }
@@ -37,6 +40,7 @@
                     <button type="button" data-href="@Url.Action("Action", "Role", new {Id = t.Id, isDelete = true})" class="data-btn btn btn-danger" data-toggle="modal" data-target="#actionModal">
                         <i class="fas fa-trash-alt mr-1"></i>Delete
                     </button>
+                   
 
                 </td>
             </tr>

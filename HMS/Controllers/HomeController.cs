@@ -26,5 +26,12 @@ namespace HMS.Controllers
 
             return View();
         }
+        
+        public ActionResult DiningAndBar()
+        {
+            ViewBag.Message = "";
+
+            return View();
+        }
     }
 }
