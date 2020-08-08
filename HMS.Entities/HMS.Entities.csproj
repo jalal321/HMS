@@ -41,8 +41,11 @@
   <ItemGroup>
     <Compile Include="Accomodation.cs" />
     <Compile Include="AccomodationPackage.cs" />
+    <Compile Include="AccomodationPackagePicture.cs" />
+    <Compile Include="AccomodationPicture.cs" />
     <Compile Include="AccomodationType.cs" />
     <Compile Include="Booking.cs" />
+    <Compile Include="Picture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,8 +16,22 @@ namespace HMS
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+                defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional},
+                namespaces: new [] { "HMS.Controllers"  }
+
+          );
+
+            ////customized route for Accomodation controler with conflity Second accomdation controller in area dashboard
+            //routes.MapRoute(
+            //    name: "FEAccomodations",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Accomodation", action = "Index", id = UrlParameter.Optional },
+            //    namespaces: new [] { "HMS.Controllers"  }
+                
+            //);
+
+
+          
         }
     }
 }

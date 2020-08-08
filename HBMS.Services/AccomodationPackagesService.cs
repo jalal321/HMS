@@ -52,13 +52,19 @@ namespace HMS.Services
        {
            var context = new HMSContext();
            var obj = context.AccomodationPackages.Find(accomodationPackage.Id);
+           
+
+           context.AccomodationPackagePictures.RemoveRange(obj.AccomodationPackagePictures);
+           context.AccomodationPackagePictures.AddRange(accomodationPackage.AccomodationPackagePictures);
+
+         
 
            obj.Name = accomodationPackage.Name;
            obj.NoOfRoom = accomodationPackage.NoOfRoom;
-          
            obj.FeePerNight = accomodationPackage.FeePerNight;
-
-
+           obj.AccomodationTypeId = accomodationPackage.AccomodationTypeId;
+           
+           //obj.AccomodationPackagePictures = accomodationPackage.AccomodationPackagePictures;
            context.Entry(obj).State = EntityState.Modified;
 
            var result = context.SaveChanges() > 0;
@@ -78,3 +84,21 @@ namespace HMS.Services
        }
     }
 }
+
+
+//obj.AccomodationPackagePictures.Clear();
+//context.SaveChanges();
+//obj.AccomodationPackagePictures.Clear();
+//foreach (var p in obj.AccomodationPackagePictures.ToList())
+//{
+//    obj.AccomodationPackagePictures.Remove(p);
+//    //obj.AccomodationPackagePictures.RemoveRange(obj.AccomodationPackagePictures.Find(aId) , obj.AccomodationPackagePictures.Count);
+
+//}
+
+//foreach (var p in accomodationPackage.AccomodationPackagePictures.ToList())
+//{
+//    obj.AccomodationPackagePictures.Add(p);
+//    //obj.AccomodationPackagePictures.RemoveRange(obj.AccomodationPackagePictures.Find(aId) , obj.AccomodationPackagePictures.Count);
+
+//}

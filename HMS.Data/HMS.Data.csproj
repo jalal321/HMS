@@ -62,6 +62,14 @@
     <Compile Include="Migrations\202007251001532_step3.designer.cs">
       <DependentUpon>202007251001532_step3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007311716165_step4.cs" />
+    <Compile Include="Migrations\202007311716165_step4.designer.cs">
+      <DependentUpon>202007311716165_step4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008041127590_add-picture-entities.cs" />
+    <Compile Include="Migrations\202008041127590_add-picture-entities.designer.cs">
+      <DependentUpon>202008041127590_add-picture-entities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -81,6 +89,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007251001532_step3.resx">
       <DependentUpon>202007251001532_step3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007311716165_step4.resx">
+      <DependentUpon>202007311716165_step4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008041127590_add-picture-entities.resx">
+      <DependentUpon>202008041127590_add-picture-entities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

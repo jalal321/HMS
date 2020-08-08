@@ -16,7 +16,7 @@ namespace HMS.Services
             var context = new HMSContext();
             return context.Accomodations.AsEnumerable();
         }
-        public IEnumerable<Accomodation> SearchAccomodations(string searchTerm, int? accomodationid)
+        public IEnumerable<Accomodation> SearchAccomodations(string searchTerm, int? typeid , int? packageid)
         {
 
             var context = new HMSContext();
@@ -27,13 +27,37 @@ namespace HMS.Services
                 accomodations = accomodations.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            if (accomodationid.HasValue && accomodationid.Value > 0)
+            if (typeid.HasValue && typeid.Value > 0)
             {
-                accomodations = accomodations.Where(a => a.AccomodationPackageId == accomodationid.Value);
+                accomodations = accomodations.Where(a => a.AccomodationPackage.AccomodationTypeId == typeid.Value);
             }
+            
+            if (packageid.HasValue && packageid.Value > 0)
+            {
+                accomodations = accomodations.Where(a => a.AccomodationPackage.Id == packageid.Value);
+            }
+
             return accomodations.ToList();
         }
+        public IEnumerable<Accomodation> SearchAccomodations(string searchTerm, int? accomodationPackageID)
+        {
 
+            var context = new HMSContext();
+            var accomodations = context.Accomodations.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                accomodations = accomodations.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (accomodationPackageID.HasValue && accomodationPackageID.Value > 0)
+            {
+                accomodations = accomodations.Where(a => a.AccomodationPackage.Id == accomodationPackageID.Value);
+            }
+
+            
+            return accomodations.ToList();
+        }
         public Accomodation GetAccomodationById(int? id)
         {
             var context = new HMSContext();

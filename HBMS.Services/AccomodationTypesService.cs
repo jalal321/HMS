@@ -17,7 +17,7 @@ namespace HMS.Services
        public IEnumerable<AccomodationType> GetAllAccomodationTypes()
        {
            var context = new HMSContext();
-           return context.AccomodationTypes.AsEnumerable(); 
+           return context.AccomodationTypes.Include(a=>a.AccomodationPackages).AsEnumerable(); 
        }
        public IEnumerable<AccomodationType> SearchAccomodationTypes(string searchTerm)
        {

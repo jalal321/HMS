@@ -73,6 +73,7 @@
     <Compile Include="AccomodationPackagesService.cs" />
     <Compile Include="AccomodationService.cs" />
     <Compile Include="AccomodationTypesService.cs" />
+    <Compile Include="DashBoardService.cs" />
     <Compile Include="HMSRoleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

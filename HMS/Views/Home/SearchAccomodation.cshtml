@@ -1,0 +1,130 @@
+﻿@model HMS.ViewModels.HomeSearchAccomodationViewModel
+@{
+    ViewBag.Title = "SearchAccomodation";
+}
+
+
+
+<div id="colorlib-reservation">
+    <div class="container">
+        <div class="row">
+            <h5 class="alert alert-info">I like to book Room from @Model.CheckIn.ToShortDateString() to @Model.CheckOut.ToShortDateString() for @Model.Adult Adult and @Model.Children Children</h5>
+
+            <div class="col-md-12 search-wrap search-wrap-form">
+                @using (Html.BeginForm("SearchAccomodation", "Home", FormMethod.Post, new {@class = "colorlib-form colorlib-form-search"}))
+                {
+                    //<form method="post" class="colorlib-form">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="date">Check-in:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" class="form-control date" placeholder="Check-in date" name="checkIn" value="@Model.CheckIn.ToShortDateString()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="date">Check-out:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" class="form-control date" placeholder="Check-out date" name="checkOut" value="@Model.CheckOut.ToShortDateString()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="Adult">Adults</label>
+                                <div class="form-field">
+                                    <i class="icon icon-form icon-arrow-down3"></i>
+                                    <select name="Adult" id="Adult" class="form-control">
+                                        <option value="1" @(Model.Adult == "1" ? "selected" : string.Empty)>1</option>
+                                        <option value="2" @(Model.Adult == "2" ? "selected" : string.Empty)>2</option>
+                                        <option value="3" @(Model.Adult == "3" ? "selected" : string.Empty)>3</option>
+                                        <option value="4" @(Model.Adult == "4" ? "selected" : string.Empty)>4</option>
+                                        <option value="5+" @(Model.Adult == "5+" ? "selected" : string.Empty)>5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="Children">Children</label>
+                                <div class="form-field">
+                                    <i class="icon icon-form icon-arrow-down3"></i>
+                                    <select name="Children" id="Children" class="form-control">
+                                        <option value="1" @(@Model.Children == "1" ? "selected" : string.Empty)>1</option>
+                                        <option value="2" @(@Model.Children == "2" ? "selected" : string.Empty)>2</option>
+                                        <option value="3" @(@Model.Children == "3" ? "selected" : string.Empty)>3</option>
+                                        <option value="4" @(@Model.Children == "4" ? "selected" : string.Empty)>4</option>
+                                        <option value="5+" @(@Model.Children == "5+" ? "selected" : string.Empty)>5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Children">Accomodation Type</label>
+                                <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="Children" id="Children" class="form-control">
+                                        <option>Plz Select Type</option>
+                                        @foreach (var t in @Model.AccomodationTypes)
+                                        {
+                                            <option value="@t.Id">@t.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" @*name="submit"*@ id="submit" value="Check Availability" class="btn btn-primary btn-block btn-form">
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="alert alert-warning" id="bookingsearchmsg">
+                @HMS.Code.Variables.HotelFullName, checkin date must be today or after today.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="" id="searchResult">
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.actionButton').click(function () {
+            // debugger;
+            $.ajax({
+                //url: '@Url.Action("Action", "AccomodationPackages")',
+                url: $(this).attr("data-href"),
+                method: "post",
+                data: $('#actionForm').serialize(),
+
+            })
+            .done(function (response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    $('#errorDiv').html(response.message);
+                }
+            });
+
+        });
+
+
+    </script>
+}

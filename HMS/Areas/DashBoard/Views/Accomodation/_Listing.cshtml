@@ -9,6 +9,7 @@
         <tr>
 
             <th scope="col">Name</th>
+            <th scope="col">Accomodation Type</th>
             <th scope="col">Accomodation Package</th>
             <th scope="col">Description</th>
             <th scope="col">Actions</th>
@@ -24,12 +25,15 @@
                     @t.Name
                 </td>
                 <td>
+                    @t.AccomodationPackage.AccomodationType.Name
+                </td>
+                <td>
                     @t.AccomodationPackage.Name
                 </td>
                 <td>
                     @t.Description
                 </td>
-                
+
                 <td>
                     <button type="button" data-href="@Url.Action("Action", "Accomodation", new {Id = t.Id})" class="data-btn btn btn-primary" data-toggle="modal" data-target="#actionModal">
                         <i class="fas fa-pen mr-1"></i>Edit

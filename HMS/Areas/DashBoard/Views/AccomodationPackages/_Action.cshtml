@@ -1,104 +1,207 @@
-﻿@model HMS.Areas.DashBoard.ViewModels.AccomodationPackagesActionViewModel
+﻿@using System.ComponentModel
+@using HMS.Entities
+@model HMS.Areas.DashBoard.ViewModels.AccomodationPackagesActionViewModel
 
 
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-                
-                @if (Model.Id > 0 && ViewBag.isDelete == false)
-                {
-                    <span>Edit Accomodation Package</span>
-                }
-                else if (Model.Id > 0 && ViewBag.isDelete == true)
-                {
-                 <span>Delete Accomodation Package</span>
-                <br/>
-                <span class="text text-danger mt-2"><i class="fas fa-exclamation-triangle mr-1"></i>Are You Sure You Want to Delete? </span>
-                }
-                else{
-                    <span>Create New Accomodation Package</span>
-                }
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
 
-            </h5>
-            <button Package="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-
-            <form id="actionForm">
-
-                <input type="hidden" name="Id" value="@Model.Id" />
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Accmodation Type</label>
-                    <select class="form-control" name="AccomodationTypeId">
-                        @if (@Model.AccomodationTypes != null)
-                        {
-                            foreach (var t in @Model.AccomodationTypes)
-                            {
-                            <option  value="@t.Id" @(t.Id == @Model.AccomodationTypeId ? "selected" : string.Empty)>@t.Name</option>
-                            }
-                        }
-                        
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Acccomodation Package Name">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Rooms</label>
-                    <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.NoOfRoom" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword2">Fee Per Night</label>
-                    <input class="form-control" id="exampleInputPassword2" name="FeePerNight" value="@Model.FeePerNight" aria-describedby="name" placeholder="Enter Fee Per Night">
-
-                </div>
-
-            </form>
-            <div id="errorDiv">
-
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button Package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
-            @if (!ViewBag.isDelete == true)
+            @if (Model.Id > 0 && ViewBag.isDelete == false)
             {
-                <button Package="button" id="actionButton" data-href="@Url.Action("Action","AccomodationPackages",new {id = Model.Id , isDeleted = false})" class="actionButton btn btn-primary"><i class="far fa-save mr-1"></i>Save changes</button>
-
+                <span>Edit Accomodation Package</span>
+            }
+            else if (Model.Id > 0 && ViewBag.isDelete == true)
+            {
+                //<span>Delete Accomodation Package</span>
+                <br />
+                <span class="text text-danger mt-2"><i class="fas fa-exclamation-circle mr-1"></i>You Want to Delete Accomodation Package? </span>
             }
             else
             {
-                <button Package="button" id="actionButton" data-href="@Url.Action("Action", "AccomodationPackages", new {id = Model.Id, isDeleted = true})"
-                         class="actionButton btn btn-danger"><i class="fas fa-exclamation-circle mr-1"></i>Delete</button>
+                <span>Create New Accomodation Package</span>
             }
+
+        </h5>
+        <button package="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form id="actionForm">
+
+            <input type="hidden" name="Id" value="@Model.Id" />
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Accmodation Type</label>
+
+                <select class="form-control" name="AccomodationTypeId">
+                    @if (@Model.AccomodationTypes != null && ViewBag.isDelete != true)
+                    {
+                        foreach (var t in @Model.AccomodationTypes)
+                        {
+                            <option value="@t.Id" @(t.Id == @Model.AccomodationTypeId ? "selected" : string.Empty)>@t.Name</option>
+                        }
+                    }
+                    else
+                    {
+
+                        <option selected=""> @Model.AccomodationType.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Acccomodation Package Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Rooms</label>
+                <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.NoOfRoom" aria-describedby="name" placeholder="Enter No Of Rooms">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword2">Fee Per Night</label>
+                <input class="form-control" id="exampleInputPassword2" name="FeePerNight" value="@Model.FeePerNight" aria-describedby="name" placeholder="Enter Fee Per Night">
+
+            </div>
+
+            <div class="form-group">
+                <label for="selectPictures">Pictures</label>
+                @if (ViewBag.isDelete != true)
+                {
+                    <input type="file" id="selectPictures" name="" class="form-control-file" multiple="">
+                }                    @* ---to take image ids to controller-- *@
+                <input type="hidden" value="" name="picIds" id="picIds" />
+            </div>
+
+            <div id="showPics">
+                @if (Model.AccomodationPackagePictures != null && Model.AccomodationPackagePictures.Count > 0)
+                {
+                    foreach (var pic in Model.AccomodationPackagePictures)
+                    {
+                        <img src="/images/site/@pic.Picture.URL" alt="@pic.Picture.URL" data-id="@pic.Picture.Id" class="col-md-3 col-6 w-100 h-50 img-accomodationpackage" />
+                    }
+                }
+            </div>
+        </form>
+        <div id="errorDiv">
+
         </div>
     </div>
+    <div class="modal-footer">
+        <button package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
+        @if (!ViewBag.isDelete == true)
+        {
+            <button package="button" id="actionButton" data-href="@Url.Action("Action", "AccomodationPackages", new {id = Model.Id, isDeleted = false})"
+                    class="actionButton btn btn-primary">
+                <i class="far fa-save mr-1"></i>Save changes
+            </button>
 
+        }
+        else
+        {
+            <button package="button" id="actionButton" data-href="@Url.Action("Action", "AccomodationPackages", new {id = Model.Id, isDeleted = true})"
+                    class="actionButton btn btn-danger">
+                <i class="fas fa-exclamation-circle mr-1"></i>Delete
+            </button>
+        }
+    </div>
+</div>
 
-    <script>
+@*another method*@
+<div class="" id="imageTemplate">
+    <img src="" alt="" data-id="" class="col-md-3 col-6 w-100 h-50  img-accomodationpackage" />
+</div>
 
-        $('.actionButton').click(function () {
-            
-                $.ajax({
-                    //url: '@Url.Action("Action","AccomodationPackages")',
-                    url: $(this).attr("data-href"),
-                    method: "post",
-                    data: $('#actionForm').serialize()
-                })
-                .done(function(response) {
-                    if (response.success) {
-                        location.reload();
-                    } else {
-                        $('#errorDiv').html(response.message);
-                    }
-                });
+<script>
+
+    $('.actionButton').click(function () {
+
+        var picIDs = [];
+
+        $('#showPics img').each(function () {
+
+            var picId = $(this).attr('data-id');
+            picIDs.push(picId);
 
         });
 
-    </script>
 
+        $('#picIds').val(picIDs.join());
+        // debugger;
+        $.ajax({
+            //url: '@Url.Action("Action", "AccomodationPackages")',
+            url: $(this).attr("data-href"),
+            method: "post",
+            data: $('#actionForm').serialize(),
+
+        })
+        .done(function (response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                $('#errorDiv').html(response.message);
+            }
+        });
+
+    });
+
+
+    $('#selectPictures').change(function () {
+
+        //var pictures = $("#selectPictures").get(0).files;
+        // to show pics on model
+        var formData = new FormData();
+
+        var pictures = this.files;
+
+        //pictures = pictures.files;
+
+        for (var i = 0; i < pictures.length; i++) {
+            formData.append("Pictures", pictures[i]);
+        }
+
+        $.ajax({
+            url: '@Url.Action("UploadPictures", "DashBoard")',
+            data: formData,
+            type: "POST",
+            //cache: false,
+            processData: false,
+            contentType: false
+            //contentType: 'multipart/form-data',
+        })
+            .done(function (response) {
+                //debugger;
+                if (response.length > 0) {
+
+                    for (i = 0; i < response.length; i++) {
+                        var pic = response[i].URL;
+                        var picId = response[i].Id;
+                        //alert(picId);
+
+                        //$('#showPics')
+                        //    .append("<img src='/images/site/" + pic + "' alt='" + "picture" + "' data-id='" + picId + "' style='width: 100px;margin-right:3px' class='img-fluid'/>");
+
+                        var imgClone = $('#imageTemplate').find('img').clone(true);
+                        imgClone.attr('src', '/images/site/' + pic);
+                        imgClone.attr('data-id', picId);
+                        $('#showPics').append(imgClone);
+
+                    }
+
+                } else {
+                    $('#errorDiv').html(response.message);
+                }
+            });
+
+    });
+    $('.img-accomodationpackage').click(function () {
+        //alert('hi');
+        $(this).remove();
+        return;
+    });
+
+
+</script>
