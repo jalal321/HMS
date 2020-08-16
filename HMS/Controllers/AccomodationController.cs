@@ -11,74 +11,112 @@ namespace HMS.Controllers
 {
     public class AccomodationController : Controller
     {
+
+        AccomodationPackagesService accomodationPackagesService = new AccomodationPackagesService();
+        AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
+        AccomodationService accomodationService = new AccomodationService();
+
         // GET: Accomodation
-        public ActionResult Index(string searchTerm , int? typeid , int? packageid)
+        public ActionResult Index(string searchTerm, int? typeid, int? packageid)
         {
-            AccomodationPackagesService accomodationPackagesService = new AccomodationPackagesService();
-            AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
-            AccomodationService accomodationService = new AccomodationService();
+           
             AccomodationViewModel model = new AccomodationViewModel();
 
 
             model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes();
-            model.AccomodationPackages = accomodationPackagesService.SearchAccomodationPackages(searchTerm , typeid);
+            model.AccomodationPackages = accomodationPackagesService.SearchAccomodationPackages(searchTerm, typeid);
             model.searchTerm = searchTerm;
             model.CurrentAccomodationType = typeid;
             model.CurrentAccomodationPackage = packageid;
-           
 
-          
-                model.Accomodations =
-                   accomodationService.SearchAccomodations(searchTerm, typeid , packageid); 
+
+
+            model.Accomodations =
+               accomodationService.SearchAccomodations(searchTerm, typeid, packageid);
+
+            return View(model);
+        }
+
+        public ActionResult AccomodationPackageDetail(int id)
+        {
+            AccomodationPackageDetailViewModel model = new AccomodationPackageDetailViewModel();
+            model.AccomodationPackage = accomodationPackagesService.GetAccomodationPackageById(id);
+
+            return View(model);
+        }
+
+        public ActionResult AccomodationPackages(string searchTerm, int? typeid)
+        {
+         
+            //AccomodationService accomodationService = new AccomodationService();
+            AccomodationPackagesViewModel model = new AccomodationPackagesViewModel();
+
+
+            model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes();
+            model.AccomodationPackages = accomodationPackagesService.SearchAccomodationPackages(searchTerm, typeid);
+            model.searchTerm = searchTerm;
+            model.CurrentAccomodationType = typeid;
+            //model.CurrentAccomodationPackage = packageid;
+
+
+
+            //model.Accomodations =accomodationService.SearchAccomodations(searchTerm, typeid, packageid);
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public ActionResult SearchAccomodation(SearchAccomodationViewModel model)
+        {
             
-
-            //if (typeid > 0)
-            //{
-            //    model.Accomodations =
-            //        accomodationService.SearchAccomodations(searchTerm, typeid);
-            //    model.AccomodationPackages = model.AccomodationPackages.Where(a => a.AccomodationTypeId == typeid).ToList();
+            //HomeViewModel model = new HomeViewModel();
+                List<AccomodationPackageCountViewModel> accomodationPackageCountViewModels = new List<AccomodationPackageCountViewModel>();
 
 
-               
-            //}
-            //else
-            //{
-            //    model.Accomodations =
-            //       accomodationService.SearchAccomodations(searchTerm, typeid);
-            //    model.AccomodationPackages = model.AccomodationPackages.ToList();
+            model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes().ToList();
+            var accomodationPacakges = accomodationPackagesService.GetAllAccomodationPackages();
+            foreach (var item in accomodationPacakges)
+            {
 
-            //}
-            //if (packageid > 0)
-            //{
-            //    model.Accomodations =
-            //        accomodationService.SearchAccomodations(searchTerm, typeid, packageid);
-            //    model.AccomodationPackages = model.AccomodationPackages.ToList();
+                var count = accomodationService.CountAccomodationByPackage(item.Id);
+                if (count > 0)
+                {
+                    AccomodationPackageCountViewModel obj = new AccomodationPackageCountViewModel();
+                    obj.AccomodationPackages = item;
+                    obj.RoomCount = count;
+                    accomodationPackageCountViewModels.Add(obj);
 
+                }
+            }
 
-            //}
-
-            //else
-            //{
-            //    model.Accomodations =
-            //       accomodationService.SearchAccomodations(searchTerm, typeid, packageid);
-            //    model.AccomodationPackages = model.AccomodationPackages.ToList();
-
-
-            //}
-            
-
-            
+            model.AccomodationPackageCountViewModels = accomodationPackageCountViewModels;
            
             return View(model);
         }
 
-        //public List<AccomodationPackage> GetAccomodationPackages(int? typeid)
-        //{
-        //    AccomodationPackagesService accomodationPackagesService = new AccomodationPackagesService();
+         [HttpPost]
+        public ActionResult CheckAccomodationAvailability(CheckAccomodationAvailabilityViewModel model)
+        {
+          
+            List<AccomodationPackageCountViewModel> accomodationPackageCountViewModels = new List<AccomodationPackageCountViewModel>();
 
-        //    var packages = accomodationPackagesService.SearchAccomodationPackages(typeid);
+            var accomodations = accomodationService.SearchAccomodationsAvailability(model.AccomodationType);
 
-        //    return packages.ToList();
-        //}
+            foreach (var item in accomodations)
+            {
+                var count = accomodationService.CountAccomodationByPackage(item.Id);
+                if (count > 0)
+                {
+                   AccomodationPackageCountViewModel obj = new AccomodationPackageCountViewModel();
+                    obj.AccomodationPackages = item;
+                    obj.RoomCount = count;
+                    accomodationPackageCountViewModels.Add(obj);
+
+                }
+            }
+
+            return View("_CheckAccomodationAvailability", accomodationPackageCountViewModels);
+        }
     }
 }

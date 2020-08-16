@@ -1,4 +1,5 @@
 ﻿@*@model HMS.ViewModels.HomeViewModel*@
+@using HMS.Entities
 @model HMS.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Home Page";
@@ -69,63 +70,63 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 search-wrap">
-                @using (Html.BeginForm("SearchAccomodation", "Home" , FormMethod.Post , new {@class="colorlib-form"}) )
+                @using (Html.BeginForm("SearchAccomodation", "Accomodation", FormMethod.Post, new { @class = "colorlib-form" }))
                 {
                     //<form method="post" class="colorlib-form">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="date">Check-in:</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-calendar2"></i>
-                                        <input type="text" id="date" class="form-control date" placeholder="Check-in date" name="checkIn">
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="date">Check-in:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" value="@DateTime.Now.ToShortDateString()" class="form-control date" placeholder="Check-in date" name="checkIn" autocomplete="off">
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="date">Check-out:</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-calendar2"></i>
-                                        <input type="text" id="date" class="form-control date" placeholder="Check-out date" name="checkOut">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="Adult">Adults</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-arrow-down3"></i>
-                                        <select name="Adult" id="Adult" class="form-control">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5+">5+</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="Children">Children</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-arrow-down3"></i>
-                                        <select name="Children" id="Children" class="form-control">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5+">5+</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="submit" @*name="submit"*@ id="submit" value="Search" class="btn btn-primary btn-block">
                             </div>
                         </div>
-                   
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="date">Check-out:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" value="@DateTime.Now.ToShortDateString()" class="form-control date" placeholder="Check-out date" name="checkOut" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Adult">Adults</label>
+                                <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="Adult" id="Adult" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5+">5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="Children">Children</label>
+                                <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="Children" id="Children" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5+">5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" @*name="submit"*@ id="submit" value="Search" class="btn btn-primary btn-block">
+                        </div>
+                    </div>
+
                 }
             </div>
         </div>
@@ -210,9 +211,23 @@
                                         <div class="owl-carousel owl-carousel2">
                                             @foreach (var p in @t.AccomodationPackages)
                                             {
-
+                                                //sajjad method
+                                                //var thumbnailPicture = @p.AccomodationPackagePictures != null && @p.AccomodationPackagePictures.Count > 0 ?
+                                                //@p.AccomodationPackagePictures.FirstOrDefault() : new AccomodationPackagePicture();
+                                                //var thumbnailPictureURL = thumbnailPicture.Picture != null ? thumbnailPicture.Picture.URL : "default-hotel.jpg";
                                                 <div class="item">
-                                                    <a href="/images/room-1.jpg" class="room image-popup-link" style="background-image: url(/images/room-1.jpg);"></a>
+                                                 
+                                                    @if (@p.AccomodationPackagePictures != null && @p.AccomodationPackagePictures.Count > 0)
+                                                    {
+                                                        <a href="/images/site/@p.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault()" class="room image-popup-link"
+                                                           style="background-image: url(/images/site/@p.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault());"></a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/images/default-hotel.jpg" class="room image-popup-link" style="background-image: url(/images/default-hotel.jpg);"></a>
+
+                                                    }
                                                     <div class="desc text-center">
                                                         <span class="rate-star">
                                                             <i class="icon-star-full full"></i>
@@ -222,7 +237,7 @@
                                                             <i class="icon-star-full full"></i>
                                                         </span>
                                                         <h3>
-                                                            <a href="@Url.Action("index", "Accomodation", new {@typeid = @t.Id , @packageid = @p.Id})">@p.Name</a>
+                                                            <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @p.Id})">@p.Name</a>
                                                         </h3>
                                                         <p class="price">
                                                             <span class="currency">$</span>
@@ -243,7 +258,8 @@
                                                             <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
                                                         </ul>
                                                         <p>
-                                                            <a class="btn btn-primary btn-book" href="@Url.Action("index", "Accomodation", new { @typeid = @t.Id, @packageid = @p.Id })">Book now!</a>
+                                                            <a class="btn btn-primary btn-book" href="@Url.Action("AccomodationPackageDetail", "Accomodation", new { @id = @p.Id })">Details</a>
+                                                            <a class="btn btn-primary btn-book" href="@Url.Action("Index", "Booking", new { @PackageId = @p.Id })">Book now!</a>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -309,21 +325,21 @@
                                             }
                                         }
 
-                                        
+
                                             <li><i class="icon-check"></i> </li>
                                             <li><i class="icon-check"></i> Only 10 rooms are available</li>
                                             <li><i class="icon-check"></i> Breakfast included</li>*@
-                                        @*<li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
-                                    </ul>
-                                    <p>
-                                        <a class="btn btn-primary btn-book" href="@Url.Action(" index", "Accomodation", new {typeid = @t.Id})">Book now!</a>
-                                    </p>
-                                </div>
-                            </div>
-                        }
+                    @*<li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
+                                                        </ul>
+                                                        <p>
+                                                            <a class="btn btn-primary btn-book" href="@Url.Action(" index", "Accomodation", new {typeid = @t.Id})">Book now!</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            }
 
 
-    </div>*@
+                        </div>*@
                 </div>
                 <div class="col-md-12 text-center animate-box">
                     <a href="@Url.Action("index","accomodation", new {@typeid = 0})">View all rooms <i class="icon-arrow-right3"></i></a>
@@ -579,19 +595,19 @@
 
 @section scripts{
     <script>
-    var totalWidth;
-    totalWidth = $('.accomodation-package').width();
+        var totalWidth;
+        totalWidth = $('.accomodation-package').width();
 
 
 
-    liWidth = totalWidth / @Model.AccomodationTypes.Count();
+        liWidth = totalWidth / @Model.AccomodationTypes.Count();
         //alert($(window).width());
         //if (liWidth > 200)
         //{
         //    $('.accomodation-package li').css('width', 170);
 
         //} else {
-            $('.accomodation-package li').css('width', liWidth);
+        $('.accomodation-package li').css('width', liWidth);
 
         //}
         if($(window).width() <= 500){
@@ -627,5 +643,5 @@
 }
 
 
- 
+
 

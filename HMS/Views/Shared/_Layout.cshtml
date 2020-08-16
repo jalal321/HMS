@@ -4,10 +4,10 @@
 <html>
 <head>
     @*<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
     @*<title>@ViewBag.Title - My ASP.NET Application</title>*@
     @*@Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
+        @Scripts.Render("~/bundles/modernizr")*@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>HMShotel Template</title>
@@ -91,18 +91,18 @@
                         </div>
                         <div class="col-xs-10 text-right menu-1">
                             <ul>
-                                <li class="active"><a href="@Url.Action("Index","Home")">Home</a></li>
-                                <li class="has-dropdown">
-                                    <a href="@Url.Action("Index","Home")">Rooms</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">Web Design</a></li>
-                                        <li><a href="#">eCommerce</a></li>
-                                        <li><a href="#">Branding</a></li>
-                                        <li><a href="#">API</a></li>
+                                <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : string.Empty)"><a href="@Url.Action("Index","Home")">Home</a></li>
+                                <li class="has-dropdown @(ViewContext.RouteData.Values["controller"].ToString() == "Accomodation" ? "active" : string.Empty)" id="accomodationtypedropdown">
+
+
+                                    <a href="#">Accomodations</a>
+
+                                    <ul class="dropdown" name="accomodationtypedropdown">
+                                        @* content appears through ajax call *@
                                     </ul>
                                 </li>
-                                <li><a href="@Url.Action("DiningAndBar","Home")">Dining &amp; Bar</a></li>
-                                <li><a href="@Url.Action("Index","Home")">Aminities</a></li>
+                                <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "" ? "active" : string.Empty)"><a href="@Url.Action("DiningAndBar","Home")">Dining &amp; Bar</a></li>
+                                <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "" ? "active" : string.Empty)"><a href="@Url.Action("Index","Home")">Aminities</a></li>
                                 <li><a href="@Url.Action("Index","Home")">Blog</a></li>
                                 <li><a href="@Url.Action("About","Home")">About</a></li>
                                 <li><a href="@Url.Action("Contact","Home")">Contact</a></li>
@@ -113,12 +113,12 @@
                 </div>
             </div>
         </nav>
-        
-       
+
+
 
         <div class="body-content">
             @RenderBody()
-            
+
             <div id="colorlib-subscribe" style="background-image: url(/images/img_bg_2.jpg);">
                 <div class="overlay"></div>
                 <div class="container">
@@ -226,12 +226,48 @@
         <script src="~/Scripts/main.js"></script>
 
 
-        </div>
+    </div>
 
-@*@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")*@
-@RenderSection("scripts", required: false)
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+    <script>
 
-   
+    $.ajax({
+        url: '@Url.Action("GetAccomodationTypes","Home")',
+            //contentType: 'application/json; charset=utf-8',
+            //data: JSON.stringify(model),
+            type: 'Get',
+            dataType: 'json'
+            //processData: false
+
+
+        }).done(function (data) {
+
+            //debugger;
+            //$('#acc').append("<ul class='dropdown'>");
+
+
+            for (var i = 0; i < data.length; i++) {
+               //you have to tell about ul and li it wont work otherwise
+                $('#accomodationtypedropdown ul').append("<li id='dropdown" + data[i].Id + "'><a href='/Accomodation/AccomodationPackages/?typeid=" + data[i].Id + "'>" + data[i].Name + "</a></li>");
+               
+                //$('#acc ul').append('<li><a href="#">New list item</a></li>');
+            }
+            //$('#accomodationtypedropdown').append("</ul>");
+
+            //  debugger;
+        }).success(function (data) {
+
+
+
+        })
+            .fail(function () {
+
+            });
+
+
+    </script>
+
 </body>
 </html>

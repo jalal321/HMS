@@ -11,5 +11,6 @@ namespace HMS.Code
         public const string HotelShortName = "Shakir";
         public const string HotelNameAbbreviation = "SIR";
         public const string DefaultUser = "User";
+        public const string Currency = "PKR";
     }
 }

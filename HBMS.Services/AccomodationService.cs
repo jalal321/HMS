@@ -58,6 +58,63 @@ namespace HMS.Services
             
             return accomodations.ToList();
         }
+
+        public IEnumerable<AccomodationPackage> SearchAccomodationsAvailability(int? accomodationTypeID)
+        {
+
+            var context = new HMSContext();
+            var accomodations = context.Accomodations.AsQueryable();
+
+
+           List<AccomodationPackage> accomodationPackages = null;
+
+            if (accomodationTypeID.HasValue && accomodationTypeID.Value > 0)
+            {
+                accomodationPackages = accomodations.Where(a => a.AccomodationPackage.AccomodationType.Id == accomodationTypeID.Value)
+                    .Select(a => a.AccomodationPackage).Distinct().ToList(); 
+                
+            }
+
+
+            return accomodationPackages;
+        }   
+       
+       public IEnumerable<Accomodation> CheckAccomodationsAvailability(int? accomodationPackageId , DateTime checkIn)
+        {
+
+            var context = new HMSContext();
+            var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId).ToList();
+
+
+            var allBookings =
+                context.BookingDetails.Where(a => a.Accomodation.AccomodationPackage.Id == accomodationPackageId).ToList();
+
+            //var allAccomodations = accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId).ToList();
+
+            var freeAccomodations = allAccomodations.Where(a => !allBookings.Any(b => b.AccomodationId == a.Id
+                && b.Booking.ToDate < checkIn)).ToList();
+
+            if (freeAccomodations == null)
+            {
+               freeAccomodations = allAccomodations.Where(a => allBookings.Any(b => b.AccomodationId == a.Id && b.Booking.FromDate > checkIn)).ToList();
+               
+            }
+
+          // List<AccomodationPackage> accomodationPackages = null;
+
+          
+            return freeAccomodations;
+        }  
+       
+       
+       public int CountAccomodationByPackage(int? accomodationPackageID)
+        {
+
+            var context = new HMSContext();
+            var packageCount = context.Accomodations.Count(a => a.AccomodationPackageId == accomodationPackageID);
+
+            return packageCount;
+        }
         public Accomodation GetAccomodationById(int? id)
         {
             var context = new HMSContext();

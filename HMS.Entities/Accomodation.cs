@@ -18,5 +18,7 @@ namespace HMS.Entities
         public string Description { get; set; }
 
        public List<AccomodationPicture> AccomodationPictures { get; set; }
+
+       public List<Booking> Bookings { get; set; }
     }
 }

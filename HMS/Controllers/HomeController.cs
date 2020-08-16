@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using HMS.Data;
 using HMS.Services;
@@ -24,17 +25,7 @@ namespace HMS.Controllers
             return View(model);
         } 
         
-        [HttpPost]
-        public ActionResult SearchAccomodation(HomeSearchAccomodationViewModel model)
-        {
-            AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
-            //HomeViewModel model = new HomeViewModel();
-             
-           
-            model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes().ToList();
-            
-            return View(model);
-        }
+      
 
         public ActionResult About()
         {
@@ -55,6 +46,19 @@ namespace HMS.Controllers
             ViewBag.Message = "";
 
             return View();
+        }
+
+
+        public JsonResult GetAccomodationTypes()
+        {
+            AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
+            //Json result = new Json();
+            var model = accomodationTypesService.GetAllAccomodationTypesList();
+           
+            //result.Data = new {model , JsonRequestBehavior.AllowGet};
+            //result.Data = model;
+
+            return Json(model ,JsonRequestBehavior.AllowGet);
         }
 
 

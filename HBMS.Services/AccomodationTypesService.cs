@@ -18,6 +18,12 @@ namespace HMS.Services
        {
            var context = new HMSContext();
            return context.AccomodationTypes.Include(a=>a.AccomodationPackages).AsEnumerable(); 
+       } 
+       
+       public IEnumerable<AccomodationType> GetAllAccomodationTypesList()
+       {
+           var context = new HMSContext();
+           return context.AccomodationTypes.ToList(); 
        }
        public IEnumerable<AccomodationType> SearchAccomodationTypes(string searchTerm)
        {

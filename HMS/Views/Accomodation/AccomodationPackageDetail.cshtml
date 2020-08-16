@@ -1,0 +1,104 @@
+﻿@using System.Activities.Statements
+@model HMS.ViewModels.AccomodationPackageDetailViewModel
+
+@{
+
+}
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/site/@Model.AccomodationPackage.AccomodationPackagePictures.First().Picture.URL);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-md-offset-3 slider-text">
+                            <div class="slider-text-inner slider-text-inner2 text-center">
+                                <h2>@Model.AccomodationPackage.AccomodationType.Name</h2>
+                                <h1>@Model.AccomodationPackage.Name</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<div class="detail-section">
+    <div class="container" id="detail">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="flexslider animate-box">
+                    <ul class="slides">
+                        @if (@Model.AccomodationPackage.AccomodationPackagePictures != null && @Model.AccomodationPackage.AccomodationPackagePictures.Count > 0)
+                        { 
+                        foreach (var pic in Model.AccomodationPackage.AccomodationPackagePictures)
+                        {
+
+                            <li data-thumb="/images/site/@pic.Picture.URL">
+                                <a href="/images/site/@pic.Picture.URL" class="image-popup" style="background-image: url(/images/site/@pic.Picture.URL);">
+                                    <img src="/images/site/@pic.Picture.URL" class=""  />
+                                </a>
+                            </li>
+                        }
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/images/default-hotel.jpg" class="image-popup" style="background-image: url(/images/default-hotel.jpg);">
+                                    <img src="/images/default-hotel.jpg" class="" />
+                                </a>
+
+                            </li>
+
+                        }
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6" id="">
+                <div class="animate-box package-detail" id="AccomodationPackageDetail">
+                    <h2>
+                        <a href="#">@Model.AccomodationPackage.Name</a>
+                    </h2>
+                    <p class="price">
+                        <span class="currency">@HMS.Code.Variables.Currency</span>
+                        <span class="price-room">@Math.Round(@Model.AccomodationPackage.FeePerNight) </span>
+                        <span class="per">/ per night / @Model.AccomodationPackage.AccomodationType.Name</span>
+                    </p>
+
+                    <p class="">
+                        @Model.AccomodationPackage.AccomodationType.Description
+                    </p>
+                    <ul>
+                        <li><i class="icon-check"></i> @Model.AccomodationPackage.NoOfRoom Rooms</li>
+                        <li><i class="icon-check"></i> Each Room Can Accomodate 2 Adults and 2 Children</li>
+                        <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
+                        <li><i class="icon-check"></i> Break Fast Excluded</li>
+                    </ul>
+                    <p>
+                        <a class="btn btn-primary btn-book" href="@Url.Action("index", "Booking", new { @packageId = @Model.AccomodationPackage.Id })">Book now!</a>
+                    </p>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        
+        $('.detail-section .flexslider').flexslider({
+            animation: "slide",
+            controlNav: "thumbnails",
+            directionNav: true
+        });
+    </script>
+}

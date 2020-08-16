@@ -1,7 +1,8 @@
-﻿@using Microsoft.Ajax.Utilities
-@model HMS.ViewModels.AccomodationViewModel
+﻿
+@model HMS.ViewModels.AccomodationPackagesViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Accomodation Packages";
 }
 
 <aside id="colorlib-hero">
@@ -51,7 +52,7 @@
 
                 }
 
-                @if (Model.CurrentAccomodationPackage != null && Model.CurrentAccomodationPackage > 0)
+                @*@if (Model.CurrentAccomodationPackage != null && Model.CurrentAccomodationPackage > 0)
                 {
                     <li class="active" aria-current="page">
                         @foreach (var t in @Model.AccomodationPackages)
@@ -70,7 +71,7 @@
                 {
                     <li class="active" aria-current="page"><a href="#">All Packages</a></li>
 
-                }
+                }*@
                 @*<li class="breadcrumb-item active" aria-current="page">@Model.AccomodationPackages.Select()</li>*@
             </ul>
         </div>
@@ -121,11 +122,11 @@
 
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="input-lbl">search accomodation</label>
-                        <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..."/>
+                        <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..." />
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="input-lbl">select accomodation type</label>
                         <select class="form-control" name="typeid">
                             <option value="0" class="" selected="">
@@ -139,20 +140,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label class="input-lbl">select accomodation package</label>
-                        <select class="form-control" name="packageid">
-                            <option value="0" class="" selected="">
-                                All Packages
-                            </option>
-                            @foreach (var t in @Model.AccomodationPackages)
-                            {
-                                <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationPackage ? "selected" : string.Empty)>
-                                    @t.Name
-                                </option>
-                            }
-                        </select>
-                    </div>
+                  
                     <div class="col-md-2">
                         <button class="btn btn-primary btn-custom-height">
                             <span>
@@ -160,15 +148,15 @@
 
                             </span>
                         </button>
-                 
 
-                    <a href="@Url.Action("Index","Accomodation")" class="btn btn-info btn-custom-height">
-                        <span>
-                            <i class="icon-reload"></i>
-                        </span>
-                    </a>
-                    @* <input type="submit" value="Reset" class="btn btn-warning btn-custom-height"/>*@
-                </div>
+
+                        <a href="@Url.Action("AccomodationPackages","Accomodation")" class="btn btn-info btn-custom-height">
+                            <span>
+                                <i class="icon-reload"></i>
+                            </span>
+                        </a>
+                        @* <input type="submit" value="Reset" class="btn btn-warning btn-custom-height"/>*@
+                    </div>
                 </div>
 
             </form>
@@ -177,14 +165,14 @@
 
         @* second row for showing products *@
         <hr />
-        <b class="pull-right">@Model.Accomodations.Count() result(s) found</b>
+        <b class="pull-right">@Model.AccomodationPackages.Count() result(s) found</b>
         <br />
-        @if (@Model.Accomodations != null && @Model.Accomodations.Count() > 0)
+        @if (@Model.AccomodationPackages != null && @Model.AccomodationPackages.Count() > 0)
         {
 
             <div class="row">
 
-                @foreach (var t in Model.Accomodations)
+                @foreach (var t in Model.AccomodationPackages)
                 {
                     <div class="col-md-4 room-wrap animate-box">
                         <a href="/images/room-1.jpg" class="room image-popup-link" style="background-image: url(/images/room-1.jpg);"></a>
@@ -195,11 +183,11 @@
                             </h3>
                             <p class="price">
                                 <span class="currency">$</span>
-                                <span class="price-room">@Math.Round(@t.AccomodationPackage.FeePerNight)</span>
+                                <span class="price-room">@Math.Round(@t.FeePerNight)</span>
                                 <span class="per">/ per night</span>
                             </p>
                             <ul>
-                                <li><i class="icon-check"></i> @t.AccomodationPackage.NoOfRoom Rooms</li>
+                                <li><i class="icon-check"></i> @t.NoOfRoom Rooms</li>
                                 <li><i class="icon-check"></i> Breakfast included</li>
                                 <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
                             </ul>

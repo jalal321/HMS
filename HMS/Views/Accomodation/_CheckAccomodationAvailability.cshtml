@@ -1,0 +1,84 @@
+﻿@model List<HMS.ViewModels.AccomodationPackageCountViewModel>
+@{
+    Layout = null;
+}
+
+@*<div class="alert alert-info">
+    @HMS.Code.Variables.HotelShortName from  to date for 1 night
+</div>*@
+@if (@Model != null && Model.Count() > 0)
+{
+    <table class="table table-success table-striped table-bordered text-center">
+
+        <thead class="bg-primary">
+            <tr>
+                <td>Accomodation Package</td>
+                <td>Adults</td>
+                <td>Rooms</td>
+                <td>Rent/Night</td>
+                <td>Children</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-2">
+                                @if (@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault() != null)
+                                {
+                                    <img src="/images/site/@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault()"
+                                         alt="" class="img-rounded" style="width: 100px" />
+
+                                }
+                                else
+                                {
+                                    <img src="/images/default-hotel.jpg"
+                                         alt="" class="img-rounded" style="width: 100px"/>
+                                }
+
+                            </div>
+                            <div class="col-md-5">
+                                <h4>
+                                    <a>@item.AccomodationPackages.Name</a>
+                                </h4>
+                                <span class="icon icon-newspaper" title="News Paper"></span>
+                                <span class="icon icon-food" title="Foood"></span>
+                                <span class="icon icon-IE" title="Internet"></span>
+                                <span class="icon icon-tv" title="Tv"></span>
+                                <p>
+                                    Prices are per room for 1 night
+                                    Excluded: 10.00% g.s.t
+                                    <br />
+                                    <b class="text text-danger icon icon-info"> only @item.RoomCount Left</b>
+                                </p>
+                                <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @item.AccomodationPackages.Id})">
+                                    view package detail
+                                </a>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>@item.AccomodationPackages.NoOfRoom</td>
+                    <td>@item.AccomodationPackages.NoOfRoom</td>
+                    <td>@Math.Round(@item.AccomodationPackages.FeePerNight) @HMS.Code.Variables.Currency</td>
+                    <td>@item.AccomodationPackages.NoOfRoom</td>
+
+                    <td>
+                        <button class="btn btn-secondary">Book Now</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        sorry! All Rooms Are Booked
+    </div>
+}
