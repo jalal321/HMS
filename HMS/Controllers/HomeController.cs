@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using HMS.Data;
+using HMS.Entities;
 using HMS.Services;
 using HMS.ViewModels;
 
@@ -12,15 +13,15 @@ namespace HMS.Controllers
 {
     public class HomeController : Controller
     {
+        AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
 
         public ActionResult Index()
         {
-            AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
             HomeViewModel model = new HomeViewModel();
              
             //HMSContext context = new HMSContext();
             //var a = context.AccomodationTypes.ToList();
-            model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes().Take(2).ToList();
+            model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes().ToList();
             
             return View(model);
         } 
@@ -51,7 +52,6 @@ namespace HMS.Controllers
 
         public JsonResult GetAccomodationTypes()
         {
-            AccomodationTypesService accomodationTypesService = new AccomodationTypesService();
             //Json result = new Json();
             var model = accomodationTypesService.GetAllAccomodationTypesList();
            
@@ -61,7 +61,18 @@ namespace HMS.Controllers
             return Json(model ,JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SendMessages(Message message)
+        {
+            ViewBag.Message = "Your contact page.";
 
+            var result = accomodationTypesService.SendMessage(message);
+            if (result)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return HttpNotFound();
+        }
         protected override void Dispose(bool disposing)
         {
             //if (disposing)

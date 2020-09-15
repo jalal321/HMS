@@ -88,10 +88,23 @@
         </div>
         <div class="">
             <div class="row">
-                <div class="alert alert-danger">
+                @*<div class="alert alert-danger">
                     @HMS.Code.Variables.HotelFullName, checkIn date @Model.CheckIn.ToShortDateString() ,
                     <span class="text text-default">checkin date must be today or after today!</span>
+                </div>*@
+
+                <div class="pull-right">
+                    <button type="button" data-href="@Url.Action("CheckAccomodationAvailability", "Accomodation", new { @tableview = true })" class="btn btn-primary view-btn">
+                        <span class="icon icon-table"></span>
+                    </button>
+                    <button type="button" data-href="@Url.Action("CheckAccomodationAvailability", "Accomodation", new { @tableview = false })" class="btn btn-primary view-btn">
+                        <span class="icon icon-list"></span>
+                    </button>
+
                 </div>
+
+
+
                 <div class="" id="searchResult">
                     @{Html.RenderPartial("_CheckAccomodationAvailability", @Model.AccomodationPackageCountViewModels);}
                 </div>
@@ -112,8 +125,8 @@
                 <h4 class="modal-title"><i class="icon icon-info"> Your  Missing Seomething</i></h4>
             </div>
             <div class="modal-body">
-                    <h4></h4>
-                </div>
+                <h4></h4>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                 @*<button type="button" class="btn btn-primary">Save changes</button>*@
@@ -125,12 +138,12 @@
     <script>
         $('.actionButton').click(function () {
             //debugger;
-            if ($('#AccomodationType option:selected').val() === "0") {
-                $('.modal-body h4').text("Plz Select Accomodation Package");
-                $('#errorModalbtn').trigger('click');
-                // debugger;
-                return;
-            }
+            //if ($('#AccomodationType option:selected').val() === "0") {
+            //    $('.modal-body h4').text("Plz Select Accomodation Package");
+            //    $('#errorModalbtn').trigger('click');
+            //    // debugger;
+            //    return;
+            //}
 
             $('.colorlib-loader').css('display', 'block');
             //alert($('#AccomodationType option:selected').val());
@@ -148,8 +161,38 @@
                     if (response != null) {
 
                         $('#searchResult').html(response);
-                       $('.colorlib-loader').css('display', 'none');
-                       // $(".colorlib-loader").fadeOut("slow");
+                        $('.colorlib-loader').css('display', 'none');
+                        // $(".colorlib-loader").fadeOut("slow");
+
+
+                    } else {
+                        $('#errorDiv').html(response.message);
+                    }
+                });
+        });
+
+ $('.view-btn').click(function () {
+            //debugger;
+           
+
+            $('.colorlib-loader').css('display', 'block');
+            //alert($('#AccomodationType option:selected').val());
+            //$(".colorlib-loader").fadeIn("fast");
+
+            $.ajax({
+                
+                url: $(this).attr("data-href"),
+                method: "post",
+                data: $('#actionForm').serialize(),
+
+            })
+                .done(function (response) {
+                    //debugger;
+                    if (response != null) {
+
+                        $('#searchResult').html(response);
+                        $('.colorlib-loader').css('display', 'none');
+                        // $(".colorlib-loader").fadeOut("slow");
 
 
                     } else {

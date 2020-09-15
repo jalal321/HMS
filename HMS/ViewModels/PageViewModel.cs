@@ -12,7 +12,7 @@ namespace HMS.ViewModels
         /// credit geos to https://jasonwatmore.com/post/2015/10/30/aspnet-mvc-pagination-example-with-logic-like-google
         /// </summary>
         
-        public Pager(int totalItems, int? page, int pageSize = 2)
+        public Pager(int totalItems, int? page, int pageSize = 8)
         {
             // calculate total, start and end pages
             var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);

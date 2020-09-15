@@ -1,0 +1,50 @@
+﻿@model List<HMS.Entities.Message>
+@{
+    Layout = null;
+}
+
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuMessage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-envelope text-danger @(Model.Count() > 0 ? "animate-icon" : string.Empty)"> <span class="badge badge-danger">@Model.Count()</span></i>
+        <span class="">Message</span>
+    </a>
+
+    @if (@Model != null && @Model.Count > 0)
+    {
+        <div class="dropdown-menu">
+            <ul class="" aria-labelledby="dropdownMenuMessage">
+                @foreach (var m in @Model)
+                {
+                    <li class="">
+                        <p>
+                            <i class="fas fa-envelope mr-1 text-primary"></i> <a href="@Url.Action("Index","DashBoard",new {@id = m.Id})" class="mt-0 text-primary card-title">@m.Subject</a>
+                            <br />
+                            <i>
+                                by @m.FirstName
+                            </i>
+                            <br />
+                            <span class="card-text">
+                                @m.UserMessage.Substring(0, (@m.UserMessage.Length > 40 ? 50 : @m.UserMessage.Length))...
+                            </span>
+                        </p>
+
+                        @*<a class="dropdown-item" href="">@m.Subject : @m.UserMessage</a>*@
+                    </li>
+                }
+            </ul>
+        </div>
+
+
+
+    }
+
+    else
+    {
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+                <a class="dropdown-item text-danger" href="">No Message Found!</a>
+
+            </li>
+        </ul>
+    }
+</div>

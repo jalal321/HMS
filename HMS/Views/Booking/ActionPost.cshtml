@@ -1,19 +1,20 @@
-﻿@model int
+﻿@model string
 @{
     ViewBag.Title = "ActionPost";
     Layout = null;
 }
 
 @if (Model != null)
-{
+{ 
     <div class="alert alert-success">
-        <span class="icon icon-circle-check"></span> your Requiured Accomodation(s) has been successfully Booked , for further refrence your <b> Booking No : @Model</b>
+        <span class="icon icon-circle-check"></span> <b> @Model</b>
     </div>
 }
-
 else
 {
     <div class="alert alert-danger">
-        <span class="icon icon-warning"></span> your Requiured Accomodation(s) has been successfully Booked , for further refrence your <b> Booking No : @Model</b>
+        <span class="icon icon-warning">
+
+        </span> @Model Invalid  Operation ! plz Give Proper Info 
     </div>
 }

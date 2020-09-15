@@ -173,8 +173,11 @@
     <Compile Include="Areas\DashBoard\ViewModels\AccomodationPackagesViewModel.cs" />
     <Compile Include="Areas\DashBoard\ViewModels\AccomodationTypesViewModel.cs" />
     <Compile Include="Areas\DashBoard\ViewModels\AccomodationViewModel.cs" />
+    <Compile Include="Areas\DashBoard\ViewModels\BookingViewModel.cs" />
+    <Compile Include="Areas\DashBoard\ViewModels\DashBoardViewModel.cs" />
     <Compile Include="Areas\DashBoard\ViewModels\RolesViewModel.cs" />
     <Compile Include="Areas\DashBoard\ViewModels\UsersViewModel.cs" />
+    <Compile Include="Code\Enums.cs" />
     <Compile Include="Code\Variables.cs" />
     <Compile Include="Controllers\AccomodationController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -448,6 +451,10 @@
     <Content Include="Areas\DashBoard\Views\Bookings\Details.cshtml" />
     <Content Include="Areas\DashBoard\Views\Bookings\Edit.cshtml" />
     <Content Include="Areas\DashBoard\Views\Bookings\Index.cshtml" />
+    <Content Include="Areas\DashBoard\Views\Bookings\_Listing.cshtml" />
+    <Content Include="Areas\DashBoard\Views\Bookings\_Action.cshtml" />
+    <Content Include="Areas\DashBoard\Views\DashBoard\GetMessages.cshtml" />
+    <Content Include="Areas\DashBoard\Views\DashBoard\GetBookingsReserved.cshtml" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Home\DiningAndBar.cshtml" />
     <Content Include="Views\test\Create.cshtml" />

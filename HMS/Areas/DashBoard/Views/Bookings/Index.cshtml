@@ -1,138 +1,156 @@
-﻿@model IEnumerable<HMS.Entities.Booking>
+﻿@using HMS.Code
+@using Microsoft.Ajax.Utilities
+@model HMS.Areas.DashBoard.ViewModels.BookingListingViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-condensed table-striped table-bordered table-responsive">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.GuestName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FromDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ToDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            #Accomodation(s)
-        </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.BreakFast)
-            </th>*@
-        <th>
-            Accomodation Detail
-            @*@Html.DisplayNameFor(model => model.BookingDetails.Select(a => a.AccomodationId))*@
-        </th>
-        <th>
-            Actions
-            @*@Html.DisplayNameFor(model => model.BookingDetails.Select(a => a.AccomodationId))*@
-        </th>
-        @*<th>
-                @Html.DisplayNameFor(model => model.Adult)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Children)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfAccomodation)
-            </th>*@
-        @*<th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecialNote)
-            </th>*@
-
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GuestName)
-            </td>
-            <td>
-                @item.FromDate.ToShortDateString()
-            </td>
-            <td>
-                @item.ToDate.ToShortDateString()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration) Night(s)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfAccomodation) Accomodation(s)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.BreakFast)
-                </td>*@
-            <td>
-                @if (item.BookingDetails != null)
-                {
-                    <select class="form-control">
 
 
-                        @foreach (var t in item.BookingDetails)
+<div class="row">
+    <div class="col col-lg-12">
+        <h2>Booking</h2>
+        <hr />
+    </div>
+</div>
+
+
+<div class="row mb-3">
+    <div class="col col-lg-12">
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchTerm" placeholder="search..." value="@Model.SearchTerm">
+                <select class="form-control" name="AccomodationPackageId">
+                    @if (Model.AccomodationPackages != null && Model.AccomodationPackages.Any())
+                    {
+                        <option value="0">All</option>
+                        foreach (var t in Model.AccomodationPackages)
                         {
-                            @*<span class="btn btn-info btn-xs">
-                                    @t.Accomodation.Name <span>,</span>  @t.Accomodation.AccomodationPackage.Name
-                                </span>*@
-                            <option>
-                                @t.Accomodation.Name - @t.Accomodation.AccomodationPackage.Name
-                            </option>
-
-
+                            <option value="@t.Id" @(Model.AccomodationPackageId == t.Id ? "selected" : string.Empty)>@t.Name</option>
                         }
-                    </select>
-                }
+                    }
 
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.BreakFast)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Adult)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Children)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NoOfAccomodation)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SpecialNote)
-                </td>*@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+                </select>
+                <select class="form-control" name="status">
+                    @if (Model.Status!= null)
+                    {
+                        //@Html.EnumDropDownListFor(model => model.Status)
+                        <option value="0" selected="">All</option>
+                        foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
+                        {
+                            <option value="@((int) s)" @(Model.Status == (Enums.BookingStatus)s ? "selected" : string.Empty)> @s</option>
+                        }
+                    }
+
+                </select>
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search mr-1"></i>Search</button>
+                    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Bookings")"><i class="fas fa-redo-alt mr-1"></i>Reset</a>
+                    <button class="data-btn btn btn-outline-success" data-href="@Url.Action("Action", "Bookings", new {isDelete = false})" type="button" data-toggle="modal" data-target="#actionModal">
+                        <i class="fas fa-plus mr-1"></i>Create
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col col-lg-12">
+        <b class="">@Model.totalRecord result(s) found</b>
+        @{ Html.RenderPartial("_Listing", Model.Bookings); }
+    </div>
+</div>
+
+ <!-- pager -->
+
+@if (Model.pager.EndPage > 1)
+    {
+<div class="col-12">
+    <nav class="" aria-label="page ">
+        <ul class="pagination justify-content-center">
+            @if (Model.pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
+                                                      @AccomodationPackageId = @Model.AccomodationPackageId})">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new { @searchTerm = @Model.SearchTerm,
+                                                      @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.CurrentPage - 1) })">Previous</a>
+                </li>
+            }
+
+            @for (var page = Model.pager.StartPage; page <= Model.pager.EndPage; page++)
+            {
+                <li class="page-item @(page == Model.pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
+                                                      @AccomodationPackageId = @Model.AccomodationPackageId ,@page = page})">@page</a>
+                                                </li>
+            }
+
+            @if (Model.pager.CurrentPage < Model.pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
+                                                      @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.CurrentPage + 1)})">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
+                                                     @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.TotalPages)})">Last</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
     }
 
-</table>
+<!-- Modal -->
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-full-width">
+        @* keep modal content part in partial view _Action *@
+
+    </div>
+</div>
+
+
+@*@section scripts{*@
+
+<script>
+
+    $('.data-btn').click(function () {
+        $(".loader-container").css('display', 'block');
+        //alert($(this).attr('data-href'));
+        
+
+            $.ajax({
+                    url: $(this).attr('data-href')
+            }).done(function (response) {
+                    if (response != null) {
+                        
+                    $('#actionModal .modal-dialog').html(response);
+                    $(".loader-container").css('display', 'none');
+
+                } else {
+                    $(".loader-container").css('display', 'none');
+                    location.reload();
+
+                }
+                    //alert('hi');
+                   
+                }).fail(function() {
+                    $(".loader-container").css('display', 'none');
+                alert("something went wrong!");
+                    location.reload();
+
+            });
+
+        });
+
+
+</script>
+
+
+
+@*  *@

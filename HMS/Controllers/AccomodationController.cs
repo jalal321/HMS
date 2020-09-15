@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using HMS.Entities;
 using HMS.Services;
 using HMS.ViewModels;
+using Microsoft.Ajax.Utilities;
 
 namespace HMS.Controllers
 {
@@ -67,23 +68,24 @@ namespace HMS.Controllers
 
 
         [HttpPost]
-        public ActionResult SearchAccomodation(SearchAccomodationViewModel model)
+        public ActionResult SearchAccomodation(SearchAccomodationViewModel model , bool tableview = false)
         {
-            
+            ViewBag.view = tableview;
             //HomeViewModel model = new HomeViewModel();
                 List<AccomodationPackageCountViewModel> accomodationPackageCountViewModels = new List<AccomodationPackageCountViewModel>();
 
 
             model.AccomodationTypes = accomodationTypesService.GetAllAccomodationTypes().ToList();
-            var accomodationPacakges = accomodationPackagesService.GetAllAccomodationPackages();
-            foreach (var item in accomodationPacakges)
+            var accomodationPacakges = accomodationService.CheckAccomodationsAvailability(null, model.CheckIn , model.CheckOut);
+            foreach (var item in accomodationPacakges.DistinctBy(a=>a.AccomodationPackage.Id))
             {
 
-                var count = accomodationService.CountAccomodationByPackage(item.Id);
+                //var count = accomodationService.CountAccomodationByPackage(item.AccomodationPackage.Id);
+                var count = accomodationPacakges.Count(b => b.AccomodationPackage.Id == item.AccomodationPackage.Id);
                 if (count > 0)
                 {
                     AccomodationPackageCountViewModel obj = new AccomodationPackageCountViewModel();
-                    obj.AccomodationPackages = item;
+                    obj.AccomodationPackages = item.AccomodationPackage;
                     obj.RoomCount = count;
                     accomodationPackageCountViewModels.Add(obj);
 
@@ -96,25 +98,29 @@ namespace HMS.Controllers
         }
 
          [HttpPost]
-        public ActionResult CheckAccomodationAvailability(CheckAccomodationAvailabilityViewModel model)
+        public ActionResult CheckAccomodationAvailability(CheckAccomodationAvailabilityViewModel model, bool tableview = false)
         {
-          
+
+            ViewBag.view = tableview;
             List<AccomodationPackageCountViewModel> accomodationPackageCountViewModels = new List<AccomodationPackageCountViewModel>();
 
-            var accomodations = accomodationService.SearchAccomodationsAvailability(model.AccomodationType);
-
-            foreach (var item in accomodations)
+            //var accomodations = accomodationService.SearchAccomodationsAvailability(model.AccomodationType);
+            var accomodationPacakges = accomodationService.CheckAccomodationsAvailability(null, model.CheckIn, model.CheckOut , model.AccomodationType);
+            foreach (var item in accomodationPacakges.DistinctBy(a => a.AccomodationPackage.Id))
             {
-                var count = accomodationService.CountAccomodationByPackage(item.Id);
+
+                //var count = accomodationService.CountAccomodationByPackage(item.AccomodationPackage.Id);
+                var count = accomodationPacakges.Count(b => b.AccomodationPackage.Id == item.AccomodationPackage.Id);
                 if (count > 0)
                 {
-                   AccomodationPackageCountViewModel obj = new AccomodationPackageCountViewModel();
-                    obj.AccomodationPackages = item;
+                    AccomodationPackageCountViewModel obj = new AccomodationPackageCountViewModel();
+                    obj.AccomodationPackages = item.AccomodationPackage;
                     obj.RoomCount = count;
                     accomodationPackageCountViewModels.Add(obj);
 
                 }
             }
+
 
             return View("_CheckAccomodationAvailability", accomodationPackageCountViewModels);
         }

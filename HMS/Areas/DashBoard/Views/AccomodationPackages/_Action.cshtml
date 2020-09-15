@@ -71,7 +71,7 @@
                 <label for="selectPictures">Pictures</label>
                 @if (ViewBag.isDelete != true)
                 {
-                    <input type="file" id="selectPictures" name="" class="form-control-file" multiple="">
+                    <input type="file" id="selectPictures" name="" class="form-control-file form-control-sm" multiple="">
                 }                    @* ---to take image ids to controller-- *@
                 <input type="hidden" value="" name="picIds" id="picIds" />
             </div>
@@ -81,7 +81,7 @@
                 {
                     foreach (var pic in Model.AccomodationPackagePictures)
                     {
-                        <img src="/images/site/@pic.Picture.URL" alt="@pic.Picture.URL" data-id="@pic.Picture.Id" class="col-md-3 col-6 w-100 h-50 img-accomodationpackage" />
+                        <img src="/images/site/@pic.Picture.URL" alt="@pic.Picture.URL" data-id="@pic.Picture.Id" class="col-md-5 col-6 w-100 h-100 mt-2 img-accomodationpackage" />
                     }
                 }
             </div>
@@ -111,9 +111,12 @@
 </div>
 
 @*another method*@
-<div class="" id="imageTemplate">
-    <img src="" alt="" data-id="" class="col-md-3 col-6 w-100 h-50  img-accomodationpackage" />
+<div class="d-none">
+    <div class="" id="imageTemplate">
+        <img src="" alt="" data-id="" class="col-md-5 col-6 w-100 h-100 mt-2 img-accomodationpackage" />
+    </div>
 </div>
+
 
 <script>
 

@@ -77,5 +77,13 @@ namespace HMS.Services
 
            return result; 
        }
+
+       public bool SendMessage(Message message)
+       {
+           HMSContext context = new HMSContext();
+           context.Messages.Add(message);
+           var result = context.SaveChanges() > 0;
+           return result;
+       }
     }
 }

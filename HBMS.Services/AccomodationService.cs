@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using HMS.Data;
 using HMS.Entities;
+using HMS;
 
 namespace HMS.Services
 {
@@ -77,33 +79,67 @@ namespace HMS.Services
 
 
             return accomodationPackages;
-        }   
-       
-       public IEnumerable<Accomodation> CheckAccomodationsAvailability(int? accomodationPackageId , DateTime checkIn)
+        }
+
+        public IEnumerable<Accomodation> CheckAccomodationsAvailability(int? accomodationPackageId, DateTime checkIn, DateTime checkOut , int? accomodationTypeId = 0)
         {
 
             var context = new HMSContext();
-            var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId).ToList();
+            List<Accomodation> availableAccomodations;
+            if (accomodationPackageId != null)
+            {
+                 var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId && a.InProcess != true).ToList();
 
 
             var allBookings =
-                context.BookingDetails.Where(a => a.Accomodation.AccomodationPackage.Id == accomodationPackageId).ToList();
+                context.BookingDetails
+                .Where(a => a.Accomodation.AccomodationPackage.Id == accomodationPackageId)
+               .ToList();
 
-            //var allAccomodations = accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId).ToList();
 
-            var freeAccomodations = allAccomodations.Where(a => !allBookings.Any(b => b.AccomodationId == a.Id
-                && b.Booking.ToDate < checkIn)).ToList();
+             availableAccomodations =
+                allAccomodations.Where(
+                    a => allBookings.Where(c=>c.AccomodationId == a.Id).All(b =>  b.Booking.FromDate >= checkOut ||   b.Booking.ToDate <= checkIn)).ToList();
 
-            if (freeAccomodations == null)
-            {
-               freeAccomodations = allAccomodations.Where(a => allBookings.Any(b => b.AccomodationId == a.Id && b.Booking.FromDate > checkIn)).ToList();
-               
             }
 
-          // List<AccomodationPackage> accomodationPackages = null;
+            else
+            {
+                if (accomodationTypeId != 0)
+                {
+                     var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackage.AccomodationType.Id == accomodationTypeId && a.InProcess != true);
+
+                var allBookings =
+                    context.BookingDetails
+                    .Where(a => a.Booking.Status != "CheckedOut" && a.Booking.Status != "Cancel" &&  a.Accomodation.AccomodationPackage.AccomodationType.Id == accomodationTypeId);
+
+
+                 availableAccomodations =
+                    allAccomodations.Where(
+                        a => allBookings.Where(c => c.AccomodationId == a.Id).All(b => b.Booking.FromDate >= checkOut || b.Booking.ToDate <= checkIn)).ToList();
+           
+                }
+                else
+                {
+                     var allAccomodations = context.Accomodations.Where(a => a.InProcess != true);
+
+
+                var allBookings =
+                    context.BookingDetails
+                    .Where(a => a.Booking.Status != "CheckedOut" && a.Booking.Status != "Cancel");
+
+
+                 availableAccomodations =
+                    allAccomodations.Where(
+                        a => allBookings.Where(c => c.AccomodationId == a.Id).All(b => b.Booking.FromDate >= checkOut || b.Booking.ToDate <= checkIn)).ToList();
+          
+                }
+
+                 }
 
           
-            return freeAccomodations;
+          
+            return availableAccomodations;
         }  
        
        

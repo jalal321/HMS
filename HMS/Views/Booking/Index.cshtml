@@ -5,154 +5,160 @@
 }
 
 <div id="resultHtml">
-
-<div id="colorlib-reservation-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box" id="colorlib-heading-reservation">
-                <span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
-                <h2>Make Your Reservation</h2>
-                @* <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>*@
+    <div id="colorlib-reservation-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box" id="colorlib-heading-reservation">
+                    <span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                    <h2>Make Your Reservation</h2>
+                    @* <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>*@
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="diningbar-flex resrvation-flex-form">
-                <div class="half-30 diningbar-img" style="background-image: url(/images/site/@Model.AccomodationPackagePictures.First().Picture.URL);">
+            <div class="row">
+                <div class="diningbar-flex resrvation-flex-form">
+                    @if (@Model.AccomodationPackagePictures != null && @Model.AccomodationPackagePictures.Count > 0)
+                    {
+                        <div class="half-30 diningbar-img" style="background-image: url(/images/site/@Model.AccomodationPackagePictures.First().Picture.URL);">
+                        </div><!-- end half-30 -->
+                    }
+                    else
+                    {
+                        <div class="half-30 diningbar-img" style="background-image: url(/images/default-hotel.jpg);">
+                        </div><!-- end half-30 -->
 
-                </div><!-- end half-30 -->
+                    }
+                    <div class="half-70 animate-box">
+                        <form action="@Url.Action("BookingAccomodation", "Booking")" method="POST" class="" id="frmCheckAvailibility">
 
-                <div class="half-70 animate-box">
-                    <form action="@Url.Action("BookingAccomodation", "Booking")" method="POST" class="" id="frmCheckAvailibility">
-                       
 
-                        <div class="row form-group">
-                            <div class="col-md-4">
-                                <label for="fname">Package</label>
-                                <input type="text" id="" name="" class="form-control" value="@Model.Name" placeholder="" readonly="">
-                                <input type="hidden" value="@Model.AccomodationTypeId" name="AccomodationTypeId" />
-                                <input type="hidden" id="" name="AccomodationPackageId" value="@Model.Id">
-                                <input type="hidden" value="" name="AccomodationId" id="AccomodationId" />
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label for="fname">Package</label>
+                                    <input type="text" id="" name="" class="form-control" value="@Model.Name" placeholder="" readonly="">
+                                    <input type="hidden" value="@Model.AccomodationTypeId" name="AccomodationTypeId" />
+                                    <input type="hidden" id="" name="AccomodationPackageId" value="@Model.Id">
+                                    <input type="hidden" value="" name="AccomodationId" id="AccomodationId" />
 
-                                @*<input type="hidden" id="AccomodationId" name="AccomodationId" value="">*@
-                            </div>
+                                    @*<input type="hidden" id="AccomodationId" name="AccomodationId" value="">*@
+                                </div>
 
-                            @*<div class="col-md-4">
-                    <label for="fname">Guest Full Name</label>
-                    <input type="text" id="fname" name="GuestFullName" class="form-control" placeholder="Your firstname">
-                </div>*@
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="FromDate">Check-in:</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-calendar2"></i>
-                                        <input type="text" id="FromDate" value="@DateTime.Now.AddDays(1).ToShortDateString()" class="form-control date" name="CheckIn" autocomplete="off">
-                                        <i class="icon icon-calendar2"></i>
+                                @*<div class="col-md-4">
+                                        <label for="fname">Guest Full Name</label>
+                                        <input type="text" id="fname" name="GuestFullName" class="form-control" placeholder="Your firstname">
+                                    </div>*@
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="FromDate">Check-in:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-calendar2"></i>
+                                            <input type="text" id="FromDate" value="@DateTime.Now.AddDays(1).ToShortDateString()" class="form-control date" name="CheckIn" autocomplete="off">
+                                            <i class="icon icon-calendar2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="ToDate">Check-out:</label>
+                                        <div class="form-field">
+                                            <i class="icon icon-calendar2"></i>
+                                            <input type="text" id="ToDate" value="@DateTime.Now.AddDays(2).ToShortDateString()" class="form-control date" name="CheckOut" autocomplete="off">
+                                            <i class="icon icon-calendar2"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="ToDate">Check-out:</label>
-                                    <div class="form-field">
-                                        <i class="icon icon-calendar2"></i>
-                                        <input type="text" id="ToDate" value="@DateTime.Now.AddDays(2).ToShortDateString()" class="form-control date" name="CheckOut" autocomplete="off">
-                                        <i class="icon icon-calendar2"></i>
-                                    </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-4">
+                                    <label for="NoOfAccomodation">@Model.AccomodationType.Name</label>
+                                    @*<input type="number" id="NoOfAccomodation" name="NoOfAccomodation" class="form-control" placeholder="" value="1" min="1" max="5">*@
+                                    <select class="form-control" name="NoOfAccomodation" id="NoOfAccomodation">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <option value="@i">@i @Model.AccomodationType.Name</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="Duration">Stay Duration</label>
+                                    <select class="form-control" name="StayDuration" id="Duration">
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <option value="@i">@i Night</option>
+                                        }
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="NoOfAdults">Adult</label>
+                                    <input type="number" id="NoOfAdults" name="Adults" class="form-control" placeholder="" value="1" min="0" max="10">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="NoOfChildren">Children</label>
+                                    <input type="number" id="NoOfChildren" name="Children" class="form-control" placeholder="" value="1" max="10" min="0">
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row form-group">
-                            <div class="col-md-4">
-                                <label for="NoOfAccomodation">@Model.AccomodationType.Name</label>
-                                @*<input type="number" id="NoOfAccomodation" name="NoOfAccomodation" class="form-control" placeholder="" value="1" min="1" max="5">*@
-                                <select class="form-control" name="NoOfAccomodation" id="NoOfAccomodation">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        <option value="@i">@i @Model.AccomodationType.Name</option>
-                                    }
-                                </select>
+                            @*<div class="row form-group">
+                                    <div class="col-md-6">
+                                        <label for="email">Email</label>
+                                        <input type="text" id="email" name="Email" class="form-control" placeholder="Your email address">
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <label for="subject">Phone No</label>
+                                        <input type="text" id="subject" name="PhoneNo" class="form-control" placeholder="Your phone no">
+                                    </div>
+                                </div>*@
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="message">Include BreakFast ?</label>
+                                            <br />
+                                            <span style="font-size: 11px;">
+                                                * Adult: 7 @HMS.Code.Variables.Currency / night
+                                                & Child 3 @HMS.Code.Variables.Currency / night
+                                            </span>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input type="checkbox" name="BreakFastYes" value="true" id="breakFastYes" class="checkbox" placeholder="yes" checked="" />
+                                            <label for="breakFastYes">Yes</label>
+
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input type="checkbox" name="BreakFastNo" value="false" id="breakFastNO" class="checkbox" />
+                                            <label for="breakFastNO">No</label>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" value="true" name="BreakFast" id="BreakFast" />
+
+                                </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="Duration">Stay Duration</label>
-                                <select class="form-control" name="StayDuration" id="Duration">
-                                    @for (int i = 1; i <= 10; i++)
-                                    {
-                                        <option value="@i">@i Night</option>
-                                    }
-                                </select>
-
+                            @*<div class="row form-group">
+                                    <div class="col-md-12">
+                                        <label for="message">Special Note</label>
+                                        <textarea name="SpecialNote" id="message" cols="30" rows="2" class="form-control" placeholder="Write Special Note..."></textarea>
+                                    </div>
+                                </div>*@
+                            <div class="row form-group pull-right">
+                                <div class="col-md-12">
+                                    <input type="button" value="Book Now" class="btn btn-primary" id="frmActionBtn">
+                                </div>
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="NoOfAdults">Adult</label>
-                                <input type="number" id="NoOfAdults" name="Adults" class="form-control" placeholder="" value="1" min="0" max="10">
-                            </div>
-
-                            <div class="col-md-2">
-                                <label for="NoOfChildren">Children</label>
-                                <input type="number" id="NoOfChildren" name="Children" class="form-control" placeholder="" value="1" max="10" min="0">
-                            </div>
-                        </div>
-
-                        @*<div class="row form-group">
-                <div class="col-md-6">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="Email" class="form-control" placeholder="Your email address">
+                        </form>
+                    </div><!-- end half-70 -->
                 </div>
-
-
-                <div class="col-md-6">
-                    <label for="subject">Phone No</label>
-                    <input type="text" id="subject" name="PhoneNo" class="form-control" placeholder="Your phone no">
-                </div>
-            </div>*@
-
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="message">Include BreakFast ?</label>
-                                        <br />
-                                        <span style="font-size: 11px;">
-                                            * Adult: 7 @HMS.Code.Variables.Currency / night
-                                            & Child 3 @HMS.Code.Variables.Currency / night
-                                        </span>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <input type="checkbox" name="BreakFastYes" value="true" id="breakFastYes" class="checkbox" placeholder="yes" checked="" />
-                                        <label for="breakFastYes">Yes</label>
-
-                                    </div>
-                                    <div class="col-md-1">
-                                        <input type="checkbox" name="BreakFastNo" value="false" id="breakFastNO" class="checkbox" />
-                                        <label for="breakFastNO">No</label>
-                                    </div>
-                                </div>
-                                <input type="hidden" value="true" name="BreakFast" id="BreakFast" />
-
-                            </div>
-                        </div>
-
-                        @*<div class="row form-group">
-                            <div class="col-md-12">
-                                <label for="message">Special Note</label>
-                                <textarea name="SpecialNote" id="message" cols="30" rows="2" class="form-control" placeholder="Write Special Note..."></textarea>
-                            </div>
-                        </div>*@
-                        <div class="row form-group pull-right">
-                            <div class="col-md-12">
-                                <input type="button" value="Book Now" class="btn btn-primary" id="frmActionBtn">
-                            </div>
-                        </div>
-
-                    </form>
-                </div><!-- end half-70 -->
             </div>
         </div>
     </div>
-</div>
 </div>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal" id="errorModalbtn" style="display: none">
     Launch modal
@@ -165,7 +171,7 @@
                 <h4 class="modal-title"><i class="icon icon-info"> Your  Missing Seomething</i></h4>
             </div>
             <div class="modal-body">
-                <h4></h4>
+                <h5 class="alert alert-danger"></h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
@@ -177,7 +183,7 @@
 @section scripts{
     <script>
         var breakFast;
-        $('input[type = checkbox]').click(function() {
+        $('input[type = checkbox]').click(function () {
             //alert('hi');
             $('input[type = checkbox]').not(this).prop('checked', false);
             breakFast = $(this).attr("value");
@@ -194,46 +200,51 @@
         });
 
 
-        $('#frmActionBtn').click(function() {
+        $('#frmActionBtn').click(function () {
+            SubmitForm();
+        });
+
+
+        $('#frmActionBtn-----oldmethod').click(function () {
 
             //show loader
             $('.colorlib-loader').css('display', 'block');
             //debugger;
             $.ajax({
-                    //url: '@Url.Action("CheckAccomodationPackage", "Booking")',
-                    url: '@Url.Action("CheckAccomodationAvailibility", "Booking")',
-                    type: "POST",
-                    data: $('#frmCheckAvailibility').serialize()
+                //url: '@Url.Action("CheckAccomodationPackage", "Booking")',
+                url: '@Url.Action("CheckAccomodationAvailibility", "Booking")',
+                type: "POST",
+                data: $('#frmCheckAvailibility').serialize()
 
-                }).done(function(response) {
-                    //$('.colorlib-loader').css('display', 'none');
+            }).done(function (response) {
+                //$('.colorlib-loader').css('display', 'none');
+
+                debugger;
+                //$('#resultHtml').html(response);
+                if (response.success) {
+                    //alert(response.message);
+                    $('#AccomodationId').val(response.data);
+
+                    SubmitForm();
+                    // $('#frmCheckAvailibility').submit();
+
 
                     //debugger;
-                    //$('#resultHtml').html(response);
-                    if (response.success) {
-                        //alert(response.message);
-                        $('#AccomodationId').val(response.data);
-
-                        SubmitForm();
-                        // $('#frmCheckAvailibility').submit();
 
 
-                        //debugger;
-
-
-                    } else {
-                        $('.colorlib-loader').css('display', 'none');
-
-                        $('.modal-body h4').text(response.message);
-                        $('#errorModalbtn').trigger('click');
-
-                    }
-                    //debugger;
-                })
-                .fail(function() {
+                } else {
                     $('.colorlib-loader').css('display', 'none');
-                alert("something went wrong!");
-            });
+
+                    $('.modal-body h5').text(response.message);
+                    $('#errorModalbtn').trigger('click');
+
+                }
+                //debugger;
+            })
+                .fail(function () {
+                    $('.colorlib-loader').css('display', 'none');
+                    alert("something went wrong!");
+                });
 
         });
 
@@ -241,37 +252,37 @@
         function SubmitForm() {
 
             //show loader
-            // $('.colorlib-loader').css('display', 'block');
+            $('.colorlib-loader').css('display', 'block');
             //debugger;
             $.ajax({
-                    //url: '@Url.Action("CheckAccomodationPackage", "Booking")',
-                    url: '@Url.Action("Action", "Booking")',
-                    type: "Get",
-                    data: $('#frmCheckAvailibility').serialize()
+                //url: '@Url.Action("CheckAccomodationPackage", "Booking")',
+                url: '@Url.Action("Action", "Booking")',
+                type: "Get",
+                data: $('#frmCheckAvailibility').serialize()
 
-                }).done(function(response) {
+            }).done(function (response) {
+                $('.colorlib-loader').css('display', 'none');
+
+
+                $('#resultHtml').html(response);
+                //if (response.success) {
+                //    //alert(response.message);
+                //    $('#AccomodationId').val(response.data);
+
+                //    $('#frmCheckAvailibility').submit();
+
+
+                //    debugger;
+                //} else {
+                //    $('.modal-body h4').text(response.message);
+                //    $('#errorModalbtn').trigger('click');
+                //}
+                //debugger;
+            })
+                .fail(function () {
                     $('.colorlib-loader').css('display', 'none');
-
-                    
-                    $('#resultHtml').html(response);
-                    //if (response.success) {
-                    //    //alert(response.message);
-                    //    $('#AccomodationId').val(response.data);
-
-                    //    $('#frmCheckAvailibility').submit();
-
-
-                    //    debugger;
-                    //} else {
-                    //    $('.modal-body h4').text(response.message);
-                    //    $('#errorModalbtn').trigger('click');
-                    //}
-                    //debugger;
-                })
-                .fail(function() {
-                    $('.colorlib-loader').css('display', 'none');
-                alert("something went wrong!");
-            });
+                    alert("something went wrong!");
+                });
         }
     </script>
 }

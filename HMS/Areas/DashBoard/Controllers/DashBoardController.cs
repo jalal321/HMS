@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using HMS.Areas.DashBoard.ViewModels;
 using HMS.Entities;
 using HMS.Services;
 
@@ -14,11 +15,37 @@ namespace HMS.Areas.DashBoard.Controllers
     {
         // GET: DashBoard/DashBoard
         List<int> iDs = new List<int>();
+        DashBoardService dashBoardService = new DashBoardService();
         public ActionResult Index()
         {
-            return View();
+            DashBoardViewModel model = new DashBoardViewModel();
+
+            model.TotalAccomodationPackages = dashBoardService.AccomodationPackagesCount(); 
+            model.TotalAccomodations = dashBoardService.AccomodationsCount(); 
+            model.TotalCheckedIn = dashBoardService.TotalAccomodationsCheckedIn(); 
+            model.TotalReserved = dashBoardService.TotalAccomodationsReserved(); 
+            model.ArrivalExpetcedToday = dashBoardService.ArrivalsExpetced(); 
+            model.DepartureExpectedToday = dashBoardService.DeparturesExpected(); 
+            
+
+            return View(model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult GetMessages()
+        {
+            var model = dashBoardService.GetMessages();
+            return View(model);
         }
         
+        [ChildActionOnly]
+        public ActionResult GetBookingsReserved()
+        {
+            var model = dashBoardService.GetBookingsReserved();
+            return View(model);
+        }
+
+
         [HttpPost]
         public JsonResult UploadPictures()
         {

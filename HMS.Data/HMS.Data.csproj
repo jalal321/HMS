@@ -78,6 +78,30 @@
     <Compile Include="Migrations\202008140754171_bookingdetail-bookingadditionalfee-included-extra-fields.designer.cs">
       <DependentUpon>202008140754171_bookingdetail-bookingadditionalfee-included-extra-fields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008171618027_step-added-inproceess-in-accomodation.cs" />
+    <Compile Include="Migrations\202008171618027_step-added-inproceess-in-accomodation.designer.cs">
+      <DependentUpon>202008171618027_step-added-inproceess-in-accomodation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008200912171_added-statusfield-in-booking.cs" />
+    <Compile Include="Migrations\202008200912171_added-statusfield-in-booking.designer.cs">
+      <DependentUpon>202008200912171_added-statusfield-in-booking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008201732296_step-add-validations.cs" />
+    <Compile Include="Migrations\202008201732296_step-add-validations.designer.cs">
+      <DependentUpon>202008201732296_step-add-validations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008281749175_add-status-in-bookingaditionalfee.cs" />
+    <Compile Include="Migrations\202008281749175_add-status-in-bookingaditionalfee.designer.cs">
+      <DependentUpon>202008281749175_add-status-in-bookingaditionalfee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009081014098_add-message-and-subscrier-table.cs" />
+    <Compile Include="Migrations\202009081014098_add-message-and-subscrier-table.designer.cs">
+      <DependentUpon>202009081014098_add-message-and-subscrier-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009081021595_add-message-and-subscrier-table-2.cs" />
+    <Compile Include="Migrations\202009081021595_add-message-and-subscrier-table-2.designer.cs">
+      <DependentUpon>202009081021595_add-message-and-subscrier-table-2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -109,6 +133,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008140754171_bookingdetail-bookingadditionalfee-included-extra-fields.resx">
       <DependentUpon>202008140754171_bookingdetail-bookingadditionalfee-included-extra-fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008171618027_step-added-inproceess-in-accomodation.resx">
+      <DependentUpon>202008171618027_step-added-inproceess-in-accomodation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008200912171_added-statusfield-in-booking.resx">
+      <DependentUpon>202008200912171_added-statusfield-in-booking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008201732296_step-add-validations.resx">
+      <DependentUpon>202008201732296_step-add-validations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008281749175_add-status-in-bookingaditionalfee.resx">
+      <DependentUpon>202008281749175_add-status-in-bookingaditionalfee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009081014098_add-message-and-subscrier-table.resx">
+      <DependentUpon>202009081014098_add-message-and-subscrier-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009081021595_add-message-and-subscrier-table-2.resx">
+      <DependentUpon>202009081021595_add-message-and-subscrier-table-2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -79,7 +79,7 @@
                                 <label for="date">Check-in:</label>
                                 <div class="form-field">
                                     <i class="icon icon-calendar2"></i>
-                                    <input type="text" id="date" value="@DateTime.Now.ToShortDateString()" class="form-control date" placeholder="Check-in date" name="checkIn" autocomplete="off">
+                                    <input type="text" id="date" value="@DateTime.Now.AddDays(1).ToShortDateString()" class="form-control date" placeholder="Check-in date" name="checkIn" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                 <label for="date">Check-out:</label>
                                 <div class="form-field">
                                     <i class="icon icon-calendar2"></i>
-                                    <input type="text" id="date" value="@DateTime.Now.ToShortDateString()" class="form-control date" placeholder="Check-out date" name="checkOut" autocomplete="off">
+                                    <input type="text" id="date" value="@DateTime.Now.AddDays(2).ToShortDateString()" class="form-control date" placeholder="Check-out date" name="checkOut" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -240,22 +240,19 @@
                                                             <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @p.Id})">@p.Name</a>
                                                         </h3>
                                                         <p class="price">
-                                                            <span class="currency">$</span>
+                                                            <span class="currency">@HMS.Code.Variables.Currency</span>
                                                             <span class="price-room">
                                                                 @p.FeePerNight
                                                             </span>
                                                             <span class="per">/ per night</span>
                                                         </p>
-                                                        <p>@p.NoOfRoom Rooms</p>
-                                                        <p>@p.AccomodationType.Description</p>
+                                                        
+                                                        @*<p>@p.AccomodationType.Description</p>*@
                                                         <ul>
-
-
-                                                            @*
-                                                                <li><i class="icon-check"></i> </li>
-                                                                <li><i class="icon-check"></i> Only 10 rooms are available</li>
-                                                                <li><i class="icon-check"></i> Breakfast included</li>*@
-                                                            <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
+                                                                <li><i class="icon-check"></i> @p.NoOfRoom Rooms </li>
+                                                                <li><i class="icon-check"></i> Only 2 adults &amp; 2 children / Room </li>
+                                                                <li><i class="icon-check"></i> Breakfast Excluded</li>
+                                                            <li><i class="icon-check"></i> Price does not include VAT &amp; tourism tax</li>
                                                         </ul>
                                                         <p>
                                                             <a class="btn btn-primary btn-book" href="@Url.Action("AccomodationPackageDetail", "Accomodation", new { @id = @p.Id })">Details</a>

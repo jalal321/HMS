@@ -30,6 +30,8 @@ namespace HMS.Data
         public DbSet<BookingDetail> BookingDetails { get; set; }
         public DbSet<BookingAdditionalFee> BookingAdditionalFees { get; set; }
         public DbSet<Picture> Pictures { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Subscribers> Subscriberses { get; set; }
     }
 
 

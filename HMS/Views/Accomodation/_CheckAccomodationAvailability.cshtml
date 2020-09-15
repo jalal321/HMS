@@ -1,84 +1,162 @@
-﻿@model List<HMS.ViewModels.AccomodationPackageCountViewModel>
+﻿@using Microsoft.Ajax.Utilities
+@model List<HMS.ViewModels.AccomodationPackageCountViewModel>
 @{
     Layout = null;
 }
 
 @*<div class="alert alert-info">
-    @HMS.Code.Variables.HotelShortName from  to date for 1 night
-</div>*@
+        @HMS.Code.Variables.HotelShortName from  to date for 1 night
+    </div>*@
 @if (@Model != null && Model.Count() > 0)
 {
-    <table class="table table-success table-striped table-bordered text-center">
+    <b>@Model.Count() Rsult(s) Found</b>
+    if (ViewBag.view)
+    {
 
-        <thead class="bg-primary">
-            <tr>
-                <td>Accomodation Package</td>
-                <td>Adults</td>
-                <td>Rooms</td>
-                <td>Rent/Night</td>
-                <td>Children</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
+        <table class="table table-success table-striped table-bordered text-center">
 
-            @foreach (var item in Model)
-            {
+            <thead class="bg-primary">
                 <tr>
-                    <td>
-                        <div class="row">
-                            <div class="col-md-2">
-                                @if (@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault() != null)
-                                {
-                                    <img src="/images/site/@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault()"
-                                         alt="" class="img-rounded" style="width: 100px" />
+                    <td>Accomodation Package</td>
+                    <td>Rooms</td>
+                    <td>Rent/Night</td>
+                    <td>Adults</td>
+                    <td>Children</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
 
-                                }
-                                else
-                                {
-                                    <img src="/images/default-hotel.jpg"
-                                         alt="" class="img-rounded" style="width: 100px"/>
-                                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @if (@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault() != null)
+                                    {
+                                        <img src="/images/site/@item.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault()"
+                                             alt="" class="img-rounded" style="width: 100px" />
 
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/default-hotel.jpg"
+                                             alt="" class="img-rounded" style="width: 100px" />
+                                    }
+
+                                </div>
+                                <div class="col-md-5">
+                                    <h4>
+                                        <a>@item.AccomodationPackages.Name</a>
+                                    </h4>
+                                    <span class="icon icon-newspaper" title="News Paper"></span>
+                                    <span class="icon icon-food" title="Foood"></span>
+                                    <span class="icon icon-IE" title="Internet"></span>
+                                    <span class="icon icon-tv" title="Tv"></span>
+                                    <p>
+                                        Prices are per room for 1 night
+                                        Excluded: 10.00% g.s.t
+                                        <br />
+                                        <b class="text text-danger icon icon-info"> only @item.RoomCount Left</b>
+                                    </p>
+                                    <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @item.AccomodationPackages.Id})">
+                                        view package detail
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-md-5">
-                                <h4>
-                                    <a>@item.AccomodationPackages.Name</a>
-                                </h4>
-                                <span class="icon icon-newspaper" title="News Paper"></span>
-                                <span class="icon icon-food" title="Foood"></span>
-                                <span class="icon icon-IE" title="Internet"></span>
-                                <span class="icon icon-tv" title="Tv"></span>
-                                <p>
-                                    Prices are per room for 1 night
-                                    Excluded: 10.00% g.s.t
-                                    <br />
-                                    <b class="text text-danger icon icon-info"> only @item.RoomCount Left</b>
+
+                        </td>
+                        <td>@item.AccomodationPackages.NoOfRoom</td>
+                        <td>@Math.Round(@item.AccomodationPackages.FeePerNight) @HMS.Code.Variables.Currency / night</td>
+                        <td>2 / Room</td>
+                        <td>2 / Room</td>
+
+                        <td>
+                            <a href="@Url.Action("Index","Booking", new {@PackageId = @item.AccomodationPackages.Id})" class="btn btn-primary">Book Now</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+
+    else
+    {
+        @* ----------second method------------ *@
+
+        <div id="colorlib-rooms" class="colorlib-light-grey">
+            <div class="row">
+                <div class="col-md-12">
+                    @foreach (var p in Model)
+                    {
+                        //sajjad method
+                        //var thumbnailPicture = @p.AccomodationPackagePictures != null && @p.AccomodationPackagePictures.Count > 0 ?
+                        //@p.AccomodationPackagePictures.FirstOrDefault() : new AccomodationPackagePicture();
+                        //var thumbnailPictureURL = thumbnailPicture.Picture != null ? thumbnailPicture.Picture.URL : "default-hotel.jpg";
+                        <div class="item col-md-4">
+
+                            @if (@p.AccomodationPackages.AccomodationPackagePictures != null && @p.AccomodationPackages.AccomodationPackagePictures.Count > 0)
+                            {
+                                <a href="/images/site/@p.AccomodationPackages.AccomodationPackagePictures.Select(a=>a.Picture.URL).FirstOrDefault()" class="room image-popup-link"
+                                   style="background-image: url(/images/site/@p.AccomodationPackages.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault())"></a>
+
+                            }
+                            else
+                            {
+                                <a href="/images/default-hotel.jpg" class="room image-popup-link" style="background-image: url(/images/default-hotel.jpg);"></a>
+
+                            }
+                            <div class="desc text-center">
+                                <span class="rate-star">
+                                    <i class="icon-star-full full"></i>
+                                    <i class="icon-star-full full"></i>
+                                    <i class="icon-star-full full"></i>
+                                    <i class="icon-star-full full"></i>
+                                    <i class="icon-star-full full"></i>
+                                </span>
+
+                                <h3>
+                                    <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @p.AccomodationPackages.Id})">@p.AccomodationPackages.Name</a>
+                                </h3>
+                                <p class="price">
+                                    <span class="currency">@HMS.Code.Variables.Currency</span>
+                                    <span class="price-room">
+                                        @p.AccomodationPackages.FeePerNight
+                                    </span>
+                                    <span class="per">/ per night</span>
                                 </p>
-                                <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @item.AccomodationPackages.Id})">
-                                    view package detail
-                                </a>
+                                <span class="icon icon-arrow-right2" title=""></span>
+                                <b class="text text-danger">only @p.RoomCount Left</b>
+                                <span class="icon icon-arrow-left2" title=""></span>
+                                @*<p>@p.AccomodationType.Description</p>*@
+                                <ul>
+                                    <li><i class="icon-check"></i> @p.AccomodationPackages.NoOfRoom Rooms </li>
+                                    <li><i class="icon-check"></i> Only 2 adults &amp; 2 children / Room </li>
+                                    <li><i class="icon-check"></i> Breakfast Excluded</li>
+                                    <li><i class="icon-check"></i> Price does not include VAT &amp; tourism tax</li>
+                                </ul>
+                                <p>
+                                    <a class="btn btn-primary btn-book" href="@Url.Action("AccomodationPackageDetail", "Accomodation", new { @id = @p.AccomodationPackages.Id })">Details</a>
+                                    <a class="btn btn-primary btn-book" href="@Url.Action("Index", "Booking", new { @PackageId = @p.AccomodationPackages.Id })">Book now!</a>
+                                </p>
                             </div>
                         </div>
 
-                    </td>
-                    <td>@item.AccomodationPackages.NoOfRoom</td>
-                    <td>@item.AccomodationPackages.NoOfRoom</td>
-                    <td>@Math.Round(@item.AccomodationPackages.FeePerNight) @HMS.Code.Variables.Currency</td>
-                    <td>@item.AccomodationPackages.NoOfRoom</td>
-
-                    <td>
-                        <button class="btn btn-secondary">Book Now</button>
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 }
+
 else
 {
     <div class="alert alert-danger">
         sorry! All Rooms Are Booked
     </div>
 }
+
+
+

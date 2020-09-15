@@ -16,6 +16,7 @@ namespace HMS.Entities
         public string Name { get; set; }
 
         public string Description { get; set; }
+        public bool InProcess { get; set; }
 
        public List<AccomodationPicture> AccomodationPictures { get; set; }
 

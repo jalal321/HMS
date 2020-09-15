@@ -1,0 +1,57 @@
+﻿@model List<HMS.Entities.Booking>
+@{
+    Layout = null;
+}
+
+<div class="dropdown">
+    <a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuBooking" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-bell text-danger @(Model.Count() > 0 ? "animate-icon" : string.Empty)"> <span class="badge badge-danger">@Model.Count()</span></i>
+        <span class="">Booking</span>
+    </a>
+
+    @if (@Model != null && @Model.Count > 0)
+    {
+        <div class="dropdown-menu">
+            <ul class="" aria-labelledby="dropdownMenuBooking">
+                @foreach (var m in @Model)
+                {
+                    <li class="">
+                        <p>
+                            <i class="fas fa-walking mr-1 text-primary"></i>
+                            <a href="#"
+                               class="mt-0 text-primary card-title">@m.GuestName</a>
+                            <br />
+                            <i>
+                                Stay : from @m.FromDate.ToShortDateString() to @m.ToDate.ToShortDateString()
+                            </i>
+                            <br />
+                            <span class="card-text">
+                                status : @m.Status  <strong class="ml-5">Total : @m.TotalAmount</strong>
+                            </span>
+                           
+                            <button type="button" class="mt-0 btn btn-primary btn-sm  card-title data-btn" data-href="@Url.Action("Action", "Bookings", new {Id = m.Id})"
+                                    data-toggle="modal" data-target="#actionModal">
+                                Detail
+                            </button>
+                            </p>
+
+                        @*<a class="dropdown-item" href="">@m.Subject : @m.UserMessage</a>*@
+                    </li>
+                }
+            </ul>
+        </div>
+
+
+
+    }
+
+    else
+    {
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+                <a class="dropdown-item text-danger" href="">No Message Found!</a>
+
+            </li>
+        </ul>
+    }
+</div>
