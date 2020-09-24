@@ -50,22 +50,22 @@
                 </p>
             </div>
             <div class="col-md-2 col-sm-3 text-center">
-                <label for="">Adult:</label>
+                <label for="">Adult & Children:</label>
                 <p class="">
-                    @Model.Adults
+                    @Model.Adults & @Model.Children
                 </p>
             </div>
-            <div class="col-md-1 col-sm-3 text-center">
-                <label for="">Children:</label>
+            <div class="col-md-2 col-sm-3 text-center">
+                <label for="">#Accomodation(s):</label>
                 <p>
-                    @Model.Children
+                    @Model.NoOfAccomodation
                 </p>
             </div>
 
-            <div class="col-md-2 text-center">
+            <div class="col-md-1 text-center">
                 <br />
-                <a href="@Url.Action("Index","Booking", new {@PackageId = Model.AccomodationPackageId})" class="btn btn-default btn-book">
-                    <i class="icon icon-edit"></i> Change
+                <a href="@Url.Action("Index","Booking", new {@PackageId = Model.AccomodationPackageId})" class="btn btn-default btn-book" style="border: 0">
+                    <i class="icon icon-edit"></i>
                 </a>
 
             </div>
@@ -83,7 +83,8 @@
                             var vatTax = (5 * roomsTotal) / 100;
                             var tourismTax = 5 * (@Model.StayDuration * @Model.NoOfAccomodation);
 
-                            var breakFasttotals = ((@Model.Adults * 7) + (@Model.Children * 3)) * (@Model.StayDuration * @Model.NoOfAccomodation);
+                            var breakFasttotals = @Model.BreakFast ? ((@Model.Adults * 7) + (@Model.Children * 3)) * @Model.StayDuration * @Model.NoOfAccomodation : 0;
+
                             var grandTotal = roomsTotal + vatTax + tourismTax + breakFasttotals;
 
                             <label>Bill Detail</label>
@@ -147,19 +148,19 @@
                     <form action="" method="POST" class="" id="frmBookAccomodation">
                         <input type="hidden" value="@Model.CheckIn" name="CheckIn" />
                         <input type="hidden" value="@Model.CheckOut" name="CheckOut" />
-                        <input type="hidden" value="@Model.StayDuration" name="StayDuration"/>
-                        <input type="hidden" value="@Model.BreakFast.ToString()" name="BreakFast"/>
+                        <input type="hidden" value="@Model.StayDuration" name="StayDuration" />
+                        <input type="hidden" value="@Model.BreakFast.ToString()" name="BreakFast" />
                         <input type="hidden" value="@Model.Adults" name="Adults" />
                         <input type="hidden" value="@Model.Children" name="Children" />
                         <input type="hidden" value="@Model.NoOfAccomodation" name="NoOfAccomodation" />
                         @Html.Hidden("NoOfAccomodation", @Model.NoOfAccomodation)
 
                         @*@foreach (var id in @Model.AccomodationId)
-                            {
+            {
 
-                                <input type="hidden" value="@id" name="id" id="" class="id" />
+                <input type="hidden" value="@id" name="id" id="" class="id" />
 
-                            }*@
+            }*@
 
 
                         <input type="hidden" value="@Model.AccomodationId" name="AccomodationId" id="AccomodationId" />
@@ -181,12 +182,12 @@
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <label for="EmailId">Email</label>
-                                <input type="text" id="EmailId" name="Email" required=""  class="form-control" placeholder="Your email address">
+                                <input type="text" id="EmailId" name="Email" required="" class="form-control" placeholder="Your email address">
                             </div>
 
                             <div class="col-md-6">
                                 <label for="Phone">Phone No</label>
-                                <input type="text" id="Phone" name="Phone" required=""  class="form-control" placeholder="Your phone no">
+                                <input type="text" id="Phone" name="Phone" required="" class="form-control" placeholder="Your phone no">
                             </div>
                         </div>
 
@@ -201,6 +202,90 @@
                                 <textarea name="SpecialNote" id="SpecialNote" cols="30" rows="3" class="form-control" placeholder="Write Special Note(optional)..."></textarea>
                             </div>
                         </div>
+                        @* payment method started *@
+                        
+                        <div class="">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title" style="font-family: Poppins, Arial, sans-serif">
+                                        <label>Payment Details</label>
+                                        @*<span class="checkbox pull-right">
+                                            <label>
+                                                <input type="checkbox" />
+                                                Remember
+                                            </label>
+                                        </span>*@
+                                    </h4>
+                                   
+                                </div>
+                                <div class="panel-body">
+
+                                    <label><input type="radio" class="" name="PaymentType" id="payment" value="COS" checked="" required=""/> On Spot</label> (* pay while checking-In)
+                                    <br />
+                                    <label><input type="radio" class="" name="PaymentType" id="payment" value="CC" required="" /> Credit Card </label> (* pay online with credit card)
+                                    <br />
+                                    
+                                    <p>
+                                        <a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Card Details <span class="icon icon-arrow-down3"></span>
+                                        </a>
+                                       
+                                    </p>
+                                    <div class="collapse" id="collapseExample">
+                                       
+                                      <div class="form-group">
+                                          <label for="cardNumber">
+                                            CARD NUMBER
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="cardNumber" placeholder="Valid Card Number"
+                                                   required autofocus />
+                                            <span class="input-group-addon"><span class="icon icon-lock3"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cardNumber">
+                                            NAME ON CARD
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="cardNumber" placeholder="Valid Card Number"
+                                                   required autofocus />
+                                            <span class="input-group-addon"><span class="icon icon-lock3"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-xs-6 col-md-4">
+                                                <label for="expityMonth">
+                                                    EXPIRY Month
+                                                </label>
+                                                <input type="text" class="form-control" id="expityMonth" placeholder="MM" required />
+                                            </div>
+                                            <div class="col-xs-6 col-md-4">
+                                                <label for="expityMonth">
+                                                    EXPIRY Year
+                                                </label>
+                                                <input type="text" class="form-control" id="expityYear" placeholder="YY" required />
+                                            </div>
+                                            <div class="col-xs-6 col-md-4">
+                                                <label for="cvCode">
+                                                    CV CODE
+                                                </label>
+                                                <input type="text" class="form-control" id="cvCode" placeholder="CV" required />
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        @* payment method end *@
+
+
+
+
+
                         <div class="row form-group pull-right">
                             <div class="col-md-12">
                                 @*<i class="icon icon-circle-check"></i>*@

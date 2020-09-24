@@ -34,7 +34,7 @@ namespace HMS.Controllers
 
             model.Accomodations =
                accomodationService.SearchAccomodations(searchTerm, typeid, packageid);
-
+            model.Accomodations.DistinctBy(a => a.AccomodationPackage.Id);
             return View(model);
         }
 

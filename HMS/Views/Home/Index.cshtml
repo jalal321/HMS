@@ -202,7 +202,7 @@
                         </ul>
                     </div>
                     <!-- Tab panes -->
-                    <div class="tab-content">
+                    <div class="accomodation-pack tab-content">
                         @foreach (var t in @Model.AccomodationTypes)
                         {
                             <div role="tabpanel" class="tab-pane mytabcustom" id="@t.Id">
@@ -592,51 +592,30 @@
 
 @section scripts{
     <script>
-        var totalWidth;
-        totalWidth = $('.accomodation-package').width();
+      
 
-
-
-        liWidth = totalWidth / @Model.AccomodationTypes.Count();
-        //alert($(window).width());
-        //if (liWidth > 200)
-        //{
-        //    $('.accomodation-package li').css('width', 170);
-
-        //} else {
-        $('.accomodation-package li').css('width', liWidth);
-
-        //}
+        
         if($(window).width() <= 500){
+            var totalWidth;
+            totalWidth = $('.accomodation-package').width();
+
+            liWidth = totalWidth / @Model.AccomodationTypes.Count();
+            //alert($(window).width());
+            //if (liWidth > 200)
+            //{
+            //    $('.accomodation-package li').css('width', 170);
+
+            //} else {
+            $('.accomodation-package li').css('width', liWidth);
             $('.accomodation-package li').css('width', 170);
             ulWidth = @Model.AccomodationTypes.Count() * 175 +10 ;
             $('.accomodation-package').css('width', ulWidth);
 
         }
 
-        //$('.mytab:first-child').addClass('active');
-        //$('.mytab').addClass('active');
-        //var timeout = setTimeout(function() {
-        //    $('.mytab').removeClass('active');
-        //    $('.mytab:first-child').addClass('active');
-        //    //alert('hi');
-        //    //cleartime();
-        //    alert('hi return form clear');
-
-        //}, 1000);
-
-
-        //function cleartime(parameters) {
-        //    alert('hi');
-        //    clearTimeout(timeout);
-        //}
-
-        //$('.mytab').removeClass('active');
-        //$('.mytabcustom:first-child').addClass('active');
-        //$('.accomodation-package li:first-child').addClass('active');
-
-
+       
     </script>
+
 }
 
 

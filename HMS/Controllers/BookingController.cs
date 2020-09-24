@@ -156,8 +156,16 @@ namespace HMS.Controllers
                     Phone = bookingViewModel.Phone,
                     Address = bookingViewModel.Address,
                     SpecialNote = bookingViewModel.SpecialNote,
+                    
+                };
+                PaymentInfo paymentobj = new PaymentInfo()
+                {
+                    PaymentType = bookingViewModel.PaymentType,
+                    PaymentStatus = "unpaid",
+
                 };
 
+                bookingObj.PaymentInfo = paymentobj;
 
                 //lock (Lock)
                 //{

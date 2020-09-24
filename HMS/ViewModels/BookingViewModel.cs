@@ -34,6 +34,8 @@ namespace HMS.ViewModels
         //public string Email { get; set; }
         public bool BreakFast { get; set; }
 
+        public string PaymentType { get; set; }
+        public string PaymentStatus { get; set; }
         //public string Address { get; set; }
         //public string SpecialNote { get; set; }
     }  
@@ -83,5 +85,7 @@ namespace HMS.ViewModels
 
         public string Address { get; set; }
         public string SpecialNote { get; set; }
+        public string PaymentType { get; set; }
+        public string PaymentStatus { get; set; }
     }
 }

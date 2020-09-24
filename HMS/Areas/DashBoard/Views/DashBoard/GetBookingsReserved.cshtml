@@ -26,14 +26,20 @@
                             </i>
                             <br />
                             <span class="card-text">
-                                status : @m.Status  <strong class="ml-5">Total : @m.TotalAmount</strong>
+                                status : @m.Status
                             </span>
-                           
-                            <button type="button" class="mt-0 btn btn-primary btn-sm  card-title data-btn" data-href="@Url.Action("Action", "Bookings", new {Id = m.Id})"
+                            <br />
+                            <strong class="">
+                                Total : @m.TotalAmount
+                                <span class="ml-4">
+                                    Payment : @(m.PaymentInfo != null ? m.PaymentInfo.PaymentStatus : string.Empty)
+                                </span>
+                            </strong>
+                            <button type="button" class="mt-2 btn btn-primary btn-sm w-100 card-title data-btn" data-href="@Url.Action("Action", "Bookings", new {Id = m.Id})"
                                     data-toggle="modal" data-target="#actionModal">
                                 Detail
                             </button>
-                            </p>
+                        </p>
 
                         @*<a class="dropdown-item" href="">@m.Subject : @m.UserMessage</a>*@
                     </li>

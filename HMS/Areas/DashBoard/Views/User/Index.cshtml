@@ -53,7 +53,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" id="modal-content">
         @* keep modal content part in partial view _Action *@
 
@@ -66,6 +66,7 @@
         
         $('.data-btn').click(function () {
             //alert($(this).attr('data-href'));
+            $('#actionModal .modal-dialog').html("");
             $.ajax({
                     url: $(this).attr('data-href')
                 })

@@ -26,7 +26,7 @@ namespace HMS.Services
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                accomodations = accomodations.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()));
+                accomodations = accomodations.Where(a => a.AccomodationPackage.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
             if (typeid.HasValue && typeid.Value > 0)

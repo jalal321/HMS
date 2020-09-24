@@ -324,6 +324,42 @@ namespace HMS.Areas.DashBoard.Controllers
 
         }
 
+        //user password change actions
+        public async Task<ActionResult> ChangePassword(string userId)
+        {
+            ApplicationUser user = null;
+
+            if (userId != null)
+            {
+               user = await UserManager.FindByIdAsync(userId);
+            }
+         
+            return PartialView("_ChangePassword", user);
+        }
+        
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword(string userId , string newPassword)
+        {
+            JsonResult json = new JsonResult();
+            IdentityResult result = null;
+
+             var user = await UserManager.FindByIdAsync(userId);
+
+             var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+
+              result = await UserManager.ResetPasswordAsync(user.Id, token, newPassword);
+
+            if (result.Succeeded)
+            {
+                json.Data = new { Success = result.Succeeded, Message = "Changed Successfully" };
+            }
+            else
+            {
+                json.Data = new { Success = false, Message = string.Join(",", result.Errors) };
+
+            }
+            return json;
+        }
 
     }
 }

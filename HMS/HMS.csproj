@@ -455,6 +455,7 @@
     <Content Include="Areas\DashBoard\Views\Bookings\_Action.cshtml" />
     <Content Include="Areas\DashBoard\Views\DashBoard\GetMessages.cshtml" />
     <Content Include="Areas\DashBoard\Views\DashBoard\GetBookingsReserved.cshtml" />
+    <Content Include="Areas\DashBoard\Views\User\_ChangePassword.cshtml" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Home\DiningAndBar.cshtml" />
     <Content Include="Views\test\Create.cshtml" />
