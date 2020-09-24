@@ -1,0 +1,163 @@
+﻿@model HMS.ViewModels.SearchAccomodationViewModel
+@{
+    ViewBag.Title = "SearchAccomodation";
+
+}
+
+
+<div id="colorlib-reservation">
+    <div class="container">
+        <div class="row">
+            @*<h5 class="alert alert-info">I like to book Room from @Model.CheckIn.ToShortDateString() to @Model.CheckOut.ToShortDateString() for @Model.Adult Adult and @Model.Children Children</h5>*@
+
+            <div class="col-md-12 search-wrap search-wrap-form">
+
+                <form method="post" class="colorlib-form colorlib-form-search" id="actionForm">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="date">Check-in:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" class="form-control date" placeholder="Check-in date" name="checkIn" value="@Model.CheckIn.ToShortDateString()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="date">Check-out:</label>
+                                <div class="form-field">
+                                    <i class="icon icon-calendar2"></i>
+                                    <input type="text" id="date" class="form-control date" placeholder="Check-out date" name="checkOut" value="@Model.CheckOut.ToShortDateString()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="Adult">Adults</label>
+                                <div class="form-field">
+                                    <i class="icon icon-form icon-arrow-down3"></i>
+                                    <select name="Adult" id="Adult" class="form-control">
+                                        <option value="1" @(Model.Adult == "1" ? "selected" : string.Empty)>1</option>
+                                        <option value="2" @(Model.Adult == "2" ? "selected" : string.Empty)>2</option>
+                                        <option value="3" @(Model.Adult == "3" ? "selected" : string.Empty)>3</option>
+                                        <option value="4" @(Model.Adult == "4" ? "selected" : string.Empty)>4</option>
+                                        <option value="5+" @(Model.Adult == "5+" ? "selected" : string.Empty)>5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="Children">Children</label>
+                                <div class="form-field">
+                                    <i class="icon icon-form icon-arrow-down3"></i>
+                                    <select name="Children" id="Children" class="form-control">
+                                        <option value="1" @(@Model.Children == "1" ? "selected" : string.Empty)>1</option>
+                                        <option value="2" @(@Model.Children == "2" ? "selected" : string.Empty)>2</option>
+                                        <option value="3" @(@Model.Children == "3" ? "selected" : string.Empty)>3</option>
+                                        <option value="4" @(@Model.Children == "4" ? "selected" : string.Empty)>4</option>
+                                        <option value="5+" @(@Model.Children == "5+" ? "selected" : string.Empty)>5+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Accomodation">Accomodation Type</label>
+                                <div class="form-field">
+                                    <i class="icon icon-arrow-down3"></i>
+                                    <select name="AccomodationType" id="AccomodationType" class="form-control" required="">
+                                        <option value="0" selected="" hidden="">All Accomodation Types</option>
+                                        @foreach (var t in @Model.AccomodationTypes)
+                                        {
+                                            <option value="@t.Id">@t.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="button" @*name="submit"*@ id="actionButton" value="Check Availability"
+                                   class="actionButton btn btn-primary btn-block btn-form">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="">
+            <div class="row">
+                <div class="alert alert-danger">
+                    @HMS.Code.Variables.HotelFullName, checkIn date @Model.CheckIn.ToShortDateString() ,
+                    <span class="text text-default">checkin date must be today or after today!</span>
+                </div>
+                <div class="" id="searchResult">
+                    @{Html.RenderPartial("_CheckAccomodationAvailability", @Model.AccomodationPackageCountViewModels);}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <hr />
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#errorModal" id="errorModalbtn" style="display: none">
+    Launch modal
+</button>
+<div class="modal fade" tabindex="-1" role="dialog" id="errorModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="icon icon-info"> Your  Missing Seomething</i></h4>
+            </div>
+            <div class="modal-body">
+                    <h4></h4>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@section scripts{
+    <script>
+        $('.actionButton').click(function () {
+            //debugger;
+            if ($('#AccomodationType option:selected').val() === "0") {
+                $('.modal-body h4').text("Plz Select Accomodation Package");
+                $('#errorModalbtn').trigger('click');
+                // debugger;
+                return;
+            }
+
+            $('.colorlib-loader').css('display', 'block');
+            //alert($('#AccomodationType option:selected').val());
+            //$(".colorlib-loader").fadeIn("fast");
+
+            $.ajax({
+                url: '@Url.Action("CheckAccomodationAvailability", "Accomodation")',
+                //url: $(this).attr("data-href"),
+                method: "post",
+                data: $('#actionForm').serialize(),
+
+            })
+                .done(function (response) {
+                    //debugger;
+                    if (response != null) {
+
+                        $('#searchResult').html(response);
+                       $('.colorlib-loader').css('display', 'none');
+                       // $(".colorlib-loader").fadeOut("slow");
+
+
+                    } else {
+                        $('#errorDiv').html(response.message);
+                    }
+                });
+        });
+
+
+    </script>
+}

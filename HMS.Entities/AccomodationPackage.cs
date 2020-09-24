@@ -14,10 +14,12 @@ namespace HMS.Entities
         public virtual AccomodationType AccomodationType { get; set; }
 
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public int NoOfRoom { get; set; }
         public decimal FeePerNight { get; set; }
 
+       public virtual List<AccomodationPackagePicture> AccomodationPackagePictures { get; set; }
 
     }
 }

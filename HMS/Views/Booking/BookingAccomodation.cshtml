@@ -1,0 +1,171 @@
+﻿@model HMS.ViewModels.BookingViewModel
+
+@{
+    ViewBag.Title = "BookingAccomodation";
+}
+
+<div id="colorlib-reservation-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box" id="colorlib-heading-reservation">
+                <span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                <h2>@HMS.Code.Variables.HotelFullName</h2>
+                @* <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>*@
+            </div>
+        </div>
+
+        <div class="row custom-alert alert-grey">
+            <div class="col-md-3 text-center">
+                <label for="">Check-In Date:</label>
+                <p>
+                    @Model.CheckIn.ToLongDateString()
+                </p>
+            </div>
+            <div class="col-md-3 text-center">
+                <label for="">Check-Out Date:</label>
+                <p>
+                    @Model.CheckIn.AddDays(Model.StayDuration).ToLongDateString()
+                </p>
+            </div>
+            <div class="col-md-1 col-sm-3 text-center">
+                <label for="">Duration:</label>
+                <p class="" style="white-space: nowrap">
+                    @Model.StayDuration Night(s)
+                </p>
+            </div>
+            <div class="col-md-2 col-sm-3 text-center">
+                <label for="">Adult:</label>
+                <p class="">
+                    @Model.Adults
+                </p>
+            </div>
+            <div class="col-md-1 col-sm-3 text-center">
+                <label for="">Children:</label>
+                <p>
+                    @Model.Children
+                </p>
+            </div>
+
+            <div class="col-md-2 text-center">
+                <br />
+                <a href="@Url.Action("Index","Booking", new {@PackageId = Model.AccomodationPackageId})" class="btn btn-default btn-book">
+                    <i class="icon icon-edit"></i> Change
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="diningbar-flex resrvation-flex-form">
+                @* <div class="half-30 diningbar-img" style="background-image: url(/images/site/@Model.AccomodationPackagePictures.First().Picture.URL);">*@
+                <div class="half-30 right-border">
+                    <div class="row">
+                        @if (Model != null)
+                        {
+                            var roomsTotal = (@Model.NoOfAccomodation * @Model.AccomodationPackage.FeePerNight) * Model.StayDuration;
+                            var vatTax = (5 * roomsTotal) / 100;
+                            var tourismTax = 5 * @Model.StayDuration;
+
+                            var breakFasttotals = ((@Model.Adults * 7) + (@Model.Children * 3)) * @Model.StayDuration;
+                            var grandTotal = roomsTotal + vatTax + tourismTax + breakFasttotals;
+                            <label>Bill Detail</label>
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>
+                                        @Model.NoOfAccomodation x @Model.AccomodationPackage.Name
+                                    </td>
+                                    <td>@roomsTotal</td>
+                                </tr>
+                                @if (@Model.BreakFast)
+                                {
+                                    <tr>
+                                        <td>
+                                            BreakFast x @Model.Adults Adults x @Model.Children Children
+                                        </td>
+                                        <td>@breakFasttotals</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td>
+                                        5% VAT for whole Stay
+                                    </td>
+                                    <td>@vatTax</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        @HMS.Code.Variables.Currency 5 Tourism Tax / night
+                                    </td>
+                                    <td>@tourismTax</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="1"><strong>Total</strong></td>
+                                    <td class="" style="white-space: nowrap"><strong>@HMS.Code.Variables.Currency @grandTotal</strong> </td>
+                                </tr>
+                            </table>
+
+                        }
+
+                    </div>
+
+                </div><!-- end half-30 -->
+
+                <div class="half-70 animate-box">
+                    <form action="@Url.Action("BookingAccomodationCompleted", "Booking")" method="POST" class="" id="frmCheckAvailibility">
+                        <input type="hidden" value="@Model.CheckIn" name="CheckIn" />
+                        <input type="hidden" value="@Model.CheckOut" name="CheckOut" />
+                        <input type="hidden" value="@Model.StayDuration" name="StayDuration" />
+                        <input type="hidden" value="@Model.BreakFast" name="BreakFast" />
+                        <input type="hidden" value="@Model.Adults" name="Adults" />
+                        <input type="hidden" value="@Model.Children" name="Children" />
+                        <input type="hidden" value="@Model.NoOfAccomodation" name="NoOfAccomodation" />
+                        <input type="hidden" value="@Model.AccomodationId" name="AccomodationId" />
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <label for="fname">Accomodation Package</label>
+                                <input type="text" id="" name="" class="form-control" value="@Model.AccomodationPackage.Name" placeholder="" readonly="">
+                                <input type="hidden" id="" name="AccomodationPackageId" value="@Model.AccomodationPackageId">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="fname">Guest Full Name</label>
+                                <input type="text" id="fname" name="GuestName" class="form-control" placeholder="Your Full Name...">
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="text" id="email" name="Email" class="form-control" placeholder="Your email address">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Phone">Phone No</label>
+                                <input type="text" id="Phone" name="Phone" class="form-control" placeholder="Your phone no">
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <label for="address">Address</label>
+                                <textarea name="Address" id="address" cols="30" rows="3" class="form-control" placeholder="Write your address..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="SpecialNote">Special Note</label>
+                                <textarea name="SpecialNote" id="SpecialNote" cols="30" rows="3" class="form-control" placeholder="Write Special Note..."></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group pull-right">
+                            <div class="col-md-12">
+                                <input type="submit" value="Book Now" class="btn btn-primary" id="frmActionBtn">
+                            </div>
+                        </div>
+
+                    </form>
+                </div><!-- end half-70 -->
+            </div>
+        </div>
+    </div>
+</div>

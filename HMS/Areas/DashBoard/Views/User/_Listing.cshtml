@@ -1,4 +1,6 @@
-﻿@using Microsoft.Ajax.Utilities
+﻿
+@using HMS.Models
+@using Microsoft.AspNet.Identity
 @model HMS.Areas.DashBoard.ViewModels.UsersListingViewModel
 
 
@@ -11,7 +13,7 @@
 
             <th scope="col">Name</th>
             <th scope="col">Email</th>
-            <th scope="col">Role</th>
+            <th scope="col">Role(s)</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -28,16 +30,39 @@
                     @t.Email
                 </td>
                 <td>
-                    @{Html.RenderAction("GetRole", new {@id = @t.Id}); }
+                     @*@if (Model.Roles != null)
+                     {
+                        
+                         foreach (var r in Model.Roles)
+                         {
+                             foreach (var u in @t.Roles)
+                         {
+                                 if (@r.Id == u.RoleId)
+                                  {
+                                      @r.Name
+                                  }
+                            
+                         }
+                     }
+                     
+                     }*@
+                    
+                        @{Html.RenderAction("GetSingleUserRoles", new { @id = @t.Id }); }
+                    
+
+                   
                 </td>
               
                 <td>
-                    <button type="button" data-href="@Url.Action("Action", "User", new {Id = t.Id})" class="data-btn btn btn-primary" data-toggle="modal" data-target="#actionModal">
+                    <button type="button" data-href="@Url.Action("Action", "User", new {Id = @t.Id})" class="data-btn btn btn-primary" data-toggle="modal" data-target="#actionModal">
                         <i class="fas fa-pen mr-1"></i>Edit
                     </button>
-                    <button type="button" data-href="@Url.Action("Action", "User", new {Id = t.Id, isDelete = true})" class="data-btn btn btn-danger" data-toggle="modal" data-target="#actionModal">
+                    <button type="button" data-href="@Url.Action("Action", "User", new {Id = @t.Id, isDelete = true})" class="data-btn btn btn-danger" data-toggle="modal" data-target="#actionModal">
                         <i class="fas fa-trash-alt mr-1"></i>Delete
                     </button>
+                    <button type="button" data-href="@Url.Action("GetUserRoles", "User", new {id = @t.Id})" class="data-btn btn btn-primary btn-xs" data-toggle="modal" data-target="#actionModal">
+                        <i class="fas fa-user-shield mr-1"></i>Role
+                    </button>       
 
                 </td>
             </tr>
@@ -70,7 +95,7 @@
                     {
                         <li class="page-item @(page == Model.pager.CurrentPage ? "active" : "")">
                             <a class="page-link" href="@Url.Action("Index", "User", new {@searchTerm = @Model.SearchTerm,
-                                                      @roleID = @Model.RoleID ,@page = page})">@page</a>
+                                                      @roleID = @Model.RoleID , @page = page})">@page</a>
                         </li>
                     }
 

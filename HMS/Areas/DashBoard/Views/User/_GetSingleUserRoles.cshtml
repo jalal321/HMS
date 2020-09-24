@@ -1,0 +1,13 @@
+﻿@model List<string>
+
+<select class="form-control">
+
+    @foreach (var role in @Model)
+    {
+        // <span class="btn btn-outline-success btn-sm">@role </span>
+
+        <option>
+            @role
+        </option>
+    }
+</select>

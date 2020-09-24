@@ -1,68 +1,99 @@
-﻿
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>@ViewBag.Title - HMS</title>
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <!-- Bootstrap core CSS -->
-        <link href="~/Areas/DashBoard/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
-        <link href="~/Areas/DashBoard/Content/css/simple-sidebar.css" rel="stylesheet"/>
-        <!-- font awesome kit or cdn -->
-        <script src="https://kit.fontawesome.com/2e4f108b26.js" crossorigin="anonymous"></script>
+﻿@using System.Web.UI.WebControls
+@using HMS.Entities
 
-        <script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>
-    </head>
-    <body>
-        <div class="d-flex" id="wrapper">
-            <!-- Sidebar -->
-            <div class="bg-light border-right" id="sidebar-wrapper">
-                <div class="sidebar-heading">
-                    <i class="fas fa-hotel mr-1"></i> HMS
-                </div>
-                <div class="list-group list-group-flush">
-                    @*<a href="#" class="list-group-item list-group-item-action bg-light">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - HMS</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link href="~/Areas/DashBoard/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/Areas/DashBoard/Content/css/simple-sidebar.css" rel="stylesheet" />
+    <!-- font awesome kit or cdn -->
+    <script src="https://kit.fontawesome.com/2e4f108b26.js" crossorigin="anonymous"></script>
+
+    <script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+                <i class="fas fa-hotel mr-1"></i> HMS
+            </div>
+            <div class="list-group list-group-flush">
+                @*<a href="#" class="list-group-item list-group-item-action bg-light">
                         <i class="fas fa-hotel"></i> Dashboard
                     </a>*@
-                    <a href="@Url.Action("Index", "AccomodationTypes")" class=" list-group-item list-group-item-action bg-light">
-                        <i class="fas fa-hotel mr-1"></i> Accomodation Types
-                    </a>
+                <a href="@Url.Action("Index", "AccomodationTypes")" class=" list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-hotel mr-1"></i> Accomodation Types
+                </a>
 
-                    <a href="@Url.Action("Index", "AccomodationPackages")" class=" list-group-item list-group-item-action bg-light">
-                        <i class="fas fa-align-left mr-1"></i> Accomodation Packages
-                    </a>
-                    <a href="@Url.Action("Index", "Accomodation")" class=" list-group-item list-group-item-action bg-light">
-                        <i class="fas fa-bed mr-1"></i>  Accomodation
-                    </a>
-                   
-                    <a href="@Url.Action("Index", "User")" class="list-group-item list-group-item-action bg-light">
-                        <i class="fas fa-users mr-1"></i> Users
-                    </a>
-                    <a href="@Url.Action("Index", "Role")" class=" list-group-item list-group-item-action bg-light">
-                        <i class="fas fa-users-cog mr-1"></i> Roles
+                <a href="@Url.Action("Index", "AccomodationPackages")" class=" list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-align-left mr-1"></i> Accomodation Packages
+                </a>
+                <a href="@Url.Action("Index", "Accomodation")" class=" list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-bed mr-1"></i> Accomodation
+                </a>
+
+                <a href="@Url.Action("Index", "Bookings")" class=" list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-bed mr-1"></i>  Booking
+                </a>
+
+                <a href="@Url.Action("Index", "User")"
+                   class="list-group-item list-group-item-action bg-light @(ViewContext.RouteData.Values["controller"].ToString() == "User" ? "text-primary" : string.Empty)">
+                    <i class="fas fa-users mr-1"></i> Users
+                </a>
+                <a href="@Url.Action("Index", "Role")"
+                   class="list-group-item list-group-item-action bg-light @(ViewContext.RouteData.Values["controller"].ToString() == "Role" ? "text-primary" : string.Empty)">
+                    <i class="fas fa-users-cog mr-1"></i> Roles
+                </a>
+
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Menu</button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="nav-item">
+                    <a class="nav-link text-primary" href="#">
+
+                        @if (@User.Identity.IsAuthenticated)
+                        {
+                            <i class="fas fa-user mr-1">
+                            </i> <span>Welcome @User.Identity.Name.Substring(0, 7)</span>
+
+                        }
                     </a>
 
                 </div>
-            </div>
-            <!-- /#sidebar-wrapper -->
-            <!-- Page Content -->
-            <div id="page-content-wrapper">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <button class="btn btn-primary" id="menu-toggle">Menu</button>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
-                                    <i class="fas fa-sign-out-alt"></i> LogOut
-                                </a>
-                            </li>
-                            @*<li class="nav-item">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active mr-2">
+                            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                <i class="fas fa-bell text-danger"> <span class="badge badge-danger">4</span></i> Booking
+                            </a>
+                        </li>
+                        <li class="nav-item active mr-2">
+                            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                <i class="fas fa-envelope text-danger"> <span class="badge badge-danger">4</span></i> Message
+                            </a>
+                        </li>
+
+                        <li class="nav-item active ">
+                            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                <i class="fas fa-power-off text-danger"></i> LogOut
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
                                 <a class="nav-link" href="#">Link</a>
                             </li>
                             <li class="nav-item dropdown">
@@ -76,46 +107,46 @@
                                     <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </li>*@
-                        </ul>
-                    </div>
-                </nav>
-                <div class="container body-content">
-                    @RenderBody()
-                    <hr />
-                    <footer>
-                        <p>&copy; @DateTime.Now.Year - HMS</p>
-                    </footer>
+                    </ul>
                 </div>
-                @*<div class="container-fluid">
+            </nav>
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - HMS</p>
+                </footer>
+            </div>
+            @*<div class="container-fluid">
                     <h1 class="mt-4">Simple Sidebar</h1>
                     <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
                     <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
                 </div>*@
-            </div>
-            <!-- /#page-content-wrapper -->
         </div>
-        <!-- /#wrapper -->
-        <!-- Bootstrap core JavaScript -->
-        @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-        {
-            @Html.AntiForgeryToken()
+        <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
 
-        }
-
-
-        @*<script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>*@
-        <script src="~/Areas/DashBoard/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- Menu Toggle Script -->
-        <script>
-            $("#menu-toggle").click(function (e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("toggled");
+    }
 
 
-            });
-        </script>
+    @*<script src="~/Areas/DashBoard/Content/vendor/jquery/jquery.min.js"></script>*@
+    <script src="~/Areas/DashBoard/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
 
-        @RenderSection("scripts", required: false)
-    </body>
+
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
 
 </html>

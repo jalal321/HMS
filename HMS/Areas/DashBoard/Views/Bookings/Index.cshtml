@@ -1,0 +1,138 @@
+﻿@model IEnumerable<HMS.Entities.Booking>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-condensed table-striped table-bordered table-responsive">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ToDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            #Accomodation(s)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.BreakFast)
+            </th>*@
+        <th>
+            Accomodation Detail
+            @*@Html.DisplayNameFor(model => model.BookingDetails.Select(a => a.AccomodationId))*@
+        </th>
+        <th>
+            Actions
+            @*@Html.DisplayNameFor(model => model.BookingDetails.Select(a => a.AccomodationId))*@
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Adult)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Children)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoOfAccomodation)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialNote)
+            </th>*@
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuestName)
+            </td>
+            <td>
+                @item.FromDate.ToShortDateString()
+            </td>
+            <td>
+                @item.ToDate.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration) Night(s)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoOfAccomodation) Accomodation(s)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.BreakFast)
+                </td>*@
+            <td>
+                @if (item.BookingDetails != null)
+                {
+                    <select class="form-control">
+
+
+                        @foreach (var t in item.BookingDetails)
+                        {
+                            @*<span class="btn btn-info btn-xs">
+                                    @t.Accomodation.Name <span>,</span>  @t.Accomodation.AccomodationPackage.Name
+                                </span>*@
+                            <option>
+                                @t.Accomodation.Name - @t.Accomodation.AccomodationPackage.Name
+                            </option>
+
+
+                        }
+                    </select>
+                }
+
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.BreakFast)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Adult)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Children)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoOfAccomodation)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialNote)
+                </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

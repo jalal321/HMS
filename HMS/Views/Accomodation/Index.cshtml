@@ -1,0 +1,222 @@
+﻿@using Microsoft.Ajax.Utilities
+@model HMS.ViewModels.AccomodationViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/img_bg_5.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-md-offset-3 slider-text">
+                            <div class="slider-text-inner slider-text-inner2 text-center">
+                                <h2>Choose our Best</h2>
+                                <h1>Rooms, Appartments &amp; Suites</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+
+<div id="colorlib-rooms" class="colorlib-light-grey">
+    <div class="container">
+        <div class="row">
+            <ul class="breadcrumb">
+                <li class=""><a href="@Url.Action("Index","Home")">Home</a></li>
+                @if (Model.CurrentAccomodationType != null && Model.CurrentAccomodationType > 0)
+                {
+                    <li class="active" aria-current="page">
+                        @foreach (var t in @Model.AccomodationTypes)
+                        {
+                            if (t.Id == Model.CurrentAccomodationType)
+                            {
+                                <a href="@Url.Action("Index","Accomodation", new {typeid = t.Id})">@t.Name</a>
+
+                            }
+
+                        }
+                    </li>
+
+                }
+                else
+                {
+                    <li class="active" aria-current="page"><a href="#">All Types</a></li>
+
+                }
+
+                @if (Model.CurrentAccomodationPackage != null && Model.CurrentAccomodationPackage > 0)
+                {
+                    <li class="active" aria-current="page">
+                        @foreach (var t in @Model.AccomodationPackages)
+                        {
+                            if (t.Id == Model.CurrentAccomodationPackage)
+                            {
+                                <a href="@Url.Action("Index", "Accomodation", new { packageid = t.Id })">@t.Name</a>
+
+                            }
+
+                        }
+                    </li>
+
+                }
+                else
+                {
+                    <li class="active" aria-current="page"><a href="#">All Packages</a></li>
+
+                }
+                @*<li class="breadcrumb-item active" aria-current="page">@Model.AccomodationPackages.Select()</li>*@
+            </ul>
+        </div>
+        @* firs row for search and select *@
+
+
+        <div class="row">
+            <form class="search-form">
+                @*<div class="form-group">
+                                        <div class="input-group col-md-12  col-sm-12 col-xs-12">
+                                            <span class="input-group-btn">
+                                                <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..." />
+
+                                            </span>
+                                            <span class="input-group-btn">
+                                                <select class="form-control" name="typeid">
+                                                    <option value="0" class="" selected="">
+                                                        All Types
+                                                    </option>
+                                                    @foreach (var t in @Model.AccomodationTypes)
+                                                    {
+                                                        <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationType ? "selected" : string.Empty)>
+                                                            @t.Name
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </span>
+
+                                            <span class="input-group-btn">
+
+                                                <select class="form-control" name="packageid">
+                                                    <option value="0" class="" selected="">
+                                                        All Packages
+                                                    </option>
+                                                    @foreach (var t in @Model.AccomodationPackages)
+                                                    {
+                                                        <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationPackage ? "selected" : string.Empty)>
+                                                            @t.Name
+                                                        </option>
+                                                    }
+                                                </select>
+                    </span>
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-primary btn-sm" id="kinerja_btn">Submit</button>
+                                            </span>
+                                        </div>*@
+                @*</div>*@
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="input-lbl">search accomodation</label>
+                        <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..."/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="input-lbl">select accomodation type</label>
+                        <select class="form-control" name="typeid">
+                            <option value="0" class="" selected="">
+                                All Types
+                            </option>
+                            @foreach (var t in @Model.AccomodationTypes)
+                            {
+                                <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationType ? "selected" : string.Empty)>
+                                    @t.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="input-lbl">select accomodation package</label>
+                        <select class="form-control" name="packageid">
+                            <option value="0" class="" selected="">
+                                All Packages
+                            </option>
+                            @foreach (var t in @Model.AccomodationPackages)
+                            {
+                                <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationPackage ? "selected" : string.Empty)>
+                                    @t.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-custom-height">
+                            <span>
+                                <i class="icon-search2"></i>
+
+                            </span>
+                        </button>
+                 
+
+                    <a href="@Url.Action("Index","Accomodation")" class="btn btn-info btn-custom-height">
+                        <span>
+                            <i class="icon-reload"></i>
+                        </span>
+                    </a>
+                    @* <input type="submit" value="Reset" class="btn btn-warning btn-custom-height"/>*@
+                </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        @* second row for showing products *@
+        <hr />
+        <b class="pull-right">@Model.Accomodations.Count() result(s) found</b>
+        <br />
+        @if (@Model.Accomodations != null && @Model.Accomodations.Count() > 0)
+        {
+
+            <div class="row">
+
+                @foreach (var t in Model.Accomodations)
+                {
+                    <div class="col-md-4 room-wrap animate-box">
+                        <a href="/images/room-1.jpg" class="room image-popup-link" style="background-image: url(/images/room-1.jpg);"></a>
+                        <div class="desc text-center">
+                            <span class="rate-star"><i class="icon-star-full full"></i><i class="icon-star-full full"></i><i class="icon-star-full full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                            <h3>
+                                <a href="rooms-suites.html">@t.Name</a>
+                            </h3>
+                            <p class="price">
+                                <span class="currency">$</span>
+                                <span class="price-room">@Math.Round(@t.AccomodationPackage.FeePerNight)</span>
+                                <span class="per">/ per night</span>
+                            </p>
+                            <ul>
+                                <li><i class="icon-check"></i> @t.AccomodationPackage.NoOfRoom Rooms</li>
+                                <li><i class="icon-check"></i> Breakfast included</li>
+                                <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
+                            </ul>
+                            <p>
+                                <a class="btn btn-primary">Book now!</a>
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">
+                Sorry! No Record Found
+            </div>
+        }
+    </div>
+</div>
+
