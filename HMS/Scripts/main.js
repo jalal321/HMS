@@ -57,6 +57,24 @@
 			.find('li')
 			.removeClass('has-dropdown');
 
+        // click dropdown menu on mobile
+        //$('.offcanvas-has-dropdown').on('click', function() {
+        //    var $this = $(this);
+
+        //    if ($this.hasClass('active')) {
+        //        $this
+        //            .removeClass('active')
+        //            .find('ul')
+        //            .slideUp(500, 'easeOutExpo');
+        //    } else {
+        //        $this
+        //            .addClass('active')
+        //            .find('ul')
+        //            .slideDown(500, 'easeOutExpo');
+        //    }
+
+        //});
+
         // Hover dropdown menu on mobile
         $('.offcanvas-has-dropdown').mouseenter(function () {
             var $this = $(this);

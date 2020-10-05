@@ -64,6 +64,14 @@ namespace HMS.Services
             return db.Bookings.Count(a => a.Status == "CheckedIn");
         }
 
+        public IEnumerable<Booking> ComepleteBookingDetail()
+        {
+            HMSContext db = new HMSContext();
+
+
+            return db.Bookings.ToList();
+        }
+
         public List<Booking> ArrivalsExpetced()
         {
             HMSContext db = new HMSContext();

@@ -74,7 +74,7 @@ namespace HMS.Areas.DashBoard.Controllers
       
 
         // GET: DashBoard/User
-        public ActionResult Index(string searchTerm, string roleID , int? page , int pageSize = 2)
+        public ActionResult Index(string searchTerm, string roleID , int? page )
          {
             RolesListingViewModel model = new RolesListingViewModel();
 
@@ -83,7 +83,7 @@ namespace HMS.Areas.DashBoard.Controllers
             model.totalRecord = model.Roles.Count();
 
             //pagination logic start from here
-            var pager = new Pager(model.totalRecord, page , pageSize);
+            var pager = new Pager(model.totalRecord, page );
 
             model.Roles =
                 model.Roles.Skip((pager.CurrentPage - 1)*pager.PageSize).Take(pager.PageSize).ToList();

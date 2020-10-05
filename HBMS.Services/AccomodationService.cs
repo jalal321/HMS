@@ -88,7 +88,7 @@ namespace HMS.Services
             List<Accomodation> availableAccomodations;
             if (accomodationPackageId != null)
             {
-                 var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId && a.InProcess != true).ToList();
+                 var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackageId == accomodationPackageId && a.IsHold != true).ToList();
 
 
             var allBookings =
@@ -107,7 +107,7 @@ namespace HMS.Services
             {
                 if (accomodationTypeId != 0)
                 {
-                     var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackage.AccomodationType.Id == accomodationTypeId && a.InProcess != true);
+                     var allAccomodations = context.Accomodations.Where(a => a.AccomodationPackage.AccomodationType.Id == accomodationTypeId && a.IsHold != true);
 
                 var allBookings =
                     context.BookingDetails
@@ -121,7 +121,7 @@ namespace HMS.Services
                 }
                 else
                 {
-                     var allAccomodations = context.Accomodations.Where(a => a.InProcess != true);
+                     var allAccomodations = context.Accomodations.Where(a => a.IsHold != true);
 
 
                 var allBookings =

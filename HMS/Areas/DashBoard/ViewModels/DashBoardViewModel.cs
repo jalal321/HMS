@@ -17,5 +17,7 @@ namespace HMS.Areas.DashBoard.ViewModels
         public int TotalAccomodations { get; set; }
         public int TotalReserved { get; set; }
         public int TotalCheckedIn { get; set; }
+
+        public IEnumerable<Booking> CompleteBookingDetail { get; set; }
     }
 }

@@ -26,6 +26,7 @@ namespace HMS.Areas.DashBoard.Controllers
             model.TotalReserved = dashBoardService.TotalAccomodationsReserved(); 
             model.ArrivalExpetcedToday = dashBoardService.ArrivalsExpetced(); 
             model.DepartureExpectedToday = dashBoardService.DeparturesExpected(); 
+            model.CompleteBookingDetail = dashBoardService.ComepleteBookingDetail(); 
             
 
             return View(model);

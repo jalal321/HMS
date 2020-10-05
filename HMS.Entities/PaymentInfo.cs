@@ -11,8 +11,14 @@ namespace HMS.Entities
     {
       public int Id { get; set; }
 
+      [Required]
       public string PaymentType { get; set; }
 
+      [Required]
+      public decimal AmountPaid { get; set; }
+      public string CardNo { get; set; }
+
+      [Required]
       public string PaymentStatus { get; set; }
 
       public int BookingId { get; set; }

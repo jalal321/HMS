@@ -1,116 +1,140 @@
 ﻿@model HMS.Areas.DashBoard.ViewModels.UsersActionViewModel
 
 
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-                
-                @if (!String.IsNullOrEmpty(Model.Id) && ViewBag.isDelete == false)
+<div class="modal-content">
+    <div class="modal-header bg-light">
+        <h5 class="modal-title" id="exampleModalLabel">
+
+            @if (!String.IsNullOrEmpty(Model.Id) && ViewBag.isDelete == false)
                 {
-                    <span>Edit User</span>
+                <span>Edit User</span>
                 }
                 else if (!String.IsNullOrEmpty(Model.Id) && ViewBag.isDelete == true)
                 {
-                 @*<span>Delete User</span>
-                <br/>*@
-                <span class="text text-danger mt-2"><i class="fas fa-exclamation-triangle mr-1"></i>Are You Sure You Want to Delete? </span>
+                    @*<span>Delete User</span>
+                        <br/>*@
+                    <span class="text text-danger mt-2"><i class="fas fa-exclamation mr-1"></i>Are You Sure You Want to Delete? </span>
                 }
                 else{
                     <span>Create New User</span>
                 }
 
-            </h5>
-            <button Package="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
+        </h5>
+        <button package="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
 
-            <form id="actionForm">
+        <form id="actionForm">
 
-                <input type="hidden" name="Id" value="@Model.Id" />
-                <div id="errorDiv" class="text text-danger">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <div id="errorDiv" class="text text-danger">
 
-                </div>
+            </div>
+            @if (String.IsNullOrEmpty(Model.Id))
+                {
                 <div class="form-group">
                     <label for="exampleInputEmail1">Roles Available</label>
                     <select class="form-control" name="RoleId">
                         <option disabled="" hidden="" value="0" selected="">Select...</option>
                         @if (@Model.Roles != null)
-                        {
-
-                            foreach (var t in @Model.Roles)
                             {
-                                <option value="@t.Id" @(t.Id == @Model.RoleId ? "selected" : string.Empty)>@t.Name</option>
+
+                                foreach (var t in @Model.Roles)
+                                {
+                                    <option value="@t.Id" @(t.Id == @Model.RoleId ? "selected" : string.Empty)>@t.Name</option>
+                                }
                             }
-                        }
 
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter Acccomodation Package Name">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword2">Email</label>
-                    <input class="form-control" id="exampleInputPassword2" name="Email" value="@Model.Email" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword3">Full Name</label>
-                    <input class="form-control" id="exampleInputPassword3" name="FullName" value="@Model.FullName" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword4">Country</label>
-                    <input class="form-control" id="exampleInputPassword4" name="Country" value="@Model.Country" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputPassword5">City</label>
-                    <input class="form-control" id="exampleInputPassword5" name="City" value="@Model.City" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword6">Address</label>
-                    <input class="form-control" id="exampleInputPassword6" name="Address" value="@Model.Address" aria-describedby="name" placeholder="Enter No Of Rooms">
-
-                </div>
-
-                @if (!String.IsNullOrEmpty(Model.Id) || ViewBag.isDelete == true)
-                {
-                    <div class="form-group">
-                        <label for="exampleInputPassword2">Current Role</label>
-                        <textarea class="form-control" id="exampleInputPassword2"
-                                  name="" aria-describedby="name" placeholder="">
-                            @foreach (var r in Model.UserRolesNames)
-                            {
-                                @r
-                            }
-                        </textarea>
-                        @*<input class="form-control" id="exampleInputPassword2" name="" value="@Model.UserRoles.FirstOrDefault()" aria-describedby="name" placeholder="Enter Fee Per Night">*@
-
-                    </div>
                 }
-            </form>
-           
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input class="form-control" id="exampleInputEmail1" name="Name" value="@Model.Name" aria-describedby="name" placeholder="Enter User Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword2">Email</label>
+                <input class="form-control" id="exampleInputPassword2" name="Email" value="@Model.Email" aria-describedby="name" placeholder="Enter Email">
+
+            </div>
+            @if (!String.IsNullOrEmpty(Model.Id) || ViewBag.isDelete == true)
+                {
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Current Role(s)</label>
+                    <select class="form-control" name="RoleId">
+                        @if (@Model.Roles != null)
+                            {
+                                foreach (var t in @Model.UserRolesNames)
+                                {
+                                    <option>@t</option>
+                                }
+                            }
+
+                    </select>
+                </div>
+                }
+                @*@if (!String.IsNullOrEmpty(Model.Id) || ViewBag.isDelete == true)
+                    {
+                        <div class="form-group">
+                            <label for="exampleInputPassword2">Current Role</label>
+                            <textarea class="form-control" id="exampleInputPassword2"
+                                      name="" rows="1" aria-describedby="name" placeholder="">
+                                @foreach (var r in Model.UserRolesNames)
+                                {
+                                    @r
+
+                                }
+                            </textarea>
+                            <input class="form-control" id="exampleInputPassword2" name="" value="@Model.UserRoles.FirstOrDefault()" aria-describedby="name" placeholder="Enter Fee Per Night">
+
         </div>
-        <div class="modal-footer">
-            <button Package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
-            @if (!ViewBag.isDelete == true)
+        }*@
+        <div class="form-group">
+            <label for="exampleInputPassword3">Full Name</label>
+            <input class="form-control" id="exampleInputPassword3" name="FullName" value="@Model.FullName" aria-describedby="name" placeholder="Enter full name">
+
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword4">Country</label>
+            <input class="form-control" id="exampleInputPassword4" name="Country" value="@Model.Country" aria-describedby="name" placeholder="Enter country">
+
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword5">City</label>
+            <input class="form-control" id="exampleInputPassword5" name="City" value="@Model.City" aria-describedby="name" placeholder="Enter city">
+
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword6">Address</label>
+            <input class="form-control" id="exampleInputPassword6" name="Address" value="@Model.Address" aria-describedby="name" placeholder="Enter address">
+
+        </div>
+
+
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button package="button" class="btn btn-secondary" data-dismiss="modal"> <i class="far fa-times-circle mr-1"></i>Close</button>
+        @if (!ViewBag.isDelete == true)
             {
-                <button type="button" id="" data-href="@Url.Action("Action", "User", new {id = Model.Id, isDeleted = false})" 
-                        class="actionButton btn btn-primary"><i class="far fa-save mr-1"></i>Save changes</button>
+            <button type="button" id="" data-href="@Url.Action("Action", "User", new {id = Model.Id, isDeleted = false})"
+                    class="actionButton btn btn-primary">
+                <i class="far fa-save mr-1"></i>Save changes
+            </button>
 
             }
             else
             {
-                <button type="button" id="" data-href="@Url.Action("Action", "User", new { id = Model.Id, isDeleted = true })"
-                         class="actionButton btn btn-danger"><i class="fas fa-exclamation-circle mr-1"></i>Delete</button>
+            <button type="button" id="" data-href="@Url.Action("Action", "User", new { id = Model.Id, isDeleted = true })"
+                    class="actionButton btn btn-danger">
+                <i class="fas fa-exclamation-circle mr-1"></i>Delete
+            </button>
             }
-        </div>
+    </div>
     </div>
 
 
@@ -118,24 +142,24 @@
 
         $('.actionButton').click(function () {
 
-                $.ajax({
-                    //url: '@Url.Action("Action","AccomodationPackages")',
-                    url: $(this).attr("data-href"),
-                    method: "post",
-                    data: $('#actionForm').serialize(),
-                    dataType: "json"
+            $.ajax({
+                //url: '@Url.Action("Action","AccomodationPackages")',
+                url: $(this).attr("data-href"),
+                method: "post",
+                data: $('#actionForm').serialize(),
+                dataType: "json"
             })
-              .done(function (response) {
-                    //alert(response.Message);
-                  if (response.Success) {
+          .done(function (response) {
+              //alert(response.Message);
+              if (response.Success) {
 
-                      window.location.href = "@Url.Action("Index","User")"; 
-                      //location.reload();
-                  } else {
-                        $('#errorDiv').addClass("alert alert-danger");
-                        $('#errorDiv').html(response.Message);
-                    }
-                });
+                  //window.location.href = "@Url.Action("Index","User")";
+                  location.reload();
+              } else {
+                  $('#errorDiv').addClass("alert alert-danger");
+                  $('#errorDiv').html(response.Message);
+              }
+          });
 
         });
 

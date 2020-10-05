@@ -5,7 +5,6 @@
 
 }
 
-
 <div class="modal-content">
     <div class="modal-header bg-light text-dark">
         <h5 class="modal-title" id="exampleModalLabel">
@@ -17,7 +16,7 @@
             else if (Model.Booking != null && ViewBag.isDelete == true)
             {
                 //<span>Delete Accomodation Package</span>
-                <br />
+
                 <span class="text text-danger mt-2"><i class="fas fa-exclamation-circle mr-1"></i>You Want to Delete Booking? </span>
             }
             else
@@ -26,534 +25,766 @@
             }
 
         </h5>
-        <button package="button" class="btn btn-danger btn-sm" data-dismiss="modal" aria-label="Close">
+        <button package="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" class="">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
-
-        <form id="actionForm">
-            <ul class="nav nav-tabs responsive-tab" id="bookingTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="booking-tab" data-toggle="tab" href="#booking" role="tab" aria-controls="booking" aria-selected="true">Booking</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="false">Booking Detail</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="paymentinfo-tab" data-toggle="tab" href="#paymentinfo" role="tab" aria-controls="paymentinfo" aria-selected="false">Payment Info</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="otheracharges-tab" data-toggle="tab" href="#otheracharges" role="tab" aria-controls="otheracharges" aria-selected="false">Add Other Charges</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="bookingContent">
-                <br />
-                @*---first tab started---*@
-                <div class="tab-pane fade show active" id="booking" role="tabpanel" aria-labelledby="booking-tab">
-
-                    <input type="hidden" name="Id" value="@Model.Id" />
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="row booking-box-left">
-                                <div class="col-md-12">
-                                    @Html.HiddenFor(a => a.Booking.Id)
-                                    @*<span class="fas fa-user-tie fa-2x"></span>*@
-
-                                    @if (Model.Booking != null)
-                                    {
-                                        <input type="hidden" name="Id" value="@Model.Booking.Id" />
-                                        <p class="alert alert-success">
-                                            Booking No : <b>@Model.Booking.Id</b>
-
-                                        </p>
-                                    }
-                                    else
-                                    {
-                                        <h6>Personal Info</h6>
-                                    }
+    @if (Model.Booking == null && ViewBag.isDelete == false)
+    {
+        <div class="modal-body add-new">
+            <form id="actionForm">
+                <!-- General -->
+                <h4 class="heading">Personal Info & contact</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="gname" class="">Name</label>
+                        @Html.TextBoxFor(a => a.Booking.GuestName, new { @class = "form-control", @id = "gname", @placeholder = "Guest Name..", })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="email">Email</label>
+                        @Html.TextBoxFor(a => a.Booking.Email, new { @class = "form-control", @id = "email", @placeholder = "Enter Email.." })
+                    </div>
+                    <div class="col-md-3">
+                        <label for="phoneno">Phone</label>
+                        @Html.TextBoxFor(a => a.Booking.Phone, new { @class = "form-control", @id = "phoneno", @placeholder = "phone no.." })
+                    </div>
 
 
-                                </div>
+                    <div class="col-md-3">
+                        <label for="street">Street</label>
+                        <input type="text" id="street" class="floatLabel form-control " name="street">
+                    </div>
 
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @*<label for="exampleInputPassword1">Guest Name</label>*@
-                                        @*<input class="form-control" id="gname" name="NoOfRoom" value="@Model.Booking.GuestName" aria-describedby="name" placeholder="Enter Guest Name">*@
-                                        @Html.TextBoxFor(a => a.Booking.GuestName, new
+
+                    <div class="col-md-3">
+                        <label for="street-number">Number</label>
+                        <input type="number" id="street-number" class="floatLabel form-control" name="street-number">
+                    </div>
+
+
+
+                    <div class="col-md-3">
+                        <label for="city">Address</label>
+                        @Html.TextAreaFor(a => a.Booking.Address, new { @class = "form-control", @rows = "1", @id = "address", @placeholder = "Enter Address.." })
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="post-code">Post Code</label>
+                        <input type="text" id="post-code" class="floatLabel form-control" name="post-code">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" class="floatLabel form-control" name="country">
+                    </div>
+                </div> <!-- /.row -->
+
+                <!-- Details -->
+                <h4 class="heading mt-4">Booking Details</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="accpackage">Accmodation Package</label>
+                        <select class="form-control" name="AccomodationPackageId" id="accpackage">
+                            <option selected="" hidden="" disabled="">Select Package..</option>
+
+                            @if (@Model.AccomodationPackages != null && ViewBag.isDelete != true)
+                            {
+                                foreach (var t in @Model.AccomodationPackages)
+                                {
+                                    <option value="@t.Id" data="@t.FeePerNight" @(t.Id == @Model.AccomodationPackageId ? "selected" : string.Empty)>@t.Name</option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="arrival" class=""><i class="fa fa-calendar"></i>&nbsp;&nbsp;Arrival</label>
+                        @Html.TextBoxFor(a => a.Booking.FromDate, new { @class = "form-control date", @id = "arrival", @autocomplete = "off", @placeholder = "checIn date.." })
+                        <i class="far fa-calendar-alt calender"></i>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="depart" class=""><i class="fa fa-calendar"></i>&nbsp;&nbsp;Departure</label>
+                        @Html.TextBoxFor(a => a.Booking.ToDate, new { @class = "form-control date", @id = "todate", @placeholder = "checkout date..", @autocomplete = "off" })
+                        <i class="far fa-calendar-alt calender"></i>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="duration">Duration / night</label>
+                        @Html.TextBoxFor(a => a.Booking.Duration, new { @class = "form-control", @id = "duration", @placeholder = "Enter duration", @type = "number" })
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="totalrooms">#Rooms Required</label>
+                        @Html.TextBoxFor(a => a.Booking.NoOfAccomodation, new { @class = "form-control", @id = "totalrooms", @placeholder = "Rooms Required...", @type = "number" })
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="adults">Adults</label>
+                        @Html.TextBoxFor(a => a.Booking.Adult, new { @class = "form-control", @id = "adults", @placeholder = "No of Adults..", @type = "number" })
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="children">Children</label>
+                        @Html.TextBoxFor(a => a.Booking.Children, new { @class = "form-control", @id = "children", @placeholder = "No Of Children..", @type = "number" })
+                    </div>
+
+                    @*<div class="col-md-3">
+                    <i class="fa fa-sort"></i>
+                    <select class="floatLabel form-control">
+                        <option value="blank"></option>
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <label for="fruit"><i class="fa fa-male"></i>&nbsp;&nbsp;People</label>
+                </div>*@
+
+                    @*<div class="col-md-3">
+                    <i class="fa fa-sort"></i>
+                    <select class="floatLabel form-control">
+                        <option value="blank"></option>
+                        <option value="deluxe" selected>With Bathroom</option>
+                        <option value="Zuri-zimmer">Without Bathroom</option>
+                    </select>
+                    <label for="fruit">Room</label>
+                </div>
+
+
+                <div class="col-md-3">
+                    <i class="fa fa-sort"></i>
+                    <select class="floatLabel form-control">
+                        <option value="blank"></option>
+                        <option value="single-bed">Zweibett</option>
+                        <option value="double-bed" selected>Doppelbett</option>
+                    </select>
+                    <label for="fruit">Bedding</label>
+                </div>*@
+
+                    <div class="col-md-3">
+                        <label for="breakfast">BreakFast</label>
+                        <select class="form-control" name="Booking.BreakFast" id="breakFast">
+                            <option class="" value="true">Yes</option>
+                            <option class="" value="false">No</option>
+                        </select>
+                        @*<i class="fa fa-sort calender"></i>*@
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="status">Status</label>
+                        <select class="form-control" name="Booking.Status" id="bstatus">
+                            <option value="0" selected="" disabled="" hidden="">Booking Status..</option>
+                            @foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
+                            {
+                                <option class="" value="@s.ToString()" >@s</option>
+                            }
+
+                        </select>
+                       @* <i class="fa fa-sort calender"></i>*@
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="tamount">Total Bill</label>
+                        @Html.TextBoxFor(a => a.Booking.TotalAmount, new { @class = "form-control", @readonly = "", @id = "tamount", })
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="pmethod">Payment Method</label>
+                        @Html.DropDownListFor(a => a.Booking.PaymentInfo.PaymentType, new SelectListItem[]{
+                       new SelectListItem() {Text = "Payment Method...", Value=""},
+                       new SelectListItem() {Text = "Cash", Value="Cash"},
+                       new SelectListItem() {Text = "Credit Card", Value="Credit Card"},
+                       new SelectListItem() {Text = "During Departure", Value="During Departure"}}, new { @class = "form-control", @id = "pmethod" })
+
+                        @*<select class="form-control" id="pmethod" name="@Model.Booking.PaymentInfo.PaymentType">
+                            <option value="">Payment Method...</option>
+                            <option value="1">Cash</option>
+                            <option value="2">Credit Card</option>
+                            <option value="3">During Departure</option>
+                        </select>*@
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="tamount">Amount Paid</label>
+                        @Html.TextBoxFor(a => a.Booking.PaymentInfo.AmountPaid, new { @class = "form-control", @id = "tamount", @placeholder = "Amount Paid.." })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="note">Special Note</label>
+                        @Html.TextAreaFor(a => a.Booking.SpecialNote, new
+                            {
+                                @class = "form-control",
+                                @id = "note",
+                                @rows = "1",
+                                @placeholder = "Please describe your needs e.g. Extra beds, children's stuff, and Specific food"
+                            })
+                    </div>
+                    <div class="col-md-3 d-none" id="cardno">
+                        <label for="tamount">Card Number</label>
+                        @Html.TextBoxFor(a => a.Booking.PaymentInfo.CardNo, new { @class = "form-control", @id = "tamount", @placeholder = "card no..." })
+                    </div>
+                </div> <!-- /.row -->
+            </form>
+
+        </div>
+    }
+    else
+    {
+
+
+        <div class="modal-body">
+
+            <form id="actionForm">
+                <ul class="nav nav-tabs responsive-tab" id="bookingTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="booking-tab" data-toggle="tab" href="#booking" role="tab" aria-controls="booking" aria-selected="true">Booking</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="bookingdetail-tab" data-toggle="tab" href="#bookingdetail" role="tab" aria-controls="bookingdetail" aria-selected="false">Booking Detail</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="paymentinfo-tab" data-toggle="tab" href="#paymentinfo" role="tab" aria-controls="paymentinfo" aria-selected="false">Payment Info</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="otheracharges-tab" data-toggle="tab" href="#otheracharges" role="tab" aria-controls="otheracharges" aria-selected="false">Add Other Charges</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="bookingContent">
+                    <br />
+                    @*---first tab started---*@
+                    <div class="tab-pane fade show active" id="booking" role="tabpanel" aria-labelledby="booking-tab">
+
+                        <input type="hidden" name="Id" value="@Model.Id" />
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row booking-box-left">
+                                    <div class="col-md-12">
+                                        @Html.HiddenFor(a => a.Booking.Id)
+                                        @*<span class="fas fa-user-tie fa-2x"></span>*@
+
+                                        @if (Model.Booking != null)
                                         {
-                                            @class = "form-control",
-                                            @id = "gname",
-                                            @placeholder = "Guest Name..",
+                                            <input type="hidden" name="Id" value="@Model.Booking.Id" />
+                                            <p class="alert alert-success">
+                                                Booking No : <b>@Model.Booking.Id</b>
 
-                                        })
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @*<label for="phoneno">Phone No</label>*@
-                                        @* <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Phone" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.Phone, new { @class = "form-control", @id = "phoneno", @placeholder = "phone no.." })
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @*<label for="email">Email</label>*@
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Email" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.Email, new { @class = "form-control", @id = "email", @placeholder = "Enter Email.." })
-
-
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        @*<label for="address">Address</label>*@
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Address" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextAreaFor(a => a.Booking.Address, new
+                                            </p>
+                                        }
+                                        else
                                         {
-                                            @class = "form-control",
-                                            @cols = "1",
-                                            @id = "address",
-                                            @placeholder = "Enter Address.."
-                                        })
+                                            <h6>Personal Info</h6>
+                                        }
 
 
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<label for="exampleInputPassword1">Guest Name</label>*@
+                                            @*<input class="form-control" id="gname" name="NoOfRoom" value="@Model.Booking.GuestName" aria-describedby="name" placeholder="Enter Guest Name">*@
+                                            @Html.TextBoxFor(a => a.Booking.GuestName, new
+                        {
+                            @class = "form-control",
+                            @id = "gname",
+                            @placeholder = "Guest Name..",
+
+                        })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<label for="phoneno">Phone No</label>*@
+                                            @* <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Phone" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.Phone, new { @class = "form-control", @id = "phoneno", @placeholder = "phone no.." })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<label for="email">Email</label>*@
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Email" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.Email, new { @class = "form-control", @id = "email", @placeholder = "Enter Email.." })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @*<label for="address">Address</label>*@
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Address" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextAreaFor(a => a.Booking.Address, new
+                        {
+                            @class = "form-control",
+                            @cols = "1",
+                            @id = "address",
+                            @placeholder = "Enter Address.."
+                        })
+
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                        <div class="col-md-8">
+                            <div class="col-md-8">
 
 
-                            <div class="row booking-box-right">
-                                <div class="col-md-6">
-                                    <div class="form-group">
+                                <div class="row booking-box-right">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Accmodation Package</label>
-                                            <select class="form-control" name="AccomodationPackageId">
-                                                <option selected="" hidden="" disabled="">Select Package..</option>
-
-                                                @if (@Model.AccomodationPackages != null && ViewBag.isDelete != true)
-                                                {
-                                                    foreach (var t in @Model.AccomodationPackages)
-                                                    {
-                                                        <option value="@t.Id" @(t.Id == @Model.AccomodationPackageId ? "selected" : string.Empty)>@t.Name</option>
-                                                    }
-                                                }
-                                                else
-                                                {
-
-                                                    <option selected="">
-                                                        @if (@Model.AccomodationPackageName != null)
-                                                        {
-                                                            @Model.AccomodationPackageName
-
-                                                        }
-                                                    </option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                @{
-                                    var arrivaldate = Model.Booking != null ? Model.Booking.FromDate.ToShortDateString() : DateTime.Now.ToShortDateString();
-                                    var departuredate = Model.Booking != null ? Model.Booking.ToDate.ToShortDateString() : DateTime.Now.AddDays(1).ToShortDateString();
-                                }
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="arrival">Arrival</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.FromDate" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.FromDate, new
-                                    {
-                                        @class = "form-control date",
-                                        @id = "arrival",
-                                        @Value = @arrivaldate,
-                                        @autocomplete = "off",
-                                        @placeholder = "checIn date.."
-
-                                    })
-                                        <i class="far fa-calendar-alt calender"></i>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="todate">Departure</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.ToDate" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.ToDate, new
-                                        {
-                                            @class = "form-control date",
-                                            @id = "todate",
-                                            @Value = @departuredate,
-                                            @placeholder = "checkout date..",
-                                            @autocomplete = "off"
-                                        })
-                                        <i class="far fa-calendar-alt calender"></i>
-
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="duration">Duration / night</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Duration" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.Duration, new
-                                        {
-                                            @class = "form-control",
-                                            @id = "duration",
-                                            @placeholder = "Enter duration",
-                                            @type = "number"
-                                        })
-                                    </div>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="totalrooms">#Rooms Required</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.NoOfAccomodation" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.NoOfAccomodation, new
-                                        {
-                                            @class = "form-control",
-                                            @id = "totalrooms",
-                                            @placeholder = "Rooms Required...",
-                                            @type = "number"
-                                        })
-
-                                    </div>
-
-                                </div>
-
-                                @*@if (Model.Booking != null)
-                                    {
-                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="exampleInputPassword1">Fee / Night</label>
-                                                <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.BookingDetails.Select(a => a.Accomodation.AccomodationPackage.FeePerNight).FirstOrDefault()" aria-describedby="name" readonly="" placeholder="Enter from date">
+                                                <label for="exampleInputEmail1">Accmodation Package</label>
+                                                <select class="form-control" name="AccomodationPackageId">
+                                                    <option selected="" hidden="" disabled="">Select Package..</option>
+
+                                                    @if (@Model.AccomodationPackages != null && ViewBag.isDelete != true)
+                                                    {
+                                                        foreach (var t in @Model.AccomodationPackages)
+                                                        {
+                                                            <option value="@t.Id" @(t.Id == @Model.AccomodationPackageId ? "selected" : string.Empty)>@t.Name</option>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <option selected="">
+                                                            @if (@Model.AccomodationPackageName != null)
+                                                            {
+                                                                @Model.AccomodationPackageName
+
+                                                            }
+                                                        </option>
+                                                    }
+                                                </select>
                                             </div>
+                                        </div>
+
+                                    </div>
+                                    @{
+                                                    var arrivaldate = Model.Booking != null ? Model.Booking.FromDate.ToShortDateString() : DateTime.Now.ToShortDateString();
+                                                    var departuredate = Model.Booking != null ? Model.Booking.ToDate.ToShortDateString() : DateTime.Now.AddDays(1).ToShortDateString();
+                                    }
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="arrival">Arrival</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.FromDate" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.FromDate, new
+                {
+                    @class = "form-control date",
+                    @id = "arrival",
+                    @Value = @arrivaldate,
+                    @autocomplete = "off",
+                    @placeholder = "checIn date.."
+
+                })
+                                            <i class="far fa-calendar-alt calender"></i>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="todate">Departure</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.ToDate" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.ToDate, new
+                {
+                    @class = "form-control date",
+                    @id = "todate",
+                    @Value = @departuredate,
+                    @placeholder = "checkout date..",
+                    @autocomplete = "off"
+                })
+                                            <i class="far fa-calendar-alt calender"></i>
+
 
                                         </div>
-                                    }*@
 
+                                    </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="adults">Adults</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Adult" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.Adult, new
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="duration">Duration / night</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Duration" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.Duration, new
+                {
+                    @class = "form-control",
+                    @id = "duration",
+                    @placeholder = "Enter duration",
+                    @type = "number"
+                })
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="totalrooms">#Rooms Required</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.NoOfAccomodation" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.NoOfAccomodation, new
+                {
+                    @class = "form-control",
+                    @id = "totalrooms",
+                    @placeholder = "Rooms Required...",
+                    @type = "number"
+                })
+
+                                        </div>
+
+                                    </div>
+
+                                    @*@if (Model.Booking != null)
                                         {
-                                            @class = "form-control",
-                                            @id = "adults",
-                                            @placeholder = "No of Adults..",
-                                            @type = "number"
-                                        })
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Fee / Night</label>
+                                                    <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.BookingDetails.Select(a => a.Accomodation.AccomodationPackage.FeePerNight).FirstOrDefault()" aria-describedby="name" readonly="" placeholder="Enter from date">
+                                                </div>
 
+                                            </div>
+                                        }*@
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="adults">Adults</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Adult" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.Adult, new
+                {
+                    @class = "form-control",
+                    @id = "adults",
+                    @placeholder = "No of Adults..",
+                    @type = "number"
+                })
+
+
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="children">Children</label>
+                                            @* <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Children" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextBoxFor(a => a.Booking.Children, new
+                {
+                    @class = "form-control",
+                    @id = "children",
+                    @placeholder = "No Of Children..",
+                    @type = "number"
+                })
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="children">Children</label>
-                                        @* <input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Children" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextBoxFor(a => a.Booking.Children, new
-                                        {
-                                            @class = "form-control",
-                                            @id = "children",
-                                            @placeholder = "No Of Children..",
-                                            @type = "number"
-                                        })
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                    <div class="@(Model.Booking != null ? "col-md-5" : "col-md-5")">
+                                        <div class="form-group">
+                                            <label for="address">Special Note</label>
+                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Address" aria-describedby="name" placeholder="Enter from date">*@
+                                            @Html.TextAreaFor(a => a.Booking.SpecialNote, new { @class = "form-control", @id = "address", @rows = "1", @placeholder = "Enter important note.." })
+                                        </div>
 
-                                <div class="@(Model.Booking != null ? "col-md-5" : "col-md-5")">
-                                    <div class="form-group">
-                                        <label for="address">Special Note</label>
-                                        @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.Address" aria-describedby="name" placeholder="Enter from date">*@
-                                        @Html.TextAreaFor(a => a.Booking.SpecialNote, new { @class = "form-control", @id = "address", @rows="1" , @placeholder = "Enter important note.." })
                                     </div>
 
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group ">
-                                        @*<input class="form-control" id="status" name="NoOfRoom" value="@Model.Booking.Status" aria-describedby="name" placeholder="Enter from date">*@
-                                        @* @Html.TextBoxFor(a => a.Booking.Status, new { @class = "form-control", @id = "status", @placeholder = "" })*@
-                                        <label for="status">BreakFast</label>
-                                        <select class="form-control" name="Booking.BreakFast" id="BreakFast">
-                                            @if (Model.Booking != null)
-                                            {
-
-                                                <option class="" value="true" @(Model.Booking.BreakFast == true ? "selected" : string.Empty)>Yes</option>
-                                                <option class="" value="false" @(Model.Booking.BreakFast == false ? "selected" : string.Empty)>No</option>
-
-                                            }
-                                            else
-                                            {
-                                                <option class="" value="true">Yes</option>
-                                                <option class="" value="false">No</option>
-                                            }
-
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    @if (Model.Booking != null)
-                                    {
+                                    <div class="col-md-2">
                                         <div class="form-group ">
                                             @*<input class="form-control" id="status" name="NoOfRoom" value="@Model.Booking.Status" aria-describedby="name" placeholder="Enter from date">*@
                                             @* @Html.TextBoxFor(a => a.Booking.Status, new { @class = "form-control", @id = "status", @placeholder = "" })*@
-                                            <label for="status">Status</label>
-                                            <select class="form-control" name="Booking.Status" id="status">
-                                                @if (Model.Booking.Status != null)
+                                            <label for="status">BreakFast</label>
+                                            <select class="form-control" name="Booking.BreakFast" id="BreakFast">
+                                                @if (Model.Booking != null)
                                                 {
-                                                    foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
-                                                    {
-                                                        <option class="" value="@s.ToString()" @(Model.Booking.Status == s.ToString() ? "selected" : string.Empty)>@s</option>
-                                                    }
-                                                }
 
+                                                    <option class="" value="true" @(Model.Booking.BreakFast == true ? "selected" : string.Empty)>Yes</option>
+                                                    <option class="" value="false" @(Model.Booking.BreakFast == false ? "selected" : string.Empty)>No</option>
+
+                                                }
+                                                else
+                                                {
+                                                    <option class="" value="true">Yes</option>
+                                                    <option class="" value="false">No</option>
+                                                }
 
                                             </select>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <label for="status">Status</label>
-                                        <select class="form-control" name="Booking.Status">
+                                    </div>
 
-                                            @*<option value="0" selected="" disabled="" hidden="">Empty</option>*@
-                                            @foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
-                                            {
-                                                <option class="" value="@s.ToString()">@s</option>
-                                            }
-
-                                        </select>
-                                    }
-                                </div>
-
-                                @if (Model.Booking != null)
-                                {
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label for="tamount">Total Bill</label>
-                                            @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.TotalAmount" aria-describedby="name" placeholder="Enter from date">*@
-                                            @Html.TextBoxFor(a => a.Booking.TotalAmount, new
+                                    <div class="col-md-3">
+                                        @if (Model.Booking != null)
                                         {
-                                            @class = "form-control",
-                                            @id = "tamount",
-                                            @readonly = "",
-                                            @placeholder = "total bill.."
-                                        })
+                                            <div class="form-group ">
+                                                @*<input class="form-control" id="status" name="NoOfRoom" value="@Model.Booking.Status" aria-describedby="name" placeholder="Enter from date">*@
+                                                @* @Html.TextBoxFor(a => a.Booking.Status, new { @class = "form-control", @id = "status", @placeholder = "" })*@
+                                                <label for="status">Status</label>
+                                                <select class="form-control" name="Booking.Status" id="status">
+                                                    @if (Model.Booking.Status != null)
+                                                    {
+                                                        foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
+                                                        {
+                                                            <option class="" value="@s.ToString()" @(Model.Booking.Status == s.ToString() ? "selected" : string.Empty)>@s</option>
+                                                        }
+                                                    }
+
+
+                                                </select>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <label for="status">Status</label>
+                                            <select class="form-control" name="Booking.Status">
+
+                                                @*<option value="0" selected="" disabled="" hidden="">Select Status</option>*@
+                                                @foreach (var s in Enum.GetValues(typeof(Enums.BookingStatus)))
+                                                {
+                                                    <option class="" value="@s.ToString()">@s</option>
+                                                }
+
+                                            </select>
+                                        }
+                                    </div>
+
+                                    @if (Model.Booking != null)
+                                    {
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="tamount">Total Bill</label>
+                                                @*<input class="form-control" id="exampleInputPassword1" name="NoOfRoom" value="@Model.Booking.TotalAmount" aria-describedby="name" placeholder="Enter from date">*@
+                                                @Html.TextBoxFor(a => a.Booking.TotalAmount, new
+                    {
+                        @class = "form-control",
+                        @id = "tamount",
+                        @readonly = "",
+                        @placeholder = "total bill.."
+                    })
+
+                                            </div>
 
                                         </div>
-
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    @* first tab closed *@
-                </div>
-
-
-                @*---second tab accomodation detail started---*@
-
-
-                <div class="tab-pane fade" id="bookingdetail" role="tabpanel" aria-labelledby="bookingdetail-tab">
-                    @if (@Model.Booking != null)
-                    {
-                        if (@Model.Booking.BookingDetails != null)
-                        {
-                            <table class="table table-responsive-xl table-sm table-striped">
-
-                                <thead class="font-weight-bold">
-                                    <tr>
-                                        <td>Package Name</td>
-                                        <td>Accomodation Name</td>
-                                        <td>Description</td>
-                                    </tr>
-
-                                </thead>
-
-                                @foreach (var item in @Model.Booking.BookingDetails)
-                                {
-                                    <tr>
-                                        <td>@item.Accomodation.AccomodationPackage.Name</td>
-                                        <td>@item.Accomodation.Name</td>
-                                        <td>@item.Accomodation.AccomodationPackage.Description</td>
-                                    </tr>
-                                }
-
-                            </table>
-                        }
-                        else
-                        {
-                            <div class="alert alert-danger">
-                                no Record found!
-                            </div>
-                        }
-                    }
-                </div>
-
-                @*---paymentinfo tab started---*@
-
-
-                <div class="tab-pane fade" id="paymentinfo" role="tabpanel" aria-labelledby="paymentinfo-tab">
-                    @if (@Model.Booking != null)
-                    {
-                        if (@Model.Booking.PaymentInfo != null)
-                        {
-
-                            <table class="table table-striped table-responsive-xl">
-                                <thead>
-                                    <tr>
-                                        <td>Payment Type</td>
-                                        <td>Payment Status</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>@Model.Booking.PaymentInfo.PaymentType</td>
-                                        <td>@Model.Booking.PaymentInfo.PaymentStatus</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        }
-                        else
-                        {
-                            <div class="alert alert-danger">
-                                no Record found!
-                            </div>
-                        }
-                    }
-                </div>
-
-                @*---othercharges tab started---*@
-
-
-                <div class="tab-pane fade" id="otheracharges" role="tabpanel" aria-labelledby="otheracharges-tab">
-
-                    @if (@Model.Booking != null)
-                    {
-                        <div class="row">
-
-                            <div class="col-md-6 overflow-auto" style="max-height: 20rem">
-                                <div class=" overflow-auto">
-                                    @if (@Model.Booking.BookingAdditionalFees != null)
-                                    {
-
-                                        <table class="table  table-responsive-xl">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Charges Detail</th>
-                                                    <th>Amount</th>
-
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="ocdetailtbl">
-                                                @foreach (var item in Model.Booking.BookingAdditionalFees)
-                                                {
-                                                    if (item.Status == 1)
-                                                    {
-                                                        <tr id="ocStatus-@item.Id">
-                                                            <td>
-                                                                <input type="checkbox" value="" class="checkbox" id="confirm-checkbox-@item.Id" />
-                                                            </td>
-                                                            <td class="w-50">
-                                                                <textarea rows="1" name="ocName"
-                                                                          class="form-control" value="" readonly="">
-                                                                    @item.Name
-                                                                </textarea>
-                                                            </td>
-                                                            <td class="w-25">
-                                                                <input type="text" name="ocAmount" class="form-control" value="@item.Fee" readonly="" />
-                                                            </td>
-
-                                                            <td>
-
-                                                                <a href="#" data="@item.Id" data-href="@Url.Action("OtherChargesAction", "Bookings", new {@id = item.Id})"
-                                                                   id="@item.Id"
-                                                                   class="ocActionBtn btn btn-danger btn-sm">
-                                                                    <i class="fas fa-times"></i> Cancel
-                                                                </a>
-
-
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                }
-                                                @*<tr>
-                                                        <td colspan="3">Total</td>
-                                                        <td>@Model.Booking.BookingAdditionalFees.Sum(a => a.Fee)</td>
-                                                    </tr>*@
-                                            </tbody>
-                                        </table>
                                     }
-
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        @* first tab closed *@
+                    </div>
 
-                                <div id="msgdiv" class="d-none alert"></div>
 
-                                <div class="otDiv">
-                                    <b>Add Other Charges</b>
-                                    <div class="form-group">
-                                        <input class="form-control col-sm-2 col-5" id="ocamount" name="OcAmount" value="" aria-describedby="name" placeholder="" required="">
-                                        <label for="ocamount" class="floating-lbl">Amount</label>
+                    @*---second tab accomodation detail started---*@
 
-                                        @*<span class="floating-lbl">Amount</span>*@
-                                        @*@Html.TextAreaFor(a => a.Booking.BookingAdditionalFees.Select(b => b.Fee), new { @class = "form-control", @id = "address", @placeholder = "Other Charges Amount.." })*@
+
+                    <div class="tab-pane fade" id="bookingdetail" role="tabpanel" aria-labelledby="bookingdetail-tab">
+                        @if (@Model.Booking != null)
+                        {
+                            if (@Model.Booking.BookingDetails != null)
+                            {
+                                <table class="table table-responsive-xl table-sm table-striped">
+
+                                    <thead class="font-weight-bold">
+                                        <tr>
+                                            <td>Package Name</td>
+                                            <td>Accomodation Name</td>
+                                            <td>Description</td>
+                                        </tr>
+
+                                    </thead>
+
+                                    @foreach (var item in @Model.Booking.BookingDetails)
+                                    {
+                                        <tr>
+                                            <td>@item.Accomodation.AccomodationPackage.Name</td>
+                                            <td>@item.Accomodation.Name</td>
+                                            <td>@item.Accomodation.AccomodationPackage.Description</td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">
+                                    no Record found!
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    @*---paymentinfo tab started---*@
+
+
+                    <div class="tab-pane fade" id="paymentinfo" role="tabpanel" aria-labelledby="paymentinfo-tab">
+                        @if (@Model.Booking != null)
+                        {
+                            if (@Model.Booking.PaymentInfo != null)
+                            {
+
+                                <table class="table table-sm table-responsive-xl">
+                                    <thead>
+                                        <tr>
+                                            <td>Payment Type</td>
+                                            <td>Other Charges</td>
+                                            <td>SubTotal</td>
+                                            <td>Total Amount</td>
+                                            <td>Amount Paid</td>
+                                            <td>Payment Status</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="alert @(@Model.Booking.PaymentInfo.PaymentStatus == "paid" ? "alert-success" : "alert-danger")">
+                                            <td>
+                                                @Model.Booking.PaymentInfo.PaymentType
+                                                @if (@Model.Booking.PaymentInfo.CardNo != null)
+                                                {
+                                                    <br />
+                                                    <b> card no :</b>
+                                                    @Model.Booking.PaymentInfo.CardNo
+                                                }
+                                            </td>
+                                            <td>
+                                                
+                                                @if (@Model.Booking.BookingAdditionalFees != null)
+                                                {
+                                                     @Model.Booking.BookingAdditionalFees.Where(a=>a.Status != 0).Sum(a=>a.Fee)
+                                                }
+                                            </td>
+                                            <td>@Model.Booking.TotalAmount</td>
+                                            <td>@(Model.Booking.TotalAmount + Model.Booking.BookingAdditionalFees.Where(a=>a.Status != 0).Sum(a => a.Fee))</td>
+                                            <td>@Model.Booking.PaymentInfo.AmountPaid</td>
+                                            <td>@Model.Booking.PaymentInfo.PaymentStatus</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">
+                                    no Record found!
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    @*---othercharges tab started---*@
+
+
+                    <div class="tab-pane fade" id="otheracharges" role="tabpanel" aria-labelledby="otheracharges-tab">
+
+                        @if (@Model.Booking != null)
+                        {
+                            <div class="row">
+
+                                <div class="col-md-6 overflow-auto" style="max-height: 20rem">
+                                    <div class=" overflow-auto">
+                                        @if (@Model.Booking.BookingAdditionalFees != null)
+                                        {
+
+                                            <table class="table table-striped table-sm  table-responsive-xl">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Charges Detail</th>
+                                                        <th>Amount</th>
+
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ocdetailtbl">
+                                                    @foreach (var item in Model.Booking.BookingAdditionalFees.OrderByDescending(a=>a.Id))
+                                                    {
+                                                        if (item.Status == 1)
+                                                        {
+                                                            <tr id="ocStatus-@item.Id">
+                                                                <td>
+                                                                    <input type="checkbox" value="" class="checkbox" id="confirm-checkbox-@item.Id" />
+                                                                </td>
+                                                                <td class="w-50">
+                                                                    <textarea rows="1" name="ocName"
+                                                                              class="form-control" value="" readonly="">@item.Name
+                                                                    </textarea>
+                                                                </td>
+                                                                <td class="w-25">
+                                                                    <input type="text" name="ocAmount" class="form-control" value="@item.Fee" readonly="" />
+                                                                </td>
+
+                                                                <td>
+
+                                                                    <a href="#" data="@item.Id" data-href="@Url.Action("OtherChargesAction", "Bookings", new {@id = item.Id})"
+                                                                       id="@item.Id"
+                                                                       class="ocActionBtn btn btn-danger btn-sm">
+                                                                        <i class="fas fa-times-circle"></i> Cancel
+                                                                    </a>
+
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    @*<tr>
+                                                            <td colspan="3">Total</td>
+                                                            <td>@Model.Booking.BookingAdditionalFees.Sum(a => a.Fee)</td>
+                                                        </tr>*@
+                                                </tbody>
+                                            </table>
+                                        }
+
                                     </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="ocdetail"
-                                                  name="OcDetails" value="" aria-describedby="name" placeholder="" required=""></textarea>
-                                        <label for="ocdetail" class="floating-lbl ">Other Charges Detail</label>
+                                </div>
+                                <div class="col-md-6">
 
-                                        @*<span class="floating-lbl">Charges Detail</span>*@
-
-                                        @*@Html.TextAreaFor(a => a.Booking.BookingAdditionalFees.Select(b => b.Name), new { @class = "form-control", @id = "address", @placeholder = "Other Charges Detail.." })*@
-                                    </div>
-
-                                    <div class="">
-                                        <button type="button" class="btn btn-primary float-md-right ocActionBtn" id=""
-                                                data-href="@Url.Action("OtherChargesAction", "Bookings", new { @id = @Model.Id, isAddOtherCharges = true })">
-                                            <i class="fas fa-plus"></i> Add
+                                    <div id="msgdiv" class="d-none alert alert-dismissible fade show">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
 
-                                    @*<input type="button" class="btn btn-primary actionButton pull-right" value="Add"
-                                        data-href="@Url.Action("Action", "Bookings", new { id = Model.Id , isOtherCharges = true})" />*@
+                                    <div class="otDiv">
+                                        <b>Add Other Charges</b>
+                                        <div class="form-group">
+                                            <input class="form-control col-sm-2 col-5" id="ocamount" name="OcAmount" value="" aria-describedby="name" placeholder="" required="">
+                                            <label for="ocamount" class="floating-lbl">Amount</label>
+
+                                            @*<span class="floating-lbl">Amount</span>*@
+                                            @*@Html.TextAreaFor(a => a.Booking.BookingAdditionalFees.Select(b => b.Fee), new { @class = "form-control", @id = "address", @placeholder = "Other Charges Amount.." })*@
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="ocdetail"
+                                                      name="OcDetails" value="" aria-describedby="name" placeholder="" required=""></textarea>
+                                            <label for="ocdetail" class="floating-lbl ">Other Charges Detail</label>
+
+                                            @*<span class="floating-lbl">Charges Detail</span>*@
+
+                                            @*@Html.TextAreaFor(a => a.Booking.BookingAdditionalFees.Select(b => b.Name), new { @class = "form-control", @id = "address", @placeholder = "Other Charges Detail.." })*@
+                                        </div>
+
+                                        <div class="">
+                                            <button type="button" class="btn btn-primary float-md-right ocActionBtn" id=""
+                                                    data-href="@Url.Action("OtherChargesAction", "Bookings", new {@id = @Model.Id, isAddOtherCharges = true})">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+
+                                        @*<input type="button" class="btn btn-primary actionButton pull-right" value="Add"
+                                            data-href="@Url.Action("Action", "Bookings", new { id = Model.Id , isOtherCharges = true})" />*@
+                                    </div>
                                 </div>
+
                             </div>
 
-                        </div>
-
-                    }
-                    else
-                    {
-                        <div class="alert alert-danger">
-                            no Record found!
-                        </div>
-                    }
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger">
+                                no Record found!
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
 
-    </div>
+        </div>
+
+
+    } @*else finished here*@
 
 
 
@@ -583,6 +814,44 @@
 <script>
     //var today = Date.now();
 
+    //new
+    //$('.add-new input').change(function () {
+    //    alert('hi');
+    //    var $this = $(this);
+    //    // on focus add cladd active to label
+    //    $this.focus(function () {
+    //        $this.next().addClass("active");
+    //    });
+    //    //on blur check field and remove class if needed
+    //    $this.blur(function () {
+    //        if ($this.val() === '' || $this.val() === 'blank') {
+    //            $this.next().removeClass();
+    //        }
+    //    });
+    //});
+    //
+
+    $('#pmethod').change(function() {
+        var pmethod = $('#pmethod').val();
+        debugger;
+        if (pmethod === "Credit Card") {
+            $('#cardno').toggleClass('d-none');
+        }
+
+    });
+
+    $('#bstatus').change(function () {
+        var packgFee = $('#accpackage').children("option:selected").attr('data');
+        var duration = $('#duration').val();
+        var totalRooms = $('#totalrooms').val();
+        var total = (packgFee * duration) * totalRooms;
+        debugger;
+        if (packgFee !== null) {
+            $('#tamount').val(total);
+        }
+
+    });
+
     $('.date').datepicker({
         'format': 'm/d/yyyy',
         'autoclose': true,
@@ -601,9 +870,9 @@
         //    up: "fas fa-arrow-up",
         //    down: "fas fa-arrow-down"
         //},
-            
+
     });
-   
+
     $('.ocEditBtn').click(function () {
         $(this).parent().parent().find('input[type = text]').removeAttr("readonly");
         alert("hi");
@@ -619,12 +888,12 @@
 
         debugger;
         $.ajax({
-                //url: '@Url.Action("Action", "Booking")',
-                url: $(this).attr("data-href"),
-                method: "post",
-                data: $('#actionForm').serialize(),
+            //url: '@Url.Action("Action", "Booking")',
+            url: $(this).attr("data-href"),
+            method: "post",
+            data: $('#actionForm').serialize(),
 
-            })
+        })
             .done(function (response) {
                 debugger;
                 if (response.success) {
@@ -636,13 +905,13 @@
                     //    $('#msgdiv').addClass("d-none");
 
                     //}, 2000);
-                    swal("Info!", response.Messag, "info")
-                        .then(function (value) {
-                            if (value) {
-                                location.reload();
-                            }
-                        });
-                    //location.reload();
+                    //swal("Info!", response.Messag, "info")
+                    //    .then(function (value) {
+                    //        if (value) {
+                    //            location.reload();
+                    //        }
+                    //    });
+                    location.reload();
                 } else {
                     //$('#msgdiv').removeClass("d-none");
                     //$('#msgdiv').addClass("alert-danger");
@@ -664,9 +933,12 @@
     });
 
 
-    $('.ocActionBtn').click(function () {
+    $('#otheracharges').on('click', '.ocActionBtn', function () {
+        //add dynamicly element and events work using this method
+        /*--- thaks to https://makeitspendit.com/fix-jquery-click-event-not-working-with-dynamically-added-elements/ ----- */
         var id = $(this).attr("id");
-        debugger;
+        //debugger;
+       
         if ($('#confirm-checkbox-' + id).prop("checked") !== true && id !== "") {
             alert("plz click checkbox before canceling...");
             return 0;
@@ -685,19 +957,18 @@
             alert("Charges Detail is Empty...");
             return 0;
         }
-        debugger;
+       
         $.ajax({
-                //url: '@Url.Action("Action", "Booking")',
-                url: $(this).attr("data-href"),
-                method: "post",
-                //data: $('#actionForm').serialize(),
-                data: {
-                    amount: ocamount,
-                    details: ocdetail
-                }
-            })
-            .done(function (response) {
-                debugger;
+            //url: '@Url.Action("Action", "Booking")',
+            url: $(this).attr("data-href"),
+            method: "post",
+            //data: $('#actionForm').serialize(),
+            data: {
+                amount: ocamount,
+                details: ocdetail
+            }
+        }).done(function (response) {
+                //debugger;
                 if (response.success) {
 
                     if (id === "") {
@@ -709,16 +980,19 @@
 
                         }, 2000);
 
-
+                        var data;
                         $('#ocdetailtbl').prepend(
-                            "<tr>" +
-                            "<td><input type='checkbox' value='' class='checkbox' id=''/>" +
+                            "<tr id='ocStatus-"+response.data +"'>" +
+                            "<td><input type='checkbox' value='' class='checkbox' id='confirm-checkbox-"+response.data+"'/>" +
                             "</td>" +
                             "<td class='w-50'>" +
                             "<textarea rows='1' name='ocName' class='form-control'  readonly=''>" + ocdetail + "</textarea>" +
                             "</td>" +
                             "<td class='w-25'>" +
                             "<input type='text' class='form-control' value='" + ocamount + "'  readonly=''/>" +
+                            "</td>" +
+                            "<td><a href='#' data='" + response.data + "' data-href='@Url.Action("OtherChargesAction", "Bookings")/"+response.data +"'  id='" + response.data + "' " +
+                             "class='ocActionBtn btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> Cancel</a>" +
                             "</td>" +
                             "</tr>"
                         );
@@ -756,7 +1030,7 @@
             }).fail(function () {
                 alert("fail...");
             });
-
+        
     });
 
 

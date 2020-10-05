@@ -1,17 +1,39 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
+    <li class="has-dropdown">
+        <a href="#" class="">My Account</a>
+        <ul class="dropdown" name="">
+            <li>
+                @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null,
+                  htmlAttributes: new { title = "Manage", @class = "", @Style = "color: #428bca" })*@
+                <a href="#">Hello, <br/> @User.Identity.GetUserName()</a>
+            </li>
+            <li>
+                <a href="#" class=""> Current Booking(s)</a>
+            </li>
+            <li>
+                <a href="#" class=""> Previous Booking(s)</a>
+            </li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li><a href="@Url.Action("Index", "DashBoard")">DashBoard</a></li>
+            }
+            <li class="divider">
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="">Log off</a>
+
+                }
+            </li>
+        </ul>
+    </li>
+    
+
 
    
-        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, 
-        htmlAttributes: new { title = "Manage" , @class="" , @Style="color: #428bca"})
-        
-        <a href="javascript:document.getElementById('logoutForm').submit()" class="logoff-btn">Log off</a>
-    
-    }
 }
 else
 {

@@ -12,13 +12,16 @@ namespace HMS.Entities
     {
         public int Id { get; set; }
 
-        
+        [DisplayName("Guest Name")]
         public string GuestName { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]  // format used by Html.EditorFor
+        [DisplayName("Arrival")]
+            
         public DateTime FromDate { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]  // format used by Html.EditorFor
+        [DisplayName("Departure")]
 
         public DateTime ToDate { get; set; }
 

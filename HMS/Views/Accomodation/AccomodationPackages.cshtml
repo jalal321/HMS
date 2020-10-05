@@ -1,5 +1,4 @@
-﻿
-@model HMS.ViewModels.AccomodationPackagesViewModel
+﻿@model HMS.ViewModels.AccomodationPackagesViewModel
 
 @{
     ViewBag.Title = "Accomodation Packages";
@@ -53,25 +52,25 @@
                 }
 
                 @*@if (Model.CurrentAccomodationPackage != null && Model.CurrentAccomodationPackage > 0)
-                {
-                    <li class="active" aria-current="page">
-                        @foreach (var t in @Model.AccomodationPackages)
-                        {
-                            if (t.Id == Model.CurrentAccomodationPackage)
+                    {
+                        <li class="active" aria-current="page">
+                            @foreach (var t in @Model.AccomodationPackages)
                             {
-                                <a href="@Url.Action("Index", "Accomodation", new { packageid = t.Id })">@t.Name</a>
+                                if (t.Id == Model.CurrentAccomodationPackage)
+                                {
+                                    <a href="@Url.Action("Index", "Accomodation", new { packageid = t.Id })">@t.Name</a>
+
+                                }
 
                             }
+                        </li>
 
-                        }
-                    </li>
+                    }
+                    else
+                    {
+                        <li class="active" aria-current="page"><a href="#">All Packages</a></li>
 
-                }
-                else
-                {
-                    <li class="active" aria-current="page"><a href="#">All Packages</a></li>
-
-                }*@
+                    }*@
                 @*<li class="breadcrumb-item active" aria-current="page">@Model.AccomodationPackages.Select()</li>*@
             </ul>
         </div>
@@ -80,53 +79,12 @@
 
         <div class="row">
             <form class="search-form">
-                @*<div class="form-group">
-                                        <div class="input-group col-md-12  col-sm-12 col-xs-12">
-                                            <span class="input-group-btn">
-                                                <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..." />
-
-                                            </span>
-                                            <span class="input-group-btn">
-                                                <select class="form-control" name="typeid">
-                                                    <option value="0" class="" selected="">
-                                                        All Types
-                                                    </option>
-                                                    @foreach (var t in @Model.AccomodationTypes)
-                                                    {
-                                                        <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationType ? "selected" : string.Empty)>
-                                                            @t.Name
-                                                        </option>
-                                                    }
-                                                </select>
-                                            </span>
-
-                                            <span class="input-group-btn">
-
-                                                <select class="form-control" name="packageid">
-                                                    <option value="0" class="" selected="">
-                                                        All Packages
-                                                    </option>
-                                                    @foreach (var t in @Model.AccomodationPackages)
-                                                    {
-                                                        <option value="@t.Id" class="" @(t.Id == Model.CurrentAccomodationPackage ? "selected" : string.Empty)>
-                                                            @t.Name
-                                                        </option>
-                                                    }
-                                                </select>
-                    </span>
-                                            <span class="input-group-btn">
-                                                <button type="submit" class="btn btn-primary btn-sm" id="kinerja_btn">Submit</button>
-                                            </span>
-                                        </div>*@
-                @*</div>*@
-
-
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-12">
                         <label class="input-lbl">search accomodation</label>
                         <input type="text" class="form-control" value="@Model.searchTerm" name="searchTerm" placeholder="search..." />
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-xs-12">
                         <label class="input-lbl">select accomodation type</label>
                         <select class="form-control" name="typeid">
                             <option value="0" class="" selected="">
@@ -140,9 +98,9 @@
                             }
                         </select>
                     </div>
-                  
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-custom-height">
+
+                    <div class="col-md-2 col-xs-12">
+                        <button class="btn btn-primary btn-custom-height col-xs-5">
                             <span>
                                 <i class="icon-search2"></i>
 
@@ -150,7 +108,7 @@
                         </button>
 
 
-                        <a href="@Url.Action("AccomodationPackages","Accomodation")" class="btn btn-info btn-custom-height">
+                        <a href="@Url.Action("AccomodationPackages","Accomodation")" class="btn btn-info btn-custom-height col-xs-6">
                             <span>
                                 <i class="icon-reload"></i>
                             </span>
@@ -175,11 +133,28 @@
                 @foreach (var t in Model.AccomodationPackages)
                 {
                     <div class="col-md-4 room-wrap animate-box">
-                        <a href="/images/room-1.jpg" class="room image-popup-link" style="background-image: url(/images/room-1.jpg);"></a>
+                        @if (@t.AccomodationPackagePictures != null && @t.AccomodationPackagePictures.Count > 0)
+                        {
+                            <a href="/images/site/@t.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault()" class="room image-popup-link"
+                               style="background-image: url(/images/site/@t.AccomodationPackagePictures.Select(a => a.Picture.URL).FirstOrDefault());"></a>
+
+                        }
+                        else
+                        {
+                            <a href="/images/default-hotel.jpg" class="room image-popup-link" style="background-image: url(/images/default-hotel.jpg);"></a>
+
+                        }
+
                         <div class="desc text-center">
-                            <span class="rate-star"><i class="icon-star-full full"></i><i class="icon-star-full full"></i><i class="icon-star-full full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                            <span class="rate-star">
+                                <i class="icon-star-full full"></i>
+                                <i class="icon-star-full full"></i>
+                                <i class="icon-star-full full"></i>
+                                <i class="icon-star-full full"></i>
+                                <i class="icon-star-full full"></i>
+                            </span>
                             <h3>
-                                <a href="rooms-suites.html">@t.Name</a>
+                                <a href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @t.Id})">@t.Name</a>
                             </h3>
                             <p class="price">
                                 <span class="currency">$</span>
@@ -192,7 +167,8 @@
                                 <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
                             </ul>
                             <p>
-                                <a class="btn btn-primary">Book now!</a>
+                                <a class="btn btn-primary btn-book" href="@Url.Action("AccomodationPackageDetail", "Accomodation", new {@id = @t.Id})">Details</a>
+                                <a class="btn btn-primary btn-book" href="@Url.Action("Index", "Booking", new {@PackageId = @t.Id})">Book now!</a>
                             </p>
                         </div>
                     </div>

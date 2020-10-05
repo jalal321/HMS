@@ -102,6 +102,10 @@
     <Compile Include="Migrations\202009081021595_add-message-and-subscrier-table-2.designer.cs">
       <DependentUpon>202009081021595_add-message-and-subscrier-table-2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009270911351_update-payment-info.cs" />
+    <Compile Include="Migrations\202009270911351_update-payment-info.designer.cs">
+      <DependentUpon>202009270911351_update-payment-info.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -151,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009081021595_add-message-and-subscrier-table-2.resx">
       <DependentUpon>202009081021595_add-message-and-subscrier-table-2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009270911351_update-payment-info.resx">
+      <DependentUpon>202009270911351_update-payment-info.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

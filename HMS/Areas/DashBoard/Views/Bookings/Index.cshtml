@@ -3,14 +3,14 @@
 @model HMS.Areas.DashBoard.ViewModels.BookingListingViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Booking";
 }
 
 
 
 <div class="row">
     <div class="col col-lg-12">
-        <h2>Booking</h2>
+        <h4>Booking</h4>
         <hr />
     </div>
 </div>
@@ -72,34 +72,47 @@
         <ul class="pagination justify-content-center">
             @if (Model.pager.CurrentPage > 1)
             {
-                <li class="page-item">
+                @*<li class="page-item">
                     <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
                                                       @AccomodationPackageId = @Model.AccomodationPackageId})">First</a>
-                </li>
+                </li>*@
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", "Bookings", new { @searchTerm = @Model.SearchTerm,
-                                                      @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.CurrentPage - 1) })">Previous</a>
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new
+                                          {
+                                              @searchTerm = @Model.SearchTerm,
+                                              @AccomodationPackageId = @Model.AccomodationPackageId,
+                                              @page = (Model.pager.CurrentPage - 1),
+                                              @status = (int)Model.Status
+                                          })">Previous</a>
                 </li>
             }
 
             @for (var page = Model.pager.StartPage; page <= Model.pager.EndPage; page++)
             {
                 <li class="page-item @(page == Model.pager.CurrentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
-                                                      @AccomodationPackageId = @Model.AccomodationPackageId ,@page = page})">@page</a>
-                                                </li>
+                    <a class="page-link" href="@Url.Action("Index", "Bookings", new
+                                          {
+                                              @searchTerm = @Model.SearchTerm,
+                                              @AccomodationPackageId = @Model.AccomodationPackageId,
+                                              @page = page,
+                                              @status = (int)Model.Status
+                                          })">@page</a>
+                                    </li>
             }
 
             @if (Model.pager.CurrentPage < Model.pager.TotalPages)
             {
                 <li class="page-item">
                     <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
-                                                      @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.CurrentPage + 1)})">Next</a>
+                                                                                     @AccomodationPackageId = @Model.AccomodationPackageId,
+                                                                                     @page = (Model.pager.CurrentPage + 1),
+                                                                                     @status = (int)Model.Status
+                                          })">Next</a>
                 </li>
-                <li class="page-item">
+                @*<li class="page-item">
                     <a class="page-link" href="@Url.Action("Index", "Bookings", new {@searchTerm = @Model.SearchTerm,
                                                      @AccomodationPackageId = @Model.AccomodationPackageId, @page = (Model.pager.TotalPages)})">Last</a>
-                </li>
+                </li>*@
             }
         </ul>
     </nav>
@@ -108,7 +121,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-full-width">
+    <div class="modal-dialog modal-dialog-full-width modal-dialog-scrollable">
         @* keep modal content part in partial view _Action *@
 
     </div>

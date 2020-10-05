@@ -120,13 +120,14 @@ namespace HMS.Areas.DashBoard.Controllers
 
                 if (model.Booking.BreakFast == true)
                 {
-                breakFastTotals = ((model.Booking.Adult * 7) + (model.Booking.Children * 3)) * model.Booking.Duration * model.Booking.NoOfAccomodation;
+                breakFastTotals = ((model.Booking.Adult * 7) + (model.Booking.Children * 3)) * model.Booking.Duration ;
                 }
 
                 var grandTotal = roomsTotal + vatTax + tourismTax + breakFastTotals;
 
 
                 model.Booking.TotalAmount = grandTotal;
+                model.Booking.PaymentInfo.PaymentStatus = grandTotal - model.Booking.PaymentInfo.AmountPaid >= 0 ? "paid" : "unpaid";
                 msg = bookingService.CreateBooking(model.Booking, model.AccomodationPackageId);
                 result = true;
             }
@@ -150,7 +151,7 @@ namespace HMS.Areas.DashBoard.Controllers
         {
             JsonResult json = new JsonResult();
             var result = false;
-
+            var additionalfeeid = 0;
             
             if (id > 0 && isAddOtherCharges == true )
             {
@@ -165,7 +166,11 @@ namespace HMS.Areas.DashBoard.Controllers
                     Status = 1
                 };
 
-                result = bookingService.AddOtherCharges(bookingAdditionalFee);
+                additionalfeeid = bookingService.AddOtherCharges(bookingAdditionalFee);
+                if (additionalfeeid > 0)
+                {
+                    result = true;
+                }
 
             }
                   catch (Exception)
@@ -194,7 +199,7 @@ namespace HMS.Areas.DashBoard.Controllers
 
             if (result)
             {
-                json.Data = new { success = true, msg = "success" };
+                json.Data = new { success = true, msg = "success", data = additionalfeeid };
             }
             else
             {

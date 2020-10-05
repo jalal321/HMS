@@ -124,7 +124,7 @@ namespace HMS.Services
                 foreach (var t in ids)
                 {
                     var obj = context.Accomodations.Find(t);
-                    obj.InProcess = true;
+                    obj.IsHold = true;
                     context.Entry(obj).State = EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -134,7 +134,7 @@ namespace HMS.Services
                 foreach (var t in ids)
                 {
                     var obj = context.Accomodations.Find(t);
-                    obj.InProcess = false;
+                    obj.IsHold = false;
                     context.Entry(obj).State = EntityState.Modified;
                     context.SaveChanges();
                 }
@@ -236,12 +236,20 @@ namespace HMS.Services
         /// </summary>
         /// <param name="bookingAdditionalFee"></param>
         /// <returns></returns>
-        public bool AddOtherCharges(BookingAdditionalFee bookingAdditionalFee)
+        public int AddOtherCharges(BookingAdditionalFee bookingAdditionalFee)
         {
             var context = new HMSContext();
             context.BookingAdditionalFees.Add(bookingAdditionalFee);
             var result = context.SaveChanges() > 0;
-            return result;
+            if (result)
+            {
+              return bookingAdditionalFee.Id;  
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
 
         public bool UpdateAddionalChargesStatus(int id, int status)

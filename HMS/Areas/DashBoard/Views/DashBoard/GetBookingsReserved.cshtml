@@ -13,11 +13,11 @@
     {
         <div class="dropdown-menu">
             <ul class="" aria-labelledby="dropdownMenuBooking">
-                @foreach (var m in @Model)
+                @foreach (var m in @Model.OrderByDescending(a=>a.Id))
                 {
                     <li class="">
                         <p>
-                            <i class="fas fa-walking mr-1 text-primary"></i>
+                            <i class="fas fa-check-circle mr-1 text-success"></i>
                             <a href="#"
                                class="mt-0 text-primary card-title">@m.GuestName</a>
                             <br />
@@ -35,7 +35,7 @@
                                     Payment : @(m.PaymentInfo != null ? m.PaymentInfo.PaymentStatus : string.Empty)
                                 </span>
                             </strong>
-                            <button type="button" class="mt-2 btn btn-primary btn-sm w-100 card-title data-btn" data-href="@Url.Action("Action", "Bookings", new {Id = m.Id})"
+                            <button type="button" class="mt-2 btn btn-outline-primary btn-sm w-100 card-title data-btn" data-href="@Url.Action("Action", "Bookings", new {Id = m.Id})"
                                     data-toggle="modal" data-target="#actionModal">
                                 Detail
                             </button>

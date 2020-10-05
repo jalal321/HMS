@@ -13,7 +13,7 @@
     {
         <div class="dropdown-menu">
             <ul class="" aria-labelledby="dropdownMenuMessage">
-                @foreach (var m in @Model)
+                @foreach (var m in @Model.OrderByDescending(a=>a.Id))
                 {
                     <li class="">
                         <p>

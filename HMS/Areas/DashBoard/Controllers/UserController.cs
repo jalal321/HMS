@@ -82,7 +82,7 @@ namespace HMS.Areas.DashBoard.Controllers
       
 
         // GET: DashBoard/User
-        public ActionResult Index(string searchTerm, string roleID , int? page , int pageSize = 2)
+        public ActionResult Index(string searchTerm, string roleID , int? page )
          {
             UsersListingViewModel model = new UsersListingViewModel();
 
@@ -91,7 +91,7 @@ namespace HMS.Areas.DashBoard.Controllers
             model.totalRecord = model.Users.Count();
 
             //pagination logic start from here
-            var pager = new Pager(model.totalRecord, page , pageSize);
+            var pager = new Pager(model.totalRecord, page);
 
             model.Users =
                 model.Users.Skip((pager.CurrentPage - 1)*pager.PageSize).Take(pager.PageSize).ToList();
@@ -225,12 +225,13 @@ namespace HMS.Areas.DashBoard.Controllers
                 //edit here
                 var user = await UserManager.FindByIdAsync(model.Id);
 
+                //dont allow to edit email and username
                 user.UserName = model.Name;
                 user.Email = model.Email;
-                user.FullName = user.FullName;
-                user.Country = user.Country;
-                user.City = user.City;
-                user.Address = user.Address;
+                user.FullName = model.FullName;
+                user.Country = model.Country;
+                user.City = model.City;
+                user.Address = model.Address;
                 result = await UserManager.UpdateAsync(user);
              
             }
@@ -243,21 +244,23 @@ namespace HMS.Areas.DashBoard.Controllers
 
             else
             {
+
                 //Create new User here with Role
                 var user = new ApplicationUser();
 
-                user.UserName = model.Name;
                 user.Email = model.Email;
-                user.FullName = user.FullName;
-                user.Country = user.Country;
-                user.City = user.City;
-                user.Address = user.Address;
-                var role = await RoleManager.FindByIdAsync(model.RoleId);
+                user.UserName = model.Name;
+                user.FullName = model.FullName;
+                user.Country = model.Country;
+                user.City = model.City;
+                user.Address = model.Address;
 
-                result = await UserManager.CreateAsync(user);
+                result = await UserManager.CreateAsync(user , "123456");
 
                 if (result.Succeeded)
                 {
+                    var role = await RoleManager.FindByIdAsync(model.RoleId);
+
                    result = await UserManager.AddToRoleAsync(user.Id, role.Name);
                 }
                 

@@ -297,7 +297,16 @@ body {
         padding: 0 5px;
         background: #fff;
     }
-
+    .heading {
+        font-size: 18px;
+        text-transform: uppercase;
+        font-weight: 300;
+        text-align: left;
+        color: 	#506982;
+        border-bottom: 1px solid 	#506982;
+        padding-bottom: 3px;
+        margin-bottom: 20px;
+    }
 .form-group {
     position: relative;
     /*display: flex;
@@ -329,7 +338,7 @@ body {
     transition: 0.1s all ease-in;
 }
 
-input:focus ~ label, textarea:focus ~ label {
+input:focus ~ label, textarea:focus ~ label,select:focus ~ label {
     top: -9px;
     font-size: 11px;
     transition: 0.2s all ease-in;
@@ -337,22 +346,19 @@ input:focus ~ label, textarea:focus ~ label {
 }
 
 
-input:not(:focus):valid ~ label, textarea:not(:focus):valid ~ label {
-    /*opacity: 0;*/
+input:not(:focus):valid ~ label, textarea:not(:focus):valid ~ label , select:not(:focus):valid ~ label {
+   /* opacity: 0;*/
     top: -9px;
     font-size: 11px;
-    /*background: #fff;*/
-    /*padding: 0 5px;*/
-    /*text-transform: uppercase;*/
-    /*transition: 0.2s all ease-in;*/
+    background: #fff;
+    padding: 0 5px;
+    text-transform: uppercase;
+    transition: 0.2s all ease-in;
     font-weight: bold;
 }
 
 
-@media (min-width: 768px) {
 
-
-}
 
 @media (max-width: 768px) {
     /* css for admin page layout*/
